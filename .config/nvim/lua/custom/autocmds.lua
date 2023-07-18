@@ -38,3 +38,9 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   command = [[%s/\s\+$//e]],
   group = augroup("whitespace"),
 })
+
+-- [[ Disable colorschme for large files ]]
+vim.api.nvim_create_autocmd("BufRead", {
+  command = [[if getfsize(expand("%")) > 1000000 | setlocal eventignore+=ColorScheme | endif]],
+  group = augroup("disable_colorscheme"),
+})

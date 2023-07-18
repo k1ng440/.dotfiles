@@ -11,6 +11,7 @@ local options = {
     enable = true,
     update_root = false,
   },
+
   view = {
     adaptive_size = false,
     side = "left",
@@ -75,38 +76,37 @@ local options = {
 }
 
 
--- auto close
-local function is_modified_buffer_open(buffers)
-  for _, v in pairs(buffers) do
-    if v.name:match("NvimTree_") == nil then
-      return true
-    end
-  end
-  return false
-end
-
-vim.api.nvim_create_autocmd("BufEnter", {
-  nested = true,
-  callback = function()
-    if
-        #vim.api.nvim_list_wins() == 1
-        and vim.api.nvim_buf_get_name(0):match("NvimTree_") ~= nil
-        and is_modified_buffer_open(vim.fn.getbufinfo({ bufmodified = 1 })) == false
-    then
-      vim.cmd("quit")
-    end
-  end,
-})
-
 return {
   "nvim-tree/nvim-tree.lua",
-  cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+  cmd = { "NvimTreeToggle", "NvimTreeFocus", "NvimTreeFindFile", "NvimTreeFindFileToggle" },
   opts = options,
   init = function()
     --  TODO: Add Keybinds
   end,
   config = function(_, opts)
-    require("nvim-tree").setup(opts)
+    require("nvim-tree").setup(vim.tbl_extend("force", options, opts))
     vim.g.nvimtree_side = opts.view.side
+    -- auto close
+    local function is_modified_buffer_open(buffers)
+      for _, v in pairs(buffers) do
+        if v.name:match("NvimTree_") == nil then
+          return true
+        end
+      end
+      return false
+    end
+
+    vim.api.nvim_create_autocmd("BufEnter", {
+      nested = true,
+      callback = function()
+        if
+            #vim.api.nvim_list_wins() == 1
+            and vim.api.nvim_buf_get_name(0):match("NvimTree_") ~= nil
+            and is_modified_buffer_open(vim.fn.getbufinfo({ bufmodified = 1 })) == false
+        then
+          vim.cmd("quit")
+        end
+      end,
+    })
   end,
 }

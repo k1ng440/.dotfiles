@@ -1,6 +1,8 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+
+-- [[ Lazy Load ]]
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system {
@@ -14,6 +16,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- [[ Lazy Setup ]]
 require('lazy').setup({
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
@@ -104,6 +107,7 @@ require('lazy').setup({
   },
   {
     "iamcco/markdown-preview.nvim",
+    ft = 'md',
     build = function()
       vim.fn["mkdp#util#install"]()
     end
@@ -138,11 +142,6 @@ vim.o.number = true
 vim.o.relativenumber = true
 vim.o.scrolloff = 5
 
--- [[ Basic Keymaps ]]
-
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -177,5 +176,8 @@ require("custom.keybinds")
 
 -- [[ autocommands ]]
 require('custom.autocmds')
+
+-- [[ commands ]]
+require('custom.commands')
 
 -- vim: ts=2 sts=2 sw=2 et

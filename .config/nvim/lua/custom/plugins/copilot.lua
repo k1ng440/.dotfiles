@@ -23,6 +23,7 @@ return {
         },
         on_status_update = require('lualine').refresh
       })
+
       -- hide copilot suggestions when cmp menu is open
       -- to prevent odd behavior/garbled up suggestions
       local cmp_status_ok, cmp = pcall(require, "cmp")
