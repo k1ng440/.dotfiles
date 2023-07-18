@@ -188,11 +188,20 @@ mason_lspconfig.setup {
 
 mason_lspconfig.setup_handlers {
   function(server_name)
-    require('lspconfig')[server_name].setup {
+    local opts = {
       capabilities = capabilities,
       on_attach = on_attach,
       settings = servers[server_name],
     }
+
+    -- intelephense requires a license key
+    if server_name == 'intelephense' then
+      opts.init_options = {
+        licenceKey = vim.fn.expand "~/.vim/intelephense/license.txt",
+      }
+    end
+
+    require('lspconfig')[server_name].setup(opts)
   end,
 }
 

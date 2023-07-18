@@ -115,6 +115,28 @@ require('lazy').setup({
   {
     'rcarriga/nvim-notify'
   },
+  {
+    'chentoast/marks.nvim',
+    event = 'VeryLazy'
+  },
+  {
+    'xiyaowong/transparent.nvim',
+    config = function()
+      require('transparent').setup({
+        extra_groups = {
+          'NvimTreeNormal',
+          'NormalFloat',
+          'GitSignsAdd',
+          'GitSignsChange',
+          'GitSignsDelete',
+        },
+      })
+      require('transparent').toggle(true)
+    end,
+  },
+  {
+    'robstumborg/yadm.nvim',
+  },
 
   require 'kickstart.plugins.autoformat',
   require 'kickstart.plugins.debug',
@@ -141,6 +163,8 @@ vim.o.termguicolors = true
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.scrolloff = 5
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
 
 
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -179,5 +203,8 @@ require('custom.autocmds')
 
 -- [[ commands ]]
 require('custom.commands')
+
+-- [[ Colorscheme ]]
+require('custom.colorscheme')
 
 -- vim: ts=2 sts=2 sw=2 et

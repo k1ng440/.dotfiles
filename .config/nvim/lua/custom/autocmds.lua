@@ -2,9 +2,16 @@ local function augroup(name)
   return vim.api.nvim_create_augroup("nvimtraap_" .. name, { clear = true })
 end
 
--- ------------------------------------------------------------------------- }}}
--- [[ Close some filetypes with <q>. ]]
+--- [[ Highlight yanked text ]]
+vim.api.nvim_create_autocmd('TextYankPost', {
+  group = augroup("yank_highlight"),
+  pattern = '*',
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
 
+-- [[ Close some filetypes with <q>. ]]
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup("close_with_q"),
   pattern = { "fugitive" },
