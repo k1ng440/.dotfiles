@@ -1,4 +1,4 @@
-local Util = require('custom.util')
+local Util = require('k1ng.util')
 local map = Util.keymap
 
 map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true, desc = 'Disable <Space>' })
@@ -29,24 +29,29 @@ map('n', 'Y', 'Y$', { desc = 'Copy to end of line' })
 map('n', '<esc><esc>', ':nohlsearch<CR>', { desc = 'Clear highlights' })
 
 -- windows
-map("n", "<leader>ww", "<C-W>p", { desc = "Other window", remap = true })
-map("n", "<leader>wd", "<C-W>c", { desc = "Delete window", remap = true })
-map("n", "<leader>w-", "<C-W>s", { desc = "Split window below", remap = true })
-map("n", "<leader>w|", "<C-W>v", { desc = "Split window right", remap = true })
-map("n", "<leader>-", "<C-W>s", { desc = "Split window below", remap = true })
-map("n", "<leader>|", "<C-W>v", { desc = "Split window right", remap = true })
+map("n", "<leader>ww", "<C-W>p", { desc = "Other window", })
+map("n", "<leader>wd", "<C-W>c", { desc = "Delete window", })
+map("n", "<leader>w-", "<C-W>s", { desc = "Split window below", })
+map("n", "<leader>w|", "<C-W>v", { desc = "Split window right", })
+map("n", "<leader>-", "<C-W>s", { desc = "Split window below", })
+map("n", "<leader>|", "<C-W>v", { desc = "Split window right", })
 
 -- Split navigation
-map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
-map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
-map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
-map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
+map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", })
+map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", })
+map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", })
+map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", })
 
 -- Split reslizing
 map('n', '<C-Up>', ':resize -2<CR>', { desc = '[Up] Resize split up' })
 map('n', '<C-Down>', ':resize +2<CR>', { desc = '[Down] Resize split down' })
 map('n', '<C-Left>', ':vertical resize -2<CR>', { desc = '[Left] Resize split left' })
 map('n', '<C-Right>', ':vertical resize +2<CR>', { desc = '[Right] Resize split right' })
+-- terminal
+map("t", "<C-Up>", "<cmd>resize -2<CR>")
+map("t", "<C-Down>", "<cmd>resize +2<CR>")
+map("t", "<C-Left>", "<cmd>vertical resize -2<CR>")
+map("t", "<C-Right>", "<cmd>vertical resize +2<CR>")
 
 -- Navigate buffers
 map('n', '[b', ':bprevious<CR>', { desc = 'Previous buffer', })
@@ -101,17 +106,8 @@ map("n", "<leader>fT", function() Util.float_term() end, { desc = "Terminal (cwd
 map("n", "<c-/>", lazyterm, { desc = "Terminal (root dir)" })
 map("n", "<c-_>", lazyterm, { desc = "which_key_ignore" })
 
--- Terminal Mappings
-map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
-map("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to left window" })
-map("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to lower window" })
-map("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window" })
-map("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window" })
-map("t", "<C-/>", "<cmd>close<cr>", { desc = "Hide Terminal" })
-map("t", "<c-_>", "<cmd>close<cr>", { desc = "which_key_ignore" })
-
 -- Copilot
-map({ 'n' }, '<A-p>', require('copilot.panel').open, { desc = 'Open Copilot Panel' })
+map('n', '<A-p>', function() require('copilot.panel').open() end, { desc = 'Open Copilot Panel' })
 
 -- Trouble.nvim
 map('n', '<leader>xx', '<cmd>TroubleToggle<CR>', { silent = true, noremap = true, desc = 'Toggle Trouble' })

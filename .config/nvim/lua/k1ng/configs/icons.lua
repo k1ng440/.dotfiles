@@ -1,8 +1,6 @@
 -- Icons for LSP, DAP, Git, and Diagnostics are configured here.
 -- They are mostly borrowed from LazyVim
 return {
-  border = { "╒", "═", "╕", "│", "╛", "═", "╘", "│" },
-  icons = {
     dap = {
       Stopped = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
       Breakpoint = " ",
@@ -57,6 +55,5 @@ return {
       Unit = " ",
       Value = " ",
       Variable = " ",
-    },
   },
 }

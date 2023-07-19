@@ -1,13 +1,14 @@
 local M = {}
-M.root_patterns = { ".git", "lua" }
+M.root_patterns = { ".git", "init.lua", "init.vim", "package.json", "go.mod", "Cargo.toml", "Makefile", "build.gradle" }
 
 -- {mode}	means the mode for which the mapping is defined (i, n, v, x, s, o, t, c, l)
 -- {lhs}	means the left-hand-side key(s) in the mapping
 -- {rhs}	means the right-hand-side action(s) in the mapping
--- {opts}	means the options for the mapping
-M.keymap = function(mode, lhs, rhs, opts)
+-- {opts}	means the options for the mapping (default: {noremap = true, silent = true})
+function M.keymap(mode, lhs, rhs, opts)
   local options = {
-    -- noremap = true, silent = true
+    noremap = true,
+    silent = true,
   }
 
   if opts then options = vim.tbl_extend('force', options, opts) end
@@ -15,10 +16,10 @@ M.keymap = function(mode, lhs, rhs, opts)
 end
 
 M.buf_keymap = function(bufnr, mode, lhs, rhs, opts)
-
   local options = {
     buffer = bufnr,
-    -- noremap = true, silent = true
+    noremap = true,
+    silent = true
   }
   if opts then options = vim.tbl_extend('force', options, opts) end
   vim.keymap.set(mode, lhs, rhs, opts)
@@ -54,7 +55,6 @@ function M.get_root()
   if not root then
     path = path and vim.fs.dirname(path) or vim.loop.cwd()
     ---@type string?
-
     root = vim.fs.find(M.root_patterns, { path = path, upward = true })[1]
     root = root and vim.fs.dirname(root) or vim.loop.cwd()
   end
@@ -87,6 +87,7 @@ end
 function M.telescope(builtin, opts)
   local params = { builtin = builtin, opts = opts }
   return function()
+    opts = opts or {}
     builtin = params.builtin
     opts = params.opts
     opts = vim.tbl_deep_extend("force", { cwd = M.get_root() }, opts or {})
@@ -115,10 +116,8 @@ function M.telescope(builtin, opts)
   end
 end
 
-
-
 function M.border_color(border, color)
- local result = {}
+  local result = {}
   for _, v in ipairs(border) do
     table.insert(result, { v, color })
   end

@@ -1,4 +1,4 @@
-local Util = require('custom.util')
+local Util = require('k1ng.util')
 return {
     {
         'nvim-telescope/telescope.nvim',
@@ -11,16 +11,17 @@ return {
             { '<leader>,', '<cmd>Telescope buffers show_all_buffers=true<cr>', desc = 'Switch Buffer' },
             { '<leader>/', Util.telescope('live_grep'), desc = 'Grep (root dir)' },
             { '<leader>:', '<cmd>Telescope command_history<cr>', desc = 'Command History' },
-            { '<leader><space>', Util.telescope('files'), desc = 'Find Files (root dir)' },
             -- find
-            { '<leader>fb', '<cmd>Telescope buffers<cr>', desc = 'Buffers' },
-            { '<leader>ff', Util.telescope('files'), desc = 'Find Files (root dir)' },
-            { '<leader>fF', Util.telescope('files', { cwd = false }), desc = 'Find Files (cwd)' },
-            { '<leader>fr', '<cmd>Telescope oldfiles<cr>', desc = 'Recent' },
-            { '<leader>fR', Util.telescope('oldfiles', { cwd = vim.loop.cwd() }), desc = 'Recent (cwd)' },
+            { '<leader>fb', '<cmd>Telescope buffers<cr>', desc = '[F]ile [B]uffers' },
+            { '<leader>ff', Util.telescope('files'), desc = '[F]ind [F]iles (root dir)' },
+            { '<leader>fF', Util.telescope('files', { cwd = false }), desc = '[F]ind [F]iles (cwd)' },
+            { '<leader>sf', Util.telescope('files'), desc = '[F]ind Files (root dir)' },
+            { '<leader>sF', Util.telescope('files', { cwd = false }), desc = 'Find Files (cwd)' },
+            { '<leader>fr', '<cmd>Telescope oldfiles<cr>', desc = '[R]ecent' },
+            { '<leader>fR', Util.telescope('oldfiles', { cwd = vim.loop.cwd() }), desc = '[R]ecent (cwd)' },
             -- git
-            { '<leader>gc', '<cmd>Telescope git_commits<CR>', desc = 'commits' },
-            { '<leader>gs', '<cmd>Telescope git_status<CR>', desc = 'status' },
+            { '<leader>gc', '<cmd>Telescope git_commits<CR>', desc = '[G]it [C]ommits' },
+            { '<leader>gs', '<cmd>Telescope git_status<CR>', desc = '[G]it [S]tatus' },
             -- search
             { '<leader>sa', '<cmd>Telescope autocommands<cr>', desc = 'Auto Commands' },
             { '<leader>sb', '<cmd>Telescope current_buffer_fuzzy_find<cr>', desc = 'Buffer' },
@@ -78,7 +79,7 @@ return {
             },
         },
         opts = function()
-            return require('custom.plugins.configs.telescope')
+            return require('k1ng.plugin-configs.telescope')
         end,
         config = function(_, opts)
             local telescope = require('telescope')
@@ -98,35 +99,53 @@ return {
     },
     {
         'nvim-telescope/telescope-file-browser.nvim',
-        dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' },
+        event = 'VeryLazy',
+        dependencies = { 'nvim-telescope/telescope.nvim' },
+        config = function (_, opts)
+            require('telescope._extensions.file_browser').setup(opts)
+            require('telescope').load_extension('file_browser')
+        end
     },
     'nvim-telescope/telescope-hop.nvim',
     'nvim-telescope/telescope-ui-select.nvim',
     {
         'ThePrimeagen/git-worktree.nvim',
+        event = 'VeryLazy',
         config = function()
             require('git-worktree').setup {}
         end,
     },
     {
         'AckslD/nvim-neoclip.lua',
+        event = 'VeryLazy',
         config = function()
             require('neoclip').setup()
         end,
     },
     {
-        'sopa0/telescope-makefile',
+        'nvim-telescope/telescope-live-grep-args.nvim',
+        event = 'VeryLazy',
         dependencies = { 'nvim-telescope/telescope.nvim' },
-        config = function()
-            require('telescope').load_extension('make')
-        end,
-    },
-    {
-    'GustavoKatel/telescope-asynctasks.nvim',
-        dependencies = {
-            'nvim-telescope/telescope.nvim',
-            'skywind3000/asynctasks.vim',
-            'skywind3000/asyncrun.vim',
+       keys = {
+            {'<leader>rg', function () require("telescope").extensions.live_grep_args.live_grep_args() end, desc = 'Grep (root dir)'},
         },
+        config = function()
+            require('telescope').load_extension('live_grep_args')
+        end,
     }
+    -- {
+    --     'sopa0/telescope-makefile',
+    --     dependencies = { 'nvim-telescope/telescope.nvim' },
+    --     config = function()
+    --         require('telescope').load_extension('make')
+    --     end,
+    -- },
+    -- {
+    -- 'GustavoKatel/telescope-asynctasks.nvim',
+    --     dependencies = {
+    --         'nvim-telescope/telescope.nvim',
+    --         'skywind3000/asynctasks.vim',
+    --         'skywind3000/asyncrun.vim',
+    --     },
+    -- }
 }

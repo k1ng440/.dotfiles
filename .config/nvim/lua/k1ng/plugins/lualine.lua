@@ -5,7 +5,7 @@ return {
     "SmiteshP/nvim-navic",
   },
   opts = function(_, opts)
-      local Util = require("custom.util")
+      local Util = require("k1ng.util")
       local colors = {
         [""] = Util.fg("Special"),
         ["Normal"] = Util.fg("Special"),
@@ -13,7 +13,7 @@ return {
         ["InProgress"] = Util.fg("DiagnosticWarn"),
       }
     -- brorowed from Lazynvim
-    local icons = require("custom.config").icons
+    local icons = require("k1ng.configs.icons")
     local baseOpts = {
       options = {
         theme = "auto",
@@ -50,7 +50,7 @@ return {
         lualine_x = {
           {
             function()
-              local icon = require("custom.config").icons.kinds.Copilot
+              local icon = require("k1ng.config.icons").kinds.Copilot
               local status = require("copilot.api").status.data
               return icon .. (status.message or "")
             end,

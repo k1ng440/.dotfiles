@@ -1,5 +1,3 @@
-local Border = require('custom.config').border
-
 local has_words_before = function()
   unpack = unpack or table.unpack
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -12,7 +10,16 @@ return {
     dependencies = {
       "hrsh7th/cmp-emoji",
       'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
+      {
+        'saadparwaiz1/cmp_luasnip',
+        version = "2.*",
+        build = 'make install_jsregexp',
+        config = function()
+          require("luasnip.loaders.from_vscode").lazy_load({
+            path = { vim.fn.stdpath("config") .. "/snippets" },
+          })
+        end
+      },
       'hrsh7th/cmp-nvim-lsp',
       "hrsh7th/cmp-path",
       'rafamadriz/friendly-snippets',
@@ -24,13 +31,12 @@ return {
       local luasnip = require("luasnip")
       local cmp = require("cmp")
 
-      local ELLIPSIS_CHAR = '…'
-      local MAX_LABEL_WIDTH = 40
-      local MIN_LABEL_WIDTH = 40
-
       -- Setup lspkind icons
       opts.formatting = {
-        format = function(entry, item)
+        format = function(_, item)
+          local ELLIPSIS_CHAR = '…'
+          local MAX_LABEL_WIDTH = 40
+          local MIN_LABEL_WIDTH = 40
           --@label string|number
           local label = item.abbr
           local truncated_label = vim.fn.strcharpart(label, 0, MAX_LABEL_WIDTH)
@@ -40,7 +46,7 @@ return {
             local padding = string.rep(' ', MIN_LABEL_WIDTH - string.len(label))
             item.abbr = label .. padding
           end
-          local icons = require("custom.config").icons.kinds
+          local icons = require("k1ng.configs.icons").kinds
           if icons[item.kind] then
             item.kind = icons[item.kind] .. item.kind
           end

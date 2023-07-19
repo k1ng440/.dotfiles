@@ -1,11 +1,8 @@
 require('nvim-treesitter.configs').setup {
   ensure_installed = {
-    'go', 'gosum', 'gomod', 'gowork',
-    'jq', 'javascript', 'jsdoc', 'make', 'passwd', 'php', 'proto', 'sql',
-    'svelte', 'todotxt', 'yaml', 'toml',
-    'lua', 'python', 'rust',
-    'tsx', 'typescript', 'vimdoc', 'vim', 'markdown', 'markdown_inline',
-    'regex', 'bash',
+    'go', 'gosum', 'gomod', 'gowork', 'jq', 'javascript', 'jsdoc', 'make',
+    'passwd', 'php', 'proto', 'sql', 'svelte', 'todotxt', 'yaml', 'toml', 'lua', 'python', 'rust',
+    'tsx', 'typescript', 'vimdoc', 'vim', 'markdown', 'markdown_inline', 'regex', 'bash',
   },
   auto_install = true,
   highlight = { enable = true },
