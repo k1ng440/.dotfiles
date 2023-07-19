@@ -1,33 +1,23 @@
 require('neodev').setup()
 
-vim.diagnostic.config({
-  virtual_text = false
-})
-
--- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
--- EOF Diagnostic keymaps
+vim.keymap.set('n', '<leader>cf', '<cmd>Format<CR>', { desc = '[C]ode [F]ormat' })
 
--- Lspsaga
-vim.keymap.set("n", "[E", function()
-  require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
-end, { desc = "Go to previous diagnostics message (ERROR)" })
+local Config = require("custom.config")
 
-vim.keymap.set("n", "]E", function()
-  require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
-end, { desc = "Go to next diagnostics message (ERROR)" })
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+  vim.lsp.handlers.hover, { border = Config.border }
+)
 
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+  vim.lsp.handlers.signature_help, { border = Config.border }
+)
 
-vim.keymap.set('n', '<leader>rn', '<Cmd>Lspsaga rename<CR>', { desc = '[R]e[n]ame' })
-vim.keymap.set('n', 'gp', '<cmd>Lspsaga peek_definition<CR>', { desc = 'Peek Definition' })
-vim.keymap.set('n', '<leader>pd', '<cmd>Lspsaga peek_definition<CR>', { desc = '[P]eek [D]efinition' })
-
--- EOF Lspsaga
-
-
+vim.diagnostic.config {
+  float = { border = Config.border },
+}
 
 -- [[ Configure LSP ]]
 local on_attach = function(client, bufnr)
@@ -56,23 +46,28 @@ local on_attach = function(client, bufnr)
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
 
-  nmap('<leader>rn', '<Cmd>Lspsaga rename<CR>', '[R]e[n]ame')
-  nmap('<leader>rn', '<Cmd>Lspsaga rename<CR>', '[R]e[n]ame')
+  local imap = function(keys, func, desc)
+    if desc then
+      desc = 'LSP: ' .. desc
+    end
+    vim.keymap.set('i', keys, func, { buffer = bufnr, desc = desc })
+  end
+
+  nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-  nmap('gd', '<cmd> Lspsaga lsp_finder <CR>', '[G]oto [D]efinition')
+  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+  nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-
-  nmap('<C-k>', '<cmd> Lspsaga signature_help <CR>', 'Signature Documentation')
-
+  imap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
   -- See `:help K` for why this keymap
-  nmap('K', '<cmd> Lspsaga hover_doc <CR>', 'Hover Documentation')
-  nmap('<leader>ld', '<cmd> Lspsaga show_line_diagnostics <CR>', 'Show [L]ine [D]iagnostics')
-
+  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
   nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
@@ -87,9 +82,6 @@ local on_attach = function(client, bufnr)
   end, { desc = 'Format current buffer with LSP' })
 end
 
--- Enable the following language servers
---  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
---
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {

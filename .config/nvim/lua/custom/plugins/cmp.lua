@@ -1,20 +1,9 @@
+local Border = require('custom.config').border
+
 local has_words_before = function()
   unpack = unpack or table.unpack
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-end
-
-local function border(hl_name)
-  return {
-    { "╭", hl_name },
-    { "─", hl_name },
-    { "╮", hl_name },
-    { "│", hl_name },
-    { "╯", hl_name },
-    { "─", hl_name },
-    { "╰", hl_name },
-    { "│", hl_name },
-  }
 end
 
 return {
@@ -34,20 +23,30 @@ return {
     opts = function(_, opts)
       local luasnip = require("luasnip")
       local cmp = require("cmp")
-      local lspkind = require("lspkind")
+
+      local ELLIPSIS_CHAR = '…'
+      local MAX_LABEL_WIDTH = 40
+      local MIN_LABEL_WIDTH = 40
 
       -- Setup lspkind icons
       opts.formatting = {
-        format = lspkind.cmp_format({
-          with_text = true,
-          maxwidth = 50,
-          mode = "symbol",
-          before = function(_, vim_item)
-            return vim_item
-          end,
-        })
+        format = function(entry, item)
+          --@label string|number
+          local label = item.abbr
+          local truncated_label = vim.fn.strcharpart(label, 0, MAX_LABEL_WIDTH)
+          if truncated_label ~= label then
+            item.abbr = truncated_label .. ELLIPSIS_CHAR
+          elseif string.len(label) < MIN_LABEL_WIDTH then
+            local padding = string.rep(' ', MIN_LABEL_WIDTH - string.len(label))
+            item.abbr = label .. padding
+          end
+          local icons = require("custom.config").icons.kinds
+          if icons[item.kind] then
+            item.kind = icons[item.kind] .. item.kind
+          end
+          return item
+        end,
       }
-
       -- Setup cmp
       opts.snippet = {
         expand = function(args)
@@ -66,16 +65,37 @@ return {
         completeopt = "menu,menuone",
       }
 
-      opts.window = {
-        completion = {
-          side_padding = 1,
-          winhighlight = "Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel",
-          scrollbar = false,
-          border = border "CmpBorder"
+      -- border style
+      require("lspconfig.ui.windows").default_options.border = "double"
+      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+        border = vim.g.bc.style,
+      })
+      local cmp_borders = {
+        border = {
+          vim.g.bc.topleft,
+          vim.g.bc.horiz,
+          vim.g.bc.topright,
+          vim.g.bc.vert,
+          vim.g.bc.botright,
+          vim.g.bc.horiz,
+          vim.g.bc.botleft,
+          vim.g.bc.vert,
         },
-        documentation = {
-          border = border "CmpDocBorder",
-          winhighlight = "Normal:CmpDoc",
+        winhighlight = "Normal:CmpPmenu,FloatBorder:CmpBorder,CursorLine:PmenuSel,Search:None",
+      }
+
+      opts.window = {
+        completion = cmp_borders,
+        documentation = cmp_borders,
+      }
+
+      opts.sorting = {
+        comparators = {
+          cmp.config.compare.exact,
+          cmp.config.compare.kind,
+          cmp.config.compare.locality,
+          cmp.config.compare.recently_used,
+          cmp.config.compare.score,
         },
       }
 

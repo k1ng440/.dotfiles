@@ -9,6 +9,13 @@ return {
         panel = {
           enabled = true,
           auto_refresh = true,
+          keymap = {
+            jump_next = "<M-n>",
+            jump_prev = "<M-p>",
+            accept = "<M-c>",
+            refresh = 'r',
+            open = '<M-CR>',
+          }
         },
         suggestion = {
           enabled = true,
@@ -21,7 +28,6 @@ return {
             prev = "<M-p>",
           },
         },
-        on_status_update = require('lualine').refresh
       })
 
       -- hide copilot suggestions when cmp menu is open
@@ -36,14 +42,5 @@ return {
         end)
       end
     end,
-  },
-  {
-    'jonahgoldwastaken/copilot-status.nvim',
-    lazy = true,
-    dependencies = { 'zbirenbaum/copilot.lua' },
-    config = function()
-      vim.notify('copilit-status.nvim loaded')
-    end,
-    event = "BufReadPost",
   },
 }
