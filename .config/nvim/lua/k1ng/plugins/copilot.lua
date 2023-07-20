@@ -7,28 +7,22 @@ return {
     config = function()
       require("copilot").setup({
         panel = {
-          enabled = true,
-          auto_refresh = true,
-          keymap = {
-            jump_next = "<M-n>",
-            jump_prev = "<M-p>",
-            accept = "<M-c>",
-            refresh = 'r',
-            open = '<M-CR>',
-          }
+          enabled = false,
         },
         suggestion = {
           enabled = true,
           auto_trigger = true,
           accept = false,
           keymap = {
-            accept = "<M-p>",
-            cancel = "<M-c>",
-            next = "<M-n>",
-            prev = "<M-p>",
+            accept = "<A-j>",
+            cancel = "<A-c>",
+            next = "<A-n>",
+            prev = "<A-p>",
           },
         },
       })
+
+
 
       -- hide copilot suggestions when cmp menu is open
       -- to prevent odd behavior/garbled up suggestions

@@ -5,6 +5,7 @@ return {
     dependencies = {
       'williamboman/mason-lspconfig.nvim',
       'folke/neodev.nvim',
+      'folke/neoconf.nvim',
       'smjonas/inc-rename.nvim',
       "hrsh7th/nvim-cmp",
     },
@@ -47,8 +48,20 @@ return {
     },
   },
   {
+    "ray-x/go.nvim",
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    ft = {"go", 'gomod'},
+    build = ':lua require("go.install").update_all_sync()',
+    config = function()
+      require('k1ng.lsp.go').setup()
+    end,
+  },
+  {
     "SmiteshP/nvim-navic",
-    lazy = true,
+    event = 'LspAttach',
     init = function()
       vim.g.navic_silence = true
       require("k1ng.util").on_attach(function(client, buffer)

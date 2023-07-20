@@ -6,7 +6,7 @@ return {
     },
     build = ':TSUpdate',
     config = function ()
-      require('k1ng.plugin-configs.treesitter')
+      require('k1ng.plugin-configs.treesitter-config')
     end
   },
 }

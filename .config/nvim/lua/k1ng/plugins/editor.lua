@@ -2,6 +2,12 @@ return {
   'tpope/vim-repeat',
   'tpope/vim-rhubarb',
   'tpope/vim-sleuth',
+  {
+    'mbbill/undotree', -- undotree
+    keys = {
+      { 'n', '<leader>ut', '<cmd>UndotreeToggle<CR>', desc = '[U]ndo [T]ree' },
+    },
+  },
   { "tpope/vim-surround", lazy = false },
   {
     'lukas-reineke/indent-blankline.nvim',

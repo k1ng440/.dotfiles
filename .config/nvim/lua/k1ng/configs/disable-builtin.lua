@@ -14,6 +14,8 @@ local disabled_built_ins = {
   'vimballPlugin',
   'zip',
   'zipPlugin',
+  -- 'netrw',
+  -- 'netrwPlugin',
 }
 
 for _, plugin in pairs(disabled_built_ins) do

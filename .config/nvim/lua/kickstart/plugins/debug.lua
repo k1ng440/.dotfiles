@@ -8,13 +8,7 @@
 
 return {
   {
-    'mfussenegger/nvim-dap',
-    event = 'VeryLazy',
-    dependencies = {
-      {
-        "rcarriga/nvim-dap-ui",
-        -- stylua: ignore
-        keys = {
+    'm      keys = {
           { "<leader>du", function() require("dapui").toggle({}) end, desc = "Dap UI" },
           { "<leader>de", function() require("dapui").eval() end,     desc = "Eval",  mode = { "n", "v" } },
         },

@@ -62,6 +62,7 @@ vim.api.nvim_create_autocmd('FileType', {
     'PlenaryTestPopup', 'help', 'lspinfo', 'man', 'notify', 'qf', 'spectre_panel',
     'startuptime', 'tsplayground', 'neotest-output', 'checkhealth', 'neotest-summary',
     'neotest-output-panel', 'fugitive', 'copilot', 'NvimTree', 'Trouble', 'neo-tree',
+    'netrw',
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false

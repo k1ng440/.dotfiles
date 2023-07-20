@@ -79,7 +79,7 @@ return {
             },
         },
         opts = function()
-            return require('k1ng.plugin-configs.telescope')
+            return require('k1ng.plugin-configs.telescope-config')
         end,
         config = function(_, opts)
             local telescope = require('telescope')
@@ -105,6 +105,13 @@ return {
             require('telescope._extensions.file_browser').setup(opts)
             require('telescope').load_extension('file_browser')
         end
+    },
+    {
+        'debugloop/telescope-undo.nvim',
+        event = 'VeryLazy',
+        config = function()
+            require('telescope').load_extension('undo')
+        end,
     },
     'nvim-telescope/telescope-hop.nvim',
     'nvim-telescope/telescope-ui-select.nvim',

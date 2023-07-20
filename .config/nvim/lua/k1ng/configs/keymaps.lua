@@ -9,10 +9,15 @@ map('n', 'Q', '@q', { desc = 'Replay macro' })
 map('n', '<Tab>', '%', { desc = 'Remap % to Tab' })
 
 -- Close buffer
-map('n', '<Leader>q', '<cmd>close<cr>', { desc = 'Close buffer' })
+map('n', '<leader>q', '<cmd>close<cr>', { desc = 'Close buffer' })
+map('n', '<leader>bd', '<cmd>DeleteFile<cr>', { desc = 'Delete buffer and file' })
 
 -- quit
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
+
+-- netrw
+map("n", "-", "<cmd>Explore<cr>", { desc = "Explorer Netrw (file dir)", })
+map({'n', 'i'}, '<c-b>', '<cmd>:Lex<cr>:vertical resize 30<cr>', { desc = 'Explorer Netrw (buffer dir)', })
 
 -- Move selection up/down/left/right
 map("v", "J", ":m '>+1<CR>gv=gv", { desc = '[J] Move selection down' })
@@ -43,19 +48,16 @@ map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", })
 map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", })
 
 -- Split reslizing
-map('n', '<C-Up>', ':resize -2<CR>', { desc = '[Up] Resize split up' })
-map('n', '<C-Down>', ':resize +2<CR>', { desc = '[Down] Resize split down' })
-map('n', '<C-Left>', ':vertical resize -2<CR>', { desc = '[Left] Resize split left' })
-map('n', '<C-Right>', ':vertical resize +2<CR>', { desc = '[Right] Resize split right' })
--- terminal
-map("t", "<C-Up>", "<cmd>resize -2<CR>")
-map("t", "<C-Down>", "<cmd>resize +2<CR>")
-map("t", "<C-Left>", "<cmd>vertical resize -2<CR>")
-map("t", "<C-Right>", "<cmd>vertical resize +2<CR>")
+map({ 'n', 't' }, '<C-Up>', ':resize -2<CR>', { desc = '[Up] Resize split up' })
+map({ 'n', 't' }, '<C-Down>', ':resize +2<CR>', { desc = '[Down] Resize split down' })
+map({ 'n', 't' }, '<C-Left>', ':vertical resize -2<CR>', { desc = '[Left] Resize split left' })
+map({ 'n', 't' }, '<C-Right>', ':vertical resize +2<CR>', { desc = '[Right] Resize split right' })
 
 -- Navigate buffers
 map('n', '[b', ':bprevious<CR>', { desc = 'Previous buffer', })
 map('n', ']b', ':bnext<CR>', { desc = 'Next buffer',  })
+map('n', '[t', ':tabprevious<CR>', { desc = 'Previous tab', })
+map('n', ']t', ':tabnext<CR>', { desc = 'Next tab',  })
 
 -- Terminal Mappings
 map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
@@ -105,9 +107,6 @@ map("n", "<leader>ft", lazyterm, { desc = "Terminal (root dir)" })
 map("n", "<leader>fT", function() Util.float_term() end, { desc = "Terminal (cwd)" })
 map("n", "<c-/>", lazyterm, { desc = "Terminal (root dir)" })
 map("n", "<c-_>", lazyterm, { desc = "which_key_ignore" })
-
--- Copilot
-map('n', '<A-p>', function() require('copilot.panel').open() end, { desc = 'Open Copilot Panel' })
 
 -- Trouble.nvim
 map('n', '<leader>xx', '<cmd>TroubleToggle<CR>', { silent = true, noremap = true, desc = 'Toggle Trouble' })
