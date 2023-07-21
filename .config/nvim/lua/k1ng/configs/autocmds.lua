@@ -7,7 +7,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
   callback = function()
     vim.highlight.on_yank()
-  end,
+  end
 })
 
 -- Disable ColorScheme when opening large files
@@ -89,5 +89,16 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
     end
     local file = vim.loop.fs_realpath(event.match) or event.match
     vim.fn.mkdir(vim.fn.fnamemodify(file, ':p:h'), 'p')
+  end,
+})
+
+
+-- Auto remove whitespace
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  pattern = { "*" },
+  callback = function(ev)
+    local save_cursor = vim.fn.getpos(".")
+    vim.cmd([[%s/\s\+$//e]])
+    vim.fn.setpos(".", save_cursor)
   end,
 })

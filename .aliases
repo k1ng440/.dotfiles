@@ -10,7 +10,7 @@ alias vimbegood="docker run -it --rm brandoncc/vim-be-good:latest"
 alias mkdir='mkdir --parents'
 alias df='df --all --si --print-type'
 alias fzfp="fzf --preview 'batcat --style=numbers --color=always --line-range :500 {}'"
-alias ch ='chezmoi'
+alias ch="chezmoi"
 
 # hack for WSL2 cache clear
 alias drop_cache="sudo sh -c \"echo 3 >'/proc/sys/vm/drop_caches' && swapoff -a && swapon -a && printf '\n%s\n' 'Ram-cache and Swap Cleared'\""

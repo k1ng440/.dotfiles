@@ -4,8 +4,8 @@ vim.g.maplocalleader = ' '
 local opt = vim.opt
 
 opt.autowrite = true -- Enable auto write
-opt.clipboard = 'unnamedplus' -- Sync with system clipboard
-opt.completeopt = 'menu,menuone,noselect'
+opt.clipboard:append('unnamedplus') -- Sync with system clipboard
+opt.completeopt = 'menuone,noselect'
 opt.conceallevel = 3 -- Hide * markup for bold and italic
 opt.cursorline = true -- Enable highlighting of the current line
 opt.expandtab = true -- Use spaces instead of tabs
@@ -43,15 +43,18 @@ opt.wildmode = 'longest:full,full' -- Command-line completion mode
 opt.winminwidth = 5 -- Minimum window width
 opt.wrap = false -- Disable line wrap
 opt.fileencoding = 'utf-8'
+opt.hidden = true
 opt.path:append('**')
 opt.wildignore:append('*/node_modules/*')
 opt.wildignore:append('*/.git/*')
+opt.wildignore:append('*/vendor/*')
 opt.wildignore:append('*/.DS_Store')
 opt.wildignore:append('*/.env')
 opt.wildignore:append('*/.env.local')
 opt.wildignore:append('*/.vscode/*')
 opt.wildignore:append('*/.idea/*')
 opt.wildignore:append('*/.gitignore')
+
 
 
 -- stylua: ignore

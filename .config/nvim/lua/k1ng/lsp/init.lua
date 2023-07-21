@@ -119,6 +119,15 @@ cmp.setup({
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
+-- Configure vim.diagnostic
+vim.diagnostic.config({
+  underline = true,
+  virtual_text = false,
+  signs = true,
+  update_in_insert = false,
+  severity_sort = true,
+})
+
 
 -- Configure LSP using Mason lspconfig
 local servers = require('k1ng.lsp.servers')
@@ -127,14 +136,7 @@ mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
 }
 
--- Configure vim.diagnostic
-vim.diagnostic.config({
-  underline = true,
-  virtual_text = false,
-  signs = true,
-  update_in_insert = false,
-})
-
+--- Setup handlers for lspconfig
 mason_lspconfig.setup_handlers {
   function(server_name)
     local opts = {
