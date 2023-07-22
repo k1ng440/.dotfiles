@@ -27,7 +27,6 @@ return {
       "hrsh7th/cmp-path",
       'rafamadriz/friendly-snippets',
       'hrsh7th/cmp-calc',
-      'onsails/lspkind.nvim',
     },
   },
   {
@@ -53,7 +52,7 @@ return {
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
     },
-    ft = {"go", 'gomod'},
+    ft = { "go", 'gomod' },
     build = ':lua require("go.install").update_all_sync()',
     config = function()
       require('k1ng.lsp.go').setup()

@@ -30,6 +30,7 @@ local options = {
       '--column',
       '--smart-case',
     },
+    file_ignore_patterns = { 'node_modules', '.vscode', '.git', '.idea', },
     borderchars = { bc.horiz, bc.vert, bc.horiz, bc.vert, bc.topleft, bc.topright, bc.botright, bc.botleft },
     prompt_prefix = '   ',
     selection_caret = '  ',
@@ -72,7 +73,6 @@ local options = {
     },
     ["ui-select"] = no_preview(),
     file_sorter = require('telescope.sorters').get_fzy_sorter,
-    file_ignore_patterns = { 'node_modules' },
     generic_sorter = require('telescope.sorters').get_generic_fuzzy_sorter,
     path_display = { 'truncate' },
     winblend = 0,
@@ -83,44 +83,44 @@ local options = {
     qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
     buffer_previewer_maker = require('telescope.previewers').buffer_previewer_maker,
     mappings = {
-                i = {
-            ["<c-t>"] = function(...)
-              return require("trouble.providers.telescope").open_with_trouble(...)
-            end,
-            ["<a-t>"] = function(...)
-              return require("trouble.providers.telescope").open_selected_with_trouble(...)
-            end,
-            ["<a-i>"] = function()
-              local action_state = require("telescope.actions.state")
-              local line = action_state.get_current_line()
-              Util.telescope("find_files", { no_ignore = true, default_text = line })()
-            end,
-            ["<a-h>"] = function()
-              local action_state = require("telescope.actions.state")
-              local line = action_state.get_current_line()
-              Util.telescope("find_files", { hidden = true, default_text = line })()
-            end,
-            ["<C-Down>"] = function(...)
-              return require("telescope.actions").cycle_history_next(...)
-            end,
-            ["<C-Up>"] = function(...)
-              return require("telescope.actions").cycle_history_prev(...)
-            end,
-            ["<C-f>"] = function(...)
-              return require("telescope.actions").preview_scrolling_down(...)
-            end,
-            ["<C-b>"] = function(...)
-              return require("telescope.actions").preview_scrolling_up(...)
-            end,
-          },
-          n = {
-            ["q"] = function(...)
-              return require("telescope.actions").close(...)
-            end,
-          },
+      i = {
+        ["<c-t>"] = function(...)
+          return require("trouble.providers.telescope").open_with_trouble(...)
+        end,
+        ["<a-t>"] = function(...)
+          return require("trouble.providers.telescope").open_selected_with_trouble(...)
+        end,
+        ["<a-i>"] = function()
+          local action_state = require("telescope.actions.state")
+          local line = action_state.get_current_line()
+          Util.telescope("find_files", { no_ignore = true, default_text = line })()
+        end,
+        ["<a-h>"] = function()
+          local action_state = require("telescope.actions.state")
+          local line = action_state.get_current_line()
+          Util.telescope("find_files", { hidden = true, default_text = line })()
+        end,
+        ["<C-Down>"] = function(...)
+          return require("telescope.actions").cycle_history_next(...)
+        end,
+        ["<C-Up>"] = function(...)
+          return require("telescope.actions").cycle_history_prev(...)
+        end,
+        ["<C-f>"] = function(...)
+          return require("telescope.actions").preview_scrolling_down(...)
+        end,
+        ["<C-b>"] = function(...)
+          return require("telescope.actions").preview_scrolling_up(...)
+        end,
+      },
+      n = {
+        ["q"] = function(...)
+          return require("telescope.actions").close(...)
+        end,
+      },
     },
   },
-  extensions_list = { },
+  extensions_list = {},
 }
 
 return options
