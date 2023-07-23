@@ -11,8 +11,9 @@ require('k1ng.lsp.format')
 
 -- Setup neodev and neoconf
 local neoconfstatus, neoconf = pcall(require, "neoconf")
-if neoconfstatus then
+if neoconfstatus and not vim.g.neoconf_configured then
   neoconf.setup({})
+  vim.g.neoconf_configured = true
 end
 
 local neodevstatus, neodev = pcall(require, "neodev")
@@ -35,7 +36,8 @@ require("lspconfig.ui.windows").default_options.border = "double"
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
   border = vim.g.bc.style,
 })
-local cmp_borders = {
+
+local cmp_window = {
   border = {
     vim.g.bc.topleft,
     vim.g.bc.horiz,
@@ -46,7 +48,7 @@ local cmp_borders = {
     vim.g.bc.botleft,
     vim.g.bc.vert,
   },
-  winhighlight = "Normal:CmpPmenu,FloatBorder:CmpBorder,CursorLine:PmenuSel,Search:None",
+  winhighlight = "Normal:Pmenu,FloatBorder:CmpBorder,CursorLine:PmenuSel,Search:None",
 }
 -- EOF border style
 
@@ -66,8 +68,8 @@ cmp.setup({
     end,
   },
   window = {
-    completion = cmp_borders,
-    documentation = cmp_borders,
+    completion = cmp_window,
+    documentation = cmp_window,
   },
   mapping = cmp.mapping.preset.insert {
     ['<C-n>'] = cmp.mapping.select_next_item(),
@@ -111,9 +113,11 @@ cmp.setup({
     completeopt = "menu,menuone",
   },
   formatting = {
-    format = require('k1ng.lsp.utils').cmp_formatter(45, 50, '...'),
+    fields = { "kind", "abbr" },
+    format = require('k1ng.lsp.utils').cmp_formatter(30, 30, '...'),
   },
 })
+
 -- EOF cmp
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
