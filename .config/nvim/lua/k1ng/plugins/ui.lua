@@ -1,5 +1,8 @@
 return {
   {
+    'nvim-tree/nvim-web-devicons'
+  },
+  {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000,

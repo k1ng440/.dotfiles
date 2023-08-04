@@ -2,6 +2,7 @@ return {
   'tpope/vim-repeat',
   'tpope/vim-rhubarb',
   'tpope/vim-sleuth',
+  'tpope/vim-capslock',
   {
     'mbbill/undotree', -- undotree
     keys = {
@@ -29,4 +30,16 @@ return {
     'chentoast/marks.nvim',
     event = 'VeryLazy'
   },
+  {
+    'max397574/better-escape.nvim',
+    event = 'InsertEnter',
+    config = function()
+      require('better_escape').setup {
+        mapping = { 'jk', 'jj' },
+        timeout = vim.o.timeoutlen,
+        clear_empty_lines = true,
+        keys = '<Esc>',
+      }
+    end
+  }
 }

@@ -8,6 +8,7 @@ return {
       'folke/neoconf.nvim',
       'smjonas/inc-rename.nvim',
       "hrsh7th/nvim-cmp",
+      "mattn/efm-langserver",
     },
     config = function()
       require('k1ng.lsp')

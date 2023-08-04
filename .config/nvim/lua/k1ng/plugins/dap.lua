@@ -1,52 +1,66 @@
 return {
-  "mfussenegger/nvim-dap",
+  'mfussenegger/nvim-dap',
 
   dependencies = {
     {
-      "rcarriga/nvim-dap-ui",
+      'rcarriga/nvim-dap-ui',
       keys = {
-        { "<leader>du", function() require("dapui").toggle({}) end, desc = "Dap UI" },
-        { "<leader>de", function() require("dapui").eval() end,     desc = "Eval",  mode = { "n", "v" } },
+        {
+          '<leader>du',
+          function()
+            require('dapui').toggle {}
+          end,
+          desc = 'Dap UI',
+        },
+        {
+          '<leader>de',
+          function()
+            require('dapui').eval()
+          end,
+          desc = 'Eval',
+          mode = { 'n', 'v' },
+        },
       },
       opts = {},
       config = function(_, opts)
-        local dap = require("dap")
-        local dapui = require("dapui")
+        local dap = require 'dap'
+        local dapui = require 'dapui'
         dapui.setup(opts)
-        dap.listeners.after.event_initialized["dapui_config"] = function()
-          dapui.open({})
+        dap.listeners.after.event_initialized['dapui_config'] = function()
+          dapui.open {}
         end
-        dap.listeners.before.event_terminated["dapui_config"] = function()
-          dapui.close({})
+        dap.listeners.before.event_terminated['dapui_config'] = function()
+          dapui.close {}
         end
-        dap.listeners.before.event_exited["dapui_config"] = function()
-          dapui.close({})
+        dap.listeners.before.event_exited['dapui_config'] = function()
+          dapui.close {}
         end
       end,
     },
     {
-      "theHamsta/nvim-dap-virtual-text",
+      'theHamsta/nvim-dap-virtual-text',
       opts = {},
     },
     {
-      "folke/which-key.nvim",
+      'folke/which-key.nvim',
       optional = true,
       opts = {
         defaults = {
-          ["<leader>d"] = { name = "+debug" },
-          ["<leader>da"] = { name = "+adapters" },
+          ['<leader>d'] = { name = '+debug' },
+          ['<leader>da'] = { name = '+adapters' },
         },
       },
     },
     {
-      "jay-babu/mason-nvim-dap.nvim",
-      dependencies = "mason.nvim",
-      cmd = { "DapInstall", "DapUninstall" },
+      'jay-babu/mason-nvim-dap.nvim',
+      dependencies = 'mason.nvim',
+      cmd = { 'DapInstall', 'DapUninstall' },
       opts = {
         automatic_installation = true,
         handlers = {},
         ensure_installed = {
           'delve',
+          'lua',
         },
       },
     },
@@ -76,14 +90,11 @@ return {
     { "<leader>dw", function() require("dap.ui.widgets").hover() end,  desc = "[W]idgets" },
   },
   config = function()
-    local Icons = require("k1ng.configs.icons")
-    vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
+    local Icons = require 'k1ng.configs.icons'
+    vim.api.nvim_set_hl(0, 'DapStoppedLine', { default = true, link = 'Visual' })
     for name, sign in pairs(Icons.dap) do
-      sign = type(sign) == "table" and sign or { sign }
-      vim.fn.sign_define(
-        "Dap" .. name,
-        { text = sign[1], texthl = sign[2] or "DiagnosticInfo", linehl = sign[3], numhl = sign[3] }
-      )
+      sign = type(sign) == 'table' and sign or { sign }
+      vim.fn.sign_define('Dap' .. name, { text = sign[1], texthl = sign[2] or 'DiagnosticInfo', linehl = sign[3], numhl = sign[3] })
     end
   end,
 }

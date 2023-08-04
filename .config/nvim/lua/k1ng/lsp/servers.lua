@@ -43,6 +43,7 @@ local servers = {
         ["https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json"] = "*lab-ci.{yaml,yml}",
         ["https://json.schemastore.org/helmfile"] = "helmfile.{yaml,yml}",
         ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "docker-compose.yml.{yml,yaml}",
+        ["https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json"] = "resume.{json,yml,yaml}",
         -- stylua: ignore
         kubernetes = {
           '*-deployment.yaml', '*-deployment.yml', '*-service.yaml', '*-service.yml',
@@ -67,8 +68,8 @@ local servers = {
     },
   },
   yamlls = {},
-  quick_lint_js = {},
-  denols = {},
+  -- quick_lint_js = {},
+  -- denols = {},
   gopls = {
     gopls = {
       gofumpt = true,

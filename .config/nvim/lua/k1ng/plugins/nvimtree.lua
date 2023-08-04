@@ -1,6 +1,5 @@
 return {
   "nvim-tree/nvim-tree.lua",
-  enabled = false,
   lazy = false,
   sync_root_with_cwd = true,
   respect_buf_cwd = true,
@@ -26,7 +25,7 @@ return {
     renderer = {
       group_empty = true,
       root_folder_label = false,
-      highlight_git = false,
+      highlight_git = true,
       highlight_opened_files = "none",
       indent_markers = {
         enable = true,
@@ -36,7 +35,7 @@ return {
           file = true,
           folder = true,
           folder_arrow = true,
-          git = false,
+          git = true,
         },
         glyphs = {
           default = "󰈚",

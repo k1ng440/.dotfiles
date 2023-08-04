@@ -13,19 +13,4 @@ return {
   },
   'williamboman/mason-lspconfig.nvim',
   'folke/neodev.nvim',
-  {
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
-    config = function()
-      require("mason-tool-installer").setup {
-        auto_update = false,
-        debounce_hours = 24,
-        ensure_installed = {
-          "black", "isort", 'lua-language-server', 'vim-language-server', 'gopls', 'stylua',
-          'shellcheck', 'editorconfig-checker', 'gofumpt', 'golines', 'gomodifytags', 'gotests',
-          'impl', 'json-to-struct', 'luacheck', 'misspell', 'revive', 'shellcheck', 'shfmt',
-          'staticcheck', 'vint', 'golangci-lint', 'bash-language-server', 'ripgrep', 'fd',
-        },
-      }
-    end,
-  },
 }
