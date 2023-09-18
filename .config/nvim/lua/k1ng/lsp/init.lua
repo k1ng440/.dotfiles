@@ -39,16 +39,7 @@ vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
 })
 
 local cmp_window = {
-  border = {
-    vim.g.bc.topleft,
-    vim.g.bc.horiz,
-    vim.g.bc.topright,
-    vim.g.bc.vert,
-    vim.g.bc.botright,
-    vim.g.bc.horiz,
-    vim.g.bc.botleft,
-    vim.g.bc.vert,
-  },
+  border = { vim.g.bc.topleft, vim.g.bc.horiz, vim.g.bc.topright, vim.g.bc.vert, vim.g.bc.botright, vim.g.bc.horiz, vim.g.bc.botleft, vim.g.bc.vert },
   winhighlight = 'Normal:Pmenu,FloatBorder:CmpBorder,CursorLine:PmenuSel,Search:None',
 }
 -- EOF border style
@@ -61,7 +52,9 @@ local has_words_before = function()
 end
 -- EOF helper functions
 
+--------------------------------------------------
 -- Setup cmp
+--------------------------------------------------
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -107,8 +100,6 @@ cmp.setup({
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'path' },
-    { name = 'emoji' },
-    { name = 'calc' },
   },
   completion = {
     completeopt = 'menu,menuone',
@@ -118,8 +109,9 @@ cmp.setup({
     format = require('k1ng.lsp.utils').cmp_formatter(30, 30, '...'),
   },
 })
-
+--------------------------------------------------
 -- EOF cmp
+--------------------------------------------------
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)

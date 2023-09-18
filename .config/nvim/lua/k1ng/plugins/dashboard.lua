@@ -1,9 +1,6 @@
 return {
   {
     'glepnir/dashboard-nvim',
-    dependencies = {
-      'MaximilianLloyd/ascii.nvim'
-    },
     event = 'VimEnter',
     config = function()
       local home = os.getenv('HOME')

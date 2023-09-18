@@ -1,8 +1,6 @@
 return {
   'tpope/vim-repeat',
-  'tpope/vim-rhubarb',
-  'tpope/vim-sleuth',
-  'tpope/vim-capslock',
+  'AndrewRadev/splitjoin.vim',
   {
     'mbbill/undotree', -- undotree
     keys = {

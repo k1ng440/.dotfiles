@@ -1,21 +1,4 @@
 local tools = {
-  diagnostics = {
-    eslint_d = {
-      prefix = "eslint_d",
-      lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
-      lintStdin = true,
-      lintIgnoreExitCode = true,
-      rootMarkers = {
-        ".eslintrc",
-        ".eslintrc.cjs",
-        ".eslintrc.js",
-        ".eslintrc.json",
-        ".eslintrc.yaml",
-        ".eslintrc.yml",
-        "package.json",
-      },
-    },
-  },
   formatting = {
     prettier_d = {
       formatCommand = "prettierd ${INPUT}",
@@ -38,22 +21,16 @@ local tools = {
 
 return {
   init_options = { documentFormatting = true, codeAction = false },
-  filetypes = {
-    "lua",
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "terraform",
-  },
+  filetypes = { "lua", "javascript", "javascriptreact", "typescript", "typescriptreact", "terraform", "hcl" },
   settings = {
     rootMarkers = { ".git/" },
     languages = {
       lua = { tools.formatting.stylua },
-      javascript = { tools.diagnostics.eslint_d, tools.formatting.prettier_d },
-      typescript = { tools.diagnostics.eslint_d, tools.formatting.prettier_d },
-      typescriptreact = { tools.diagnostics.eslint_d, tools.formatting.prettier_d },
+      javascript = { tools.formatting.prettier_d },
+      typescript = { tools.formatting.prettier_d },
+      typescriptreact = { tools.formatting.prettier_d },
       terraform = { tools.formatting.terraform },
+      hcl = { tools.formatting.terraform },
     },
   },
 }

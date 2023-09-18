@@ -55,10 +55,13 @@ map({ 'n', 't' }, '<C-Right>', ':vertical resize +2<CR>', { desc = '[Right] Resi
 -- Navigate buffers
 map('n', '[b', ':bprevious<CR>', { desc = 'Previous buffer' })
 map('n', ']b', ':bnext<CR>', { desc = 'Next buffer' })
-map('n', 'gp', ':bprevious<CR>', { desc = 'Previous buffer' })
-map('n', 'gn', ':bnext<CR>', { desc = 'Next buffer' })
 map('n', '[t', ':tabprevious<CR>', { desc = 'Previous tab' })
 map('n', ']t', ':tabnext<CR>', { desc = 'Next tab' })
+
+map('n', 'gp', ':bprevious<CR>', { desc = 'Previous buffer' })
+map('n', 'gn', ':bnext<CR>', { desc = 'Next buffer' })
+map('n', 'tp', ':tabprevious<CR>', { desc = 'Previous tab' })
+map('n', 'tn', ':tabnext<CR>', { desc = 'Next tab' })
 
 -- Terminal Mappings
 map('t', '<esc><esc>', '<c-\\><c-n>', { desc = 'Enter Normal Mode' })
@@ -70,14 +73,38 @@ map('t', '<C-/>', '<cmd>close<cr>', { desc = 'Hide Terminal' })
 map('t', '<c-_>', '<cmd>close<cr>', { desc = 'which_key_ignore' })
 
 -- Trouble.nvim
-map('n', '<leader>xx', '<cmd>TroubleToggle<CR>', { silent = true, noremap = true, desc = 'Toggle Trouble' })
-map('n', '<leader>xw', '<cmd>TroubleToggle workspace_diagnostics<cr>',
-  { silent = true, noremap = true, desc = 'Toggle Trouble [W]orkspace diagnostics' })
-map('n', '<leader>xd', '<cmd>TroubleToggle document_diagnostics<cr>',
-  { silent = true, noremap = true, desc = 'Toggle Trouble [D]ocument diagnostics' })
-map('n', '<leader>xl', '<cmd>TroubleToggle loclist<cr>',
-  { silent = true, noremap = true, desc = 'Toggle Trouble [L]ocation list' })
-map('n', '<leader>xq', '<cmd>TroubleToggle quickfix<cr>',
-  { silent = true, noremap = true, desc = 'Toggle Trouble [Q]uickfix' })
-map('n', 'gR', '<cmd>TroubleToggle lsp_references<cr>',
-  { silent = true, noremap = true, desc = 'Toggle Trouble [R]eferences' })
+map('n', '<leader>xx', '<cmd>TroubleToggle<CR>', {
+  silent = true,
+  noremap = true,
+  desc = 'Toggle Trouble',
+})
+
+map('n', '<leader>xw', '<cmd>TroubleToggle workspace_diagnostics<cr>', {
+  silent = true,
+  noremap = true,
+  desc = 'Toggle Trouble [W]orkspace diagnostics',
+})
+
+map('n', '<leader>xd', '<cmd>TroubleToggle document_diagnostics<cr>', {
+  silent = true,
+  noremap = true,
+  desc = 'Toggle Trouble [D]ocument diagnostics',
+})
+
+map('n', '<leader>xl', '<cmd>TroubleToggle loclist<cr>', {
+  silent = true,
+  noremap = true,
+  desc = 'Toggle Trouble [L]ocation list',
+})
+
+map('n', '<leader>xq', '<cmd>TroubleToggle quickfix<cr>', {
+  silent = true,
+  noremap = true,
+  desc = 'Toggle Trouble [Q]uickfix',
+})
+
+map('n', 'gR', '<cmd>TroubleToggle lsp_references<cr>', {
+  silent = true,
+  noremap = true,
+  desc = 'Toggle Trouble [R]eferences',
+})

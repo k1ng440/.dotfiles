@@ -8,7 +8,6 @@ return {
       'folke/neoconf.nvim',
       'smjonas/inc-rename.nvim',
       "hrsh7th/nvim-cmp",
-      "mattn/efm-langserver",
     },
     config = function()
       require('k1ng.lsp')
@@ -17,17 +16,15 @@ return {
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
-      "hrsh7th/cmp-emoji",
       'L3MON4D3/LuaSnip',
       {
         'saadparwaiz1/cmp_luasnip',
         version = "2.*",
-        build = 'make install_jsregexp',
+        build = 'make install_jsregexp'
       },
       'hrsh7th/cmp-nvim-lsp',
       "hrsh7th/cmp-path",
       'rafamadriz/friendly-snippets',
-      'hrsh7th/cmp-calc',
     },
   },
   {
