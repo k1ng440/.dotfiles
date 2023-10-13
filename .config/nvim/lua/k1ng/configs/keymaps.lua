@@ -14,9 +14,9 @@ map('n', '<leader>bd', '<cmd>DeleteFile<cr>', { desc = 'Delete buffer and file' 
 -- quit
 map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
 
-
 -- Tree and explorer
 map({ 'n', 'i' }, '<c-n>', '<cmd>NvimTreeFindFileToggle<cr>', { desc = 'Explorer' })
+map({ 'n' }, '-', '<cmd>Oil<cr>', { desc = 'Oil' })
 
 -- Move selection up/down/left/right
 map('v', 'J', ":m '>+1<CR>gv=gv", { desc = '[J] Move selection down' })

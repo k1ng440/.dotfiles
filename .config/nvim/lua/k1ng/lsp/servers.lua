@@ -1,6 +1,6 @@
 local servers = {
   ansiblels = {},
-  clangd = {},
+  clangd = { },
   rust_analyzer = {},
   terraformls = {},
   tsserver = {},

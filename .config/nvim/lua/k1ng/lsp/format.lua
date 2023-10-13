@@ -22,23 +22,18 @@ end
 
 -- Priotize efm formatters
 function M.get_formatters(bufnr)
-  local ret = {
-    active = {},
-    available = {},
-  }
-
+  local ret = {}
   local efm = vim.lsp.get_active_clients({ name = 'efm', bufnr = bufnr })
-  for _, client in ipairs(efm) do
-    table.insert(ret.active, client)
+  local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
+
+  if efm[1] ~= nil then
+    table.insert(ret, efm[1])
   end
 
-  local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
   for _, client in ipairs(clients) do
     if M.supports_format(client) then
-      if vim.tbl_count(ret.active) == 0 then
-        table.insert(ret.active, client)
-      else
-        table.insert(ret.available, client)
+      if vim.tbl_count(ret) == 0 then
+        table.insert(ret, client)
       end
     end
   end
@@ -46,15 +41,15 @@ function M.get_formatters(bufnr)
 end
 
 function M.format(opts)
-  local buf = vim.api.nvim_get_current_buf()
   if vim.g.autoformat == false and not (opts and opts.force) then
     return
   end
 
+  local buf = vim.api.nvim_get_current_buf()
   local formatters = M.get_formatters(buf)
   local client_ids = vim.tbl_map(function(client)
     return client.id
-  end, formatters.active)
+  end, formatters)
   if #client_ids == 0 then
     return
   end
