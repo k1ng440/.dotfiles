@@ -1,13 +1,16 @@
 return {
-  'tpope/vim-repeat',
-  'AndrewRadev/splitjoin.vim',
+  { "tpope/vim-surround",        lazy = false },
+  { 'tpope/vim-repeat',          event = 'VeryLazy' },
+  { 'AndrewRadev/splitjoin.vim', event = 'VeryLazy' },
+  { 'numToStr/Comment.nvim',     event = 'VeryLazy' },
+  { 'chentoast/marks.nvim',      event = 'VeryLazy' },
   {
     'mbbill/undotree', -- undotree
+    event = 'VeryLazy',
     keys = {
       { '<leader>ut', '<cmd>UndotreeToggle<CR>', desc = '[U]ndo [T]ree' },
     },
   },
-  { "tpope/vim-surround",    lazy = false },
   {
     'lukas-reineke/indent-blankline.nvim',
     event = 'BufRead',
@@ -16,7 +19,6 @@ return {
       show_trailing_blankline_indent = false,
     },
   },
-  { 'numToStr/Comment.nvim', opts = {} },
   {
     "iamcco/markdown-preview.nvim",
     ft = 'md',
@@ -25,19 +27,11 @@ return {
     end
   },
   {
-    'chentoast/marks.nvim',
-    event = 'VeryLazy'
+    "simrat39/symbols-outline.nvim",
+    cmd = "SymbolsOutline",
+    keys = { { "<leader>cs", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
+    opts = {
+      position = "right",
+    },
   },
-  {
-    'max397574/better-escape.nvim',
-    event = 'InsertEnter',
-    config = function()
-      require('better_escape').setup {
-        mapping = { 'jk', 'jj' },
-        timeout = vim.o.timeoutlen,
-        clear_empty_lines = true,
-        keys = '<Esc>',
-      }
-    end
-  }
 }

@@ -75,8 +75,8 @@ cmp.setup({
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
-      elseif require('copilot.suggestion').is_visible() then
-        require('copilot.suggestion').accept()
+      -- elseif require('copilot.suggestion').is_visible() then
+      --   require('copilot.suggestion').accept()
       elseif luasnip.expand_or_locally_jumpable() then
         luasnip.expand_or_jump()
       elseif has_words_before() then
@@ -137,7 +137,8 @@ mason_lspconfig.setup({
 --- Setup handlers for lspconfig
 mason_lspconfig.setup_handlers({
   function(server_name)
-    if not vim.tbl_contains(ensure_installed, server_name) then
+    -- Ignore efm setup
+    if server_name == 'efm' then
       return
     end
 
@@ -153,12 +154,22 @@ mason_lspconfig.setup_handlers({
       }
     end
 
+    -- clangd
+    if server_name == 'clangd' then
+      opts.cmd = {
+        "clangd",
+        "--offset-encoding=utf-16",
+      }
+    end
+
     -- Setup lsp server
     lspconfig[server_name].setup(opts)
   end,
 })
 
 -- Setup efm
--- lspconfig['efm'].setup(require('k1ng.lsp.efm'))
+local efmls_config = require('k1ng.lsp.efm')
+require('lspconfig').efm.setup(vim.tbl_extend('force', efmls_config, {
+  capabilities = capabilities,
+}))
 
--- vim: ts=2 sts=2 sw=2 et

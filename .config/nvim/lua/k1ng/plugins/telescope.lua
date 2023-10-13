@@ -8,12 +8,14 @@ return {
       'nvim-treesitter/nvim-treesitter',
     },
     keys = {
-      { '<leader>,', '<cmd>Telescope buffers show_all_buffers=true<cr>', desc = 'Switch Buffer' },
+      { '<leader>,', '<cmd>Telescope buffers show_all_buffers=true ignore_current_buffer=true sort_lastused=true<cr>', desc = 'Switch Buffer' },
+      { '<leader>bf', '<cmd>Telescope buffers show_all_buffers=true ignore_current_buffer=true sort_lastused=true<cr>', desc = 'Switch Buffer' },
       { '<leader>/', Util.telescope('live_grep'), desc = 'Grep (root dir)' },
       { '<leader>:', '<cmd>Telescope command_history<cr>', desc = 'Command History' },
       -- find
       { '<leader>fb', '<cmd>Telescope buffers<cr>', desc = '[F]ile [B]uffers' },
       { '<leader>ff', Util.telescope('files'), desc = '[F]ind [F]iles (root dir)' },
+      { '<leader>fg', Util.telescope('live_grep'), desc = 'Grep (root dir)' },
       { '<leader>fF', Util.telescope('files', { cwd = false }), desc = '[F]ind [F]iles (cwd)' },
       { '<leader>sf', Util.telescope('files'), desc = '[F]ind Files (root dir)' },
       { '<leader>sF', Util.telescope('files', { cwd = false }), desc = 'Find Files (cwd)' },
@@ -91,22 +93,59 @@ return {
   },
   {
     'nvim-telescope/telescope-fzf-native.nvim',
-    event = 'VeryLazy',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+    },
     build = 'make',
     cond = function()
       return vim.fn.executable 'make' == 1
     end,
   },
   {
-    'nvim-telescope/telescope-file-browser.nvim',
+    'prochri/telescope-all-recent.nvim',
     event = 'VeryLazy',
-    dependencies = { 'nvim-telescope/telescope.nvim' },
-    config = function (_, opts)
-      require('telescope._extensions.file_browser').setup(opts)
-      require('telescope').load_extension('file_browser')
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+      'kkharji/sqlite.lua',
+    },
+  },
+  {
+    'chip/telescope-software-licenses.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+    },
+    opts = function ()
+      require("telescope").load_extension("software-licenses")
     end
   },
-  'nvim-telescope/telescope-ui-select.nvim',
+  {
+    'nvim-telescope/telescope-ui-select.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+    },
+  },
+  {
+    'wesleimp/telescope-windowizer.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+    },
+    opts = function ()
+      require("telescope").load_extension("windowizer")
+    end,
+  },
+  {
+    'benfowler/telescope-luasnip.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+    },
+    opts = function ()
+      require("telescope").load_extension("luasnip")
+    end,
+  },
   {
     'nvim-telescope/telescope-live-grep-args.nvim',
     event = 'VeryLazy',

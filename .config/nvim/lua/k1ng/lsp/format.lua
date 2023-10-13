@@ -1,6 +1,10 @@
-local Util = require 'k1ng.util'
+local Util = require('k1ng.util')
 
-local M = {}
+local M = {
+  opts = {
+    autoformat = true,
+  },
+}
 
 function M.toggle()
   if vim.b.autoformat == false then
@@ -10,9 +14,13 @@ function M.toggle()
     M.opts.autoformat = not M.opts.autoformat
   end
   if M.opts.autoformat then
-    Util.info('Enabled format on save', { title = 'Format' })
+    vim.notify('Enabled format on save', vim.log.INFO, { title = 'Toggle Format' })
+    M.auto_format()
   else
-    Util.warn('Disabled format on save', { title = 'Format' })
+    vim.notify('Disabled format on save', vim.log.INFO, { title = 'Toggle Format' })
+    if M.autocmd_id then
+      vim.api.nvim_del_autocmd(M.autocmd_id)
+    end
   end
 end
 
@@ -20,24 +28,22 @@ function M.supports_format(client)
   if client.config and client.config.capabilities and client.config.capabilities.documentFormattingProvider == false then
     return false
   end
-  return client.supports_method 'textDocument/formatting' or client.supports_method 'textDocument/rangeFormatting'
+  return client.supports_method('textDocument/formatting') or client.supports_method('textDocument/rangeFormatting')
 end
 
--- Priotize null-ls over lsp formatters
+-- Priotize efm formatters
 function M.get_formatters(bufnr)
-  local ft = vim.bo[bufnr].filetype
-
   local ret = {
     active = {},
     available = {},
   }
 
-  -- ugly hack
-  if ft == 'go' then
-    return ret
+  local efm = vim.lsp.get_active_clients({ name = 'efm', bufnr = bufnr })
+  for _, client in ipairs(efm) do
+    table.insert(ret.active, client)
   end
 
-  local clients = vim.lsp.get_active_clients { bufnr = bufnr }
+  local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
   for _, client in ipairs(clients) do
     if M.supports_format(client) then
       if vim.tbl_count(ret.active) == 0 then
@@ -64,21 +70,21 @@ function M.format(opts)
     return
   end
 
-  vim.lsp.buf.format {
+  vim.lsp.buf.format({
+    timeout_ms = 2000,
     bufnr = buf,
     filter = function(client)
       if not vim.tbl_contains(client_ids, client.id) then
         return false
       end
-      vim.notify('Formatting with ' .. client.name)
+      -- vim.notify('Formatting with ' .. client.name, vim.log.INFO, { title = 'Format Document' })
       return true
     end,
-  }
+  })
 end
 
-function M.auto_format(opts)
-  M.opts = opts
-  vim.api.nvim_create_autocmd('BufWritePre', {
+function M.auto_format()
+  M.autocmd_id = vim.api.nvim_create_autocmd('BufWritePre', {
     group = vim.api.nvim_create_augroup('AutoFormat', {}),
     callback = function()
       if M.opts.autoformat then
@@ -89,29 +95,13 @@ function M.auto_format(opts)
 end
 
 Util.on_attach(function(client, _)
-  if client.name == 'gopls' then
-    vim.api.nvim_create_autocmd('BufWritePre', {
-      group = vim.api.nvim_create_augroup('GoImport', { clear = true }),
-      pattern = '*.go',
-      callback = function()
-        require('go.format').goimport()
-        require('go.format').gofmt()
-      end,
-    })
+  M.auto_format()
 
-    vim.api.nvim_create_user_command('Format', function()
-      require('go.format').goimport()
-      require('go.format').gofmt()
-    end, { desc = 'Format current buffer with LSP' })
-    return
-  end -- gopls
-
-  -- Auto Format
-  M.auto_format {
-    autoformat = false,
-  }
+  vim.api.nvim_create_user_command('FormatToggle', function()
+    M.toggle()
+  end, { desc = 'Toggle auto format on save' })
 
   vim.api.nvim_create_user_command('Format', function()
-    M.format { force = true }
+    M.format({ force = true })
   end, { desc = 'Format current buffer with LSP' })
 end)

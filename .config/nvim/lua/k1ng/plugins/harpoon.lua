@@ -7,6 +7,11 @@ return {
     { '<a-3>',      function() require('harpoon.ui').nav_file(3) end,         desc = 'Harpoon marked file 3' },
     { '<a-4>',      function() require('harpoon.ui').nav_file(4) end,         desc = 'Harpoon marked file 4' },
 
+    { '<leader>hj',      function() require('harpoon.ui').nav_file(1) end,         desc = 'Harpoon marked file 1' },
+    { '<leader>hk',      function() require('harpoon.ui').nav_file(2) end,         desc = 'Harpoon marked file 2' },
+    { '<leader>hl',      function() require('harpoon.ui').nav_file(3) end,         desc = 'Harpoon marked file 3' },
+    { '<leader>h;',      function() require('harpoon.ui').nav_file(4) end,         desc = 'Harpoon marked file 4' },
+
     -- Harpoon next and previous.
     { '<a-5>',      function() require('harpoon.ui').nav_next() end,          desc = 'Harpoon next' },
     { '<a-6>',      function() require('harpoon.ui').nav_prev() end,          desc = 'Harpoon previous' },

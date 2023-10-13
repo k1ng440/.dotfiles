@@ -1,36 +1,36 @@
-local tools = {
-  formatting = {
-    prettier_d = {
-      formatCommand = "prettierd ${INPUT}",
-      formatStdin = true,
-    },
-    stylua = {
-      formatCommand = "stylua --color Never -",
-      formatStdin = true,
-      rootMarkers = { "stylua.toml", ".stylua.toml" },
-    },
-    terraform = {
-      formatCommand = "terraform fmt -",
-      formatStdin = true,
-    },
-    python = {
-      { formatCommand = "black --quiet -", formatStdin = true }
-    },
+-- Register linters and formatters per language
+local languages = require('efmls-configs.defaults').languages()
+languages = vim.tbl_extend('force', languages, {
+  html = {
+    require('efmls-configs.formatters.prettier'),
   },
-}
+  json = {
+    require('efmls-configs.formatters.jq'),
+  },
+  rust = {
+    require('efmls-configs.formatters.rustfmt'),
+  },
+  terraform = {
+    require('efmls-configs.formatters.terraform_fmt'),
+  },
+  markdown = {
+    require('efmls-configs.formatters.mdformat'),
+  },
+  go = {
+    require('efmls-configs.formatters.goimports'),
+    require('efmls-configs.formatters.gofmt'),
+    require('efmls-configs.formatters.golines'),
+  },
+})
 
 return {
-  init_options = { documentFormatting = true, codeAction = false },
-  filetypes = { "lua", "javascript", "javascriptreact", "typescript", "typescriptreact", "terraform", "hcl" },
+  filetypes = vim.tbl_keys(languages),
   settings = {
-    rootMarkers = { ".git/" },
-    languages = {
-      lua = { tools.formatting.stylua },
-      javascript = { tools.formatting.prettier_d },
-      typescript = { tools.formatting.prettier_d },
-      typescriptreact = { tools.formatting.prettier_d },
-      terraform = { tools.formatting.terraform },
-      hcl = { tools.formatting.terraform },
-    },
+    rootMarkers = { '.git/' },
+    languages = languages,
+  },
+  init_options = {
+    documentFormatting = true,
+    documentRangeFormatting = true,
   },
 }

@@ -19,5 +19,11 @@ return {
       require("project_nvim").setup(opts.opts)
       require('telescope').load_extension('projects')
     end
+  }, {
+    'windwp/nvim-projectconfig',
+    opts = {
+      autocmd = true,
+      silent = false,
+    }
   }
 }

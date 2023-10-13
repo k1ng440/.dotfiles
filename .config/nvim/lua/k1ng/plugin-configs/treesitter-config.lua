@@ -8,8 +8,8 @@ require('nvim-treesitter.configs').setup {
   auto_install = true,
   highlight = { enable = true },
   indent = {
-    enable = false,
-    disable = { 'python', 'yaml' },
+    enable = true,
+    disable = { 'python' },
   },
   incremental_selection = {
     enable = true,

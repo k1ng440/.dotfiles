@@ -112,6 +112,10 @@ local options = {
         ["<C-b>"] = function(...)
           return require("telescope.actions").preview_scrolling_up(...)
         end,
+        ["<C-d>"] = require('telescope.actions').delete_buffer + require('telescope.actions').move_to_top, -- delete a buffer from picker without closing telescope
+        ["<C-u>"] = false, -- Clear prompt
+
+
       },
       n = {
         ["q"] = function(...)

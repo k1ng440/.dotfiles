@@ -1,5 +1,22 @@
+-- Copyright (C) 2023  Asaduzzaman, Pavel <contact@iampavel.dev>
+--
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+--
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.g.licenses_copyright_holders_name = 'Asaduzzaman, Pavel <contact@iampavel.dev>'
+vim.g.licenses_default_commands = {'gpl', 'mit'}
 
 local opt = vim.opt
 
@@ -30,7 +47,7 @@ opt.showmode = false       -- Dont show mode since we have a statusline
 opt.sidescrolloff = 8      -- Columns of context
 opt.signcolumn = 'yes'     -- Always show the signcolumn, otherwise it would shift the text each time
 opt.smartcase = true       -- Don't ignore case with capitals
-opt.smartindent = true    -- Insert indents automatically
+opt.smartindent = true     -- Insert indents automatically
 opt.splitbelow = true      -- Put new windows below current
 opt.splitright = true      -- Put new windows right of current
 opt.tabstop = 4            -- Number of spaces tabs count for
@@ -57,8 +74,6 @@ opt.wildignore:append '*/.env.local'
 opt.wildignore:append '*/.vscode/*'
 opt.wildignore:append '*/.idea/*'
 opt.wildignore:append '*/.gitignore'
-
-
 
 -- stylua: ignore
 local borderchars = {

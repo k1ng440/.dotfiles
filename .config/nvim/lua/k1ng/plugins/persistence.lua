@@ -14,4 +14,5 @@ return {
       pre_save = nil,                                               -- a function to call before saving the session
     }
   },
+  'kkharji/sqlite.lua',
 }
