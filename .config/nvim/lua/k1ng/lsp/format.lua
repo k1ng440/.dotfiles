@@ -1,27 +1,16 @@
 local Util = require('k1ng.util')
+local M = {}
 
-local M = {
-  opts = {
-    autoformat = true,
-  },
-}
+-- TODO: Persist this across sessions
+vim.g.autoformat = true
 
 function M.toggle()
-  if vim.b.autoformat == false then
-    vim.b.autoformat = nil
-    M.opts.autoformat = true
-  else
-    M.opts.autoformat = not M.opts.autoformat
-  end
-  if M.opts.autoformat then
+  vim.g.autoformat = not vim.g.autoformat
+  if vim.g.autoformat then
     vim.notify('Enabled format on save', vim.log.INFO, { title = 'Toggle Format' })
-    M.auto_format()
-  else
-    vim.notify('Disabled format on save', vim.log.INFO, { title = 'Toggle Format' })
-    if M.autocmd_id then
-      vim.api.nvim_del_autocmd(M.autocmd_id)
-    end
+    return
   end
+  vim.notify('Disabled format on save', vim.log.INFO, { title = 'Toggle Format' })
 end
 
 function M.supports_format(client)
@@ -58,7 +47,7 @@ end
 
 function M.format(opts)
   local buf = vim.api.nvim_get_current_buf()
-  if vim.b.autoformat == false and not (opts and opts.force) then
+  if vim.g.autoformat == false and not (opts and opts.force) then
     return
   end
 
@@ -74,34 +63,22 @@ function M.format(opts)
     timeout_ms = 2000,
     bufnr = buf,
     filter = function(client)
-      if not vim.tbl_contains(client_ids, client.id) then
-        return false
-      end
-      -- vim.notify('Formatting with ' .. client.name, vim.log.INFO, { title = 'Format Document' })
-      return true
+      return vim.tbl_contains(client_ids, client.id)
     end,
   })
 end
 
-function M.auto_format()
-  M.autocmd_id = vim.api.nvim_create_autocmd('BufWritePre', {
-    group = vim.api.nvim_create_augroup('AutoFormat', {}),
-    callback = function()
-      if M.opts.autoformat then
-        M.format()
-      end
-    end,
-  })
-end
+vim.api.nvim_create_autocmd('BufWritePre', {
+  group = vim.api.nvim_create_augroup('AutoFormat', {}),
+  callback = function()
+    M.format()
+  end,
+})
 
-Util.on_attach(function(client, _)
-  M.auto_format()
+vim.api.nvim_create_user_command('FormatToggle', function()
+  M.toggle()
+end, { desc = 'Toggle auto format on save' })
 
-  vim.api.nvim_create_user_command('FormatToggle', function()
-    M.toggle()
-  end, { desc = 'Toggle auto format on save' })
-
-  vim.api.nvim_create_user_command('Format', function()
-    M.format({ force = true })
-  end, { desc = 'Format current buffer with LSP' })
-end)
+vim.api.nvim_create_user_command('Format', function()
+  M.format({ force = true })
+end, { desc = 'Format current buffer with LSP' })
