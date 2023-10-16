@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+export ANDROID_SERIAL='192.168.0.69:5555'
+
+adb connect "$ANDROID_SERIAL" || true
+
+current_focus=$(adb shell dumpsys window windows | grep -E 'mCurrentFocus' | cut -d '/' -f1 | sed 's/.* //g')
+
+# Do nothing if 'com.mediatek.wwtv.tvcenter' is currently focused
+[ "$current_focus" == "com.mediatek.wwtv.tvcenter" ] && exit 0
+
+[[ "$current_focus" == *"dream"* ]] && \
+    adb shell input keyevent KEYCODE_HOME
+
+adb shell \
+    "am start -a android.intent.action.VIEW \
+    -d content://android.media.tv/passthrough/com.mediatek.tvinput%2F.hdmi.HDMIInputService%2FHW2 \
+    -n com.mediatek.wwtv.tvcenter/com.mitv.livetv.nav.TurnkeyUiMainActivity -f 0x1000000"

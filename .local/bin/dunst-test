@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+pidof dunst && killall dunst
+dunst &
+
+notify-send -u low "This is a test notification 1" "This is a test notification" &
+notify-send -u critical "This is a test notification 2" "This is a test notification" &
+notify-send -u normal "This is a test notification 3" "This is a test notification This is a test notification This is a test notification This is a test notification" &

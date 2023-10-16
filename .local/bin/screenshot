@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# Initialize variables
+UPLOAD=false
+CLIP=""
+USAGE="Usage: $0 [-c|--clip] [-u|--upload]"
+
+# Parse the command-line arguments using getopt
+VALID_ARGS=$(getopt -o cu --long clip,upload -- "$@")
+[[ $? -ne 0 ]] && echo "Invalid option. $USAGE" && exit 1;
+
+eval set -- "$VALID_ARGS"
+while true; do
+  case "$1" in
+    -c | --clip) CLIP="--clipboard"; shift ;;
+    -u | --upload) UPLOAD=true; shift ;;
+    --) shift; break ;;
+    *) echo "Unknown option. $USAGE"; exit 1 ;;
+  esac
+done
+
+mkdir -p "$HOME/Pictures/Screenshots"
+SCREEN_PATH="$HOME/Pictures/Screenshots$(date +%G-%m-%d_%s).png"
+
+flameshot gui -p "$SCREEN_PATH" "$CLIP"
+
+[[ -f "$SCREEN_PATH" && "$UPLOAD" == true ]] && (
+    notify-send -u low -i "$SCREEN_PATH" "Flameshot Info" "Uploading file"
+    URL=$(curl -s -F file="@$SCREEN_PATH" https://file.coffee/api/file/upload | jq -r '.url')
+    [ "$?" -eq 0 ] \
+        && echo "$URL" | xclip -sel clip \
+        && notify-send -u low -i "$SCREEN_PATH" "URL copied to clipboard" "$URL"
+)

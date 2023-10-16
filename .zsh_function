@@ -1,8 +1,3 @@
-increaseWatchers() {
-    sudo sysctl fs.inotify.max_user_watches=65536
-    sudo sysctl -p
-}
-
 addToPath() {
     if [[ "$PATH" != *"$1"* ]]; then
         export PATH=$PATH:$1
@@ -19,3 +14,18 @@ die () {
     echo >&2 "$@"
     exit 1
 }
+
+editnvimconfig() {
+    (cd ~/.config/nvim && nvim ~/.config/nvim)
+}
+
+i3edit() {
+    (~/.config/i3/config && nvim ~/.config/i3/config)
+}
+
+function server() {
+    local port="${1:-8000}"
+    sleep 1 && open "http://localhost:${port}/" &
+    python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port"
+}
+

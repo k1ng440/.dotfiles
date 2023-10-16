@@ -1,5 +1,6 @@
 require('k1ng.configs.options')
 require('k1ng.configs.autocmds')
+require('k1ng.configs.filetypes')
 require('k1ng.configs.commands')
 require('k1ng.configs.disable-builtin')
 require('k1ng.configs.keymaps')

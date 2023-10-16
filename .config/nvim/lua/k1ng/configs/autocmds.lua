@@ -1,14 +1,6 @@
 local function augroup(name)
-  return vim.api.nvim_create_augroup("nvimtraap_" .. name, { clear = true })
+  return vim.api.nvim_create_augroup('nvimtraap_' .. name, { clear = true })
 end
-
-vim.api.nvim_create_autocmd('TextYankPost', {
-  group = augroup("yank_highlight"),
-  pattern = '*',
-  callback = function()
-    vim.highlight.on_yank()
-  end
-})
 
 -- Disable ColorScheme when opening large files
 vim.api.nvim_create_autocmd('BufRead', {
@@ -59,9 +51,24 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 vim.api.nvim_create_autocmd('FileType', {
   group = augroup('close_with_q'),
   pattern = {
-    'PlenaryTestPopup', 'help', 'lspinfo', 'man', 'notify', 'qf', 'spectre_panel',
-    'startuptime', 'tsplayground', 'neotest-output', 'checkhealth', 'neotest-summary',
-    'neotest-output-panel', 'fugitive', 'copilot', 'NvimTree', 'Trouble', 'neo-tree',
+    'PlenaryTestPopup',
+    'help',
+    'lspinfo',
+    'man',
+    'notify',
+    'qf',
+    'spectre_panel',
+    'startuptime',
+    'tsplayground',
+    'neotest-output',
+    'checkhealth',
+    'neotest-summary',
+    'neotest-output-panel',
+    'fugitive',
+    'copilot',
+    'NvimTree',
+    'Trouble',
+    'neo-tree',
     'netrw',
   },
   callback = function(event)
@@ -93,11 +100,11 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
 })
 
 -- Auto remove whitespace
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  pattern = { "*" },
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+  pattern = { '*' },
   callback = function()
-    local save_cursor = vim.fn.getpos(".")
+    local save_cursor = vim.fn.getpos('.')
     vim.cmd([[%s/\s\+$//e]])
-    vim.fn.setpos(".", save_cursor)
+    vim.fn.setpos('.', save_cursor)
   end,
 })
