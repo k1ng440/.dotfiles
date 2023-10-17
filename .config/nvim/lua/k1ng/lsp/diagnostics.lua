@@ -15,9 +15,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
         end
         vim.api.nvim_buf_set_extmark(args.buf, ns, curline - 1, 0, {
           virt_text = virt_texts,
-          hl_mode = 'combine'
+          hl_mode = 'combine',
         })
-      end
+      end,
     })
-  end
+  end,
 })

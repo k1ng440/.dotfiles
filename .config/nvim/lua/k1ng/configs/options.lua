@@ -66,6 +66,7 @@ opt.lazyredraw = true
 opt.colorcolumn = '80'
 opt.title = true
 opt.titlestring = [[%f %h%m%r%w %{v:progname} (%{tabpagenr()} of %{tabpagenr('$')})]]
+opt.exrc = true
 opt.path:append('**')
 opt.wildignore:append('*/node_modules/*')
 opt.wildignore:append('*/.git/*')

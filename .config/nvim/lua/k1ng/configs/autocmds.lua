@@ -23,7 +23,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- resize splits if window got resized
-vim.api.nvim_create_autocmd({ 'VimResized' }, {
+vim.api.nvim_create_autocmd({ 'vimresized' }, {
   group = augroup('resize_splits'),
   callback = function()
     vim.cmd('tabdo wincmd =')

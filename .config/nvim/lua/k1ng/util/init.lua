@@ -1,5 +1,7 @@
+require('k1ng/util/project-config')
+
 local M = {}
-M.root_patterns = { ".git", "init.lua", "init.vim", "package.json", "go.mod", "Cargo.toml", "Makefile", "build.gradle" }
+M.root_patterns = { '.git', 'init.lua', 'init.vim', 'package.json', 'go.mod', 'Cargo.toml', 'Makefile', 'build.gradle' }
 
 -- {mode}	means the mode for which the mapping is defined (i, n, v, x, s, o, t, c, l)
 -- {lhs}	means the left-hand-side key(s) in the mapping
@@ -11,7 +13,9 @@ function M.keymap(mode, lhs, rhs, opts)
     silent = true,
   }
 
-  if opts then options = vim.tbl_extend('force', options, opts) end
+  if opts then
+    options = vim.tbl_extend('force', options, opts)
+  end
   vim.keymap.set(mode, lhs, rhs, options)
 end
 
@@ -19,9 +23,11 @@ M.buf_keymap = function(bufnr, mode, lhs, rhs, opts)
   local options = {
     buffer = bufnr,
     noremap = true,
-    silent = true
+    silent = true,
   }
-  if opts then options = vim.tbl_extend('force', options, opts) end
+  if opts then
+    options = vim.tbl_extend('force', options, opts)
+  end
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
@@ -29,7 +35,7 @@ end
 function M.get_root()
   ---@type string?
   local path = vim.api.nvim_buf_get_name(0)
-  path = path ~= "" and vim.loop.fs_realpath(path) or nil
+  path = path ~= '' and vim.loop.fs_realpath(path) or nil
   ---@type string[]
   local roots = {}
   if path then
@@ -67,13 +73,13 @@ function M.fg(name)
   ---@type {foreground?:number}?
   local hl = vim.api.nvim_get_hl and vim.api.nvim_get_hl(0, { name = name }) or vim.api.nvim_get_hl_by_name(name, true)
   local fg = hl and hl.fg or hl.foreground
-  return fg and { fg = string.format("#%06x", fg) }
+  return fg and { fg = string.format('#%06x', fg) }
 end
 
 -- borrowed from LazyVim
 ---@param on_attach fun(client, buffer)
 function M.on_attach(on_attach)
-  vim.api.nvim_create_autocmd("LspAttach", {
+  vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
       local buffer = args.buf
       local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -90,29 +96,26 @@ function M.telescope(builtin, opts)
     opts = opts or {}
     builtin = params.builtin
     opts = params.opts
-    opts = vim.tbl_deep_extend("force", { cwd = M.get_root() }, opts or {})
-    if builtin == "files" then
-      if vim.loop.fs_stat((opts.cwd or vim.loop.cwd()) .. "/.git") then
+    opts = vim.tbl_deep_extend('force', { cwd = M.get_root() }, opts or {})
+    if builtin == 'files' then
+      if vim.loop.fs_stat((opts.cwd or vim.loop.cwd()) .. '/.git') then
         opts.show_untracked = true
-        builtin = "git_files"
+        builtin = 'git_files'
       else
-        builtin = "find_files"
+        builtin = 'find_files'
       end
     end
     if opts.cwd and opts.cwd ~= vim.loop.cwd() then
       opts.attach_mappings = function(_, map)
-        map("i", "<a-c>", function()
-          local action_state = require("telescope.actions.state")
+        map('i', '<a-c>', function()
+          local action_state = require('telescope.actions.state')
           local line = action_state.get_current_line()
-          M.telescope(
-            params.builtin,
-            vim.tbl_deep_extend("force", {}, params.opts or {}, { cwd = false, default_text = line })
-          )()
+          M.telescope(params.builtin, vim.tbl_deep_extend('force', {}, params.opts or {}, { cwd = false, default_text = line }))()
         end)
         return true
       end
     end
-    require("telescope.builtin")[builtin](opts)
+    require('telescope.builtin')[builtin](opts)
   end
 end
 
