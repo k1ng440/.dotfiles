@@ -84,7 +84,6 @@ mode "$mode_launcher" {
 bindsym $mod+grave scratchpad show
 bindsym $mod+Shift+grave move scratchpad
 
-
 bindsym $mod+b exec --no-startup-id brave
 bindsym $mod+$Alt+f exec --no-startup-id firefox
 
@@ -205,12 +204,12 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 bindsym $mod+Shift+r restart
 
 # Exit menu
-bindsym $mod+Shift+e exec i3-nagbar -f "pango:Terminus 12" \
--m "Exit i3? This will end your current X session." \
--B "Exit now" "i3-msg exit" \
--B "Suspend" "systemctl suspend && pkill i3-nagbar" \
--B "Reboot" "systemctl reboot" \
--B "Power off" "systemctl poweroff" \
+bindsym $mod+Shift+e exec i3-nagbar -f "pango:Ubuntu Mono 14" \
+    -m "Exit i3? This will end your current X session." \
+    -B "Exit now" "i3-msg exit" \
+    -B "Suspend" "systemctl suspend && pkill i3-nagbar" \
+    -B "Reboot" "systemctl reboot" \
+    -B "Power off" "systemctl poweroff" \
 
 mode "resize" {
     bindsym h resize shrink width 10 px or 10 ppt
@@ -253,6 +252,9 @@ for_window [title="Message Filters$"] floating enable
 for_window [all] title_window_icon on
 for_window [all] title_window_icon padding 3px
 for_window [class="thunderbird$" title="^Write\:"] floating enable
+
+# switch to workspace with urgent window automatically
+for_window [urgent=latest] focus
 
 # Scratchpad
 for_window [class="Spotify"] floating toggle, move to scratchpad
