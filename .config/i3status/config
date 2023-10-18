@@ -1,0 +1,50 @@
+general {
+    colors = true
+    interval = 10
+    color_good      = '#88b090'
+    color_degraded  = '#ccdc90'
+    color_bad       = '#e89393'
+}
+
+order += "disk /"
+order += "load"
+order += "cpu_usage"
+order += "memory"
+order += "volume master"
+order += "tztime local"
+
+ethernet _first_ {
+    format_up = "%ip (%speed)"
+    format_down = ""
+}
+
+
+disk "/" {
+    format = " %avail"
+}
+
+load {
+    format = " %1min"
+}
+
+cpu_usage {
+    format = "💻 %usage"
+}
+
+memory {
+    format = "⛁ %used"
+        threshold_degraded = "1G"
+        format_degraded = "MEMORY < %available"
+}
+
+volume master {
+    format = "🔉 %volume"
+        format_muted = "🔇 %volume"
+        device = "default"
+}
+
+tztime local {
+    format = " %a %Y-%m-%d ⌚%l:%M %p "
+}
+
+

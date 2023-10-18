@@ -5,7 +5,7 @@ require('nvim-treesitter.configs').setup({
   highlight = { enable = true },
   indent = {
     enable = true,
-    disable = { 'python', 'yaml' },
+    disable = { 'python' },
   },
   incremental_selection = {
     enable = true,

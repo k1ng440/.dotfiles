@@ -20,7 +20,15 @@ editnvimconfig() {
 }
 
 i3edit() {
-    (~/.config/i3/config && nvim ~/.config/i3/config)
+    (cd ~/.config/i3 && nvim ~/.config/i3/config)
+}
+
+kitty-reload() {
+    kill -SIGUSR1 $(pidof kitty)
+}
+
+window-class() {
+    xprop | grep 'CLASS'
 }
 
 function server() {

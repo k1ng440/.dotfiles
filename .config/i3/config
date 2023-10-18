@@ -3,26 +3,54 @@
 set $mod Mod4
 set $alt Mod1
 
-font pango:DejaVu Sans Mono 8
+set $monitor_primary "DP-0"
+set $monitor_left "DP-2"
+set $monitor_top "HDMI-1"
 
-exec_always --no-startup-id feh --bg-scale ~/Pictures/cyber_girl.jpg
+font pango:Ubuntu Mono 14
+
+client.focused          #002b36 #586e75 #fdf6e3 #268bd2
+client.focused_inactive #002b36 #073642 #839496 #073642
+client.unfocused        #002b36 #073642 #839496 #073642
+client.urgent           #002b36 #dc322f #fdf6e3 #002b36
+
+bar {
+    status_command i3status
+	i3bar_command i3bar --transparency
+	tray_output none
+    position bottom
+    status_command i3status
+    tray_output primary
+    mode dock
+    modifier Control
+    separator_symbol " | "
+    tray_padding 4
+    font pango:MesloLGS NF 12
+    strip_workspace_numbers yes
+    colors {
+        background #002b36
+        statusline #839496
+        separator  #586e75
+        focused_workspace  #b58900 #b58900 #002b36
+        active_workspace   #586e75 #586e75 #002b36
+        inactive_workspace #073642 #002b36 #839496
+        urgent_workspace   #dc322f #dc322f #fdf6e3
+    }
+}
+
+exec_always --no-startup-id feh --bg-scale --randomize ~/Pictures/wl
 
 exec_always --no-startup-id xrandr --dpi 96 \
     --output DP-0 --primary --mode 3440x1440 --rate 100.00 --scale 1x1 \
     --output DP-2           --mode 3440x1440 --rate 60.00 --left-of DP-0 --scale 1x1 \
     --output HDMI-0         --mode 3840x2160 --rate 60.00 --above DP-0 --scale 1x1
 
+exec_always exec picom -f
 exec_always dunst -config ~/.config/dunst/dunstrc
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-appleth
 exec_always --no-startup-id ~/.local/bin/remaps
-
-# Polybar i3
-exec_always --no-startup-id killall -q polybar
-exec_always --no-startup-id $HOME/.local/bin/launch_polybar.sh DP-0 i3
-exec_always --no-startup-id $HOME/.local/bin/launch_polybar.sh DP-2 i3
-exec_always --no-startup-id $HOME/.local/bin/launch_polybar.sh HDMI-0 i3bottom
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -31,41 +59,31 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
-popup_during_fullscreen smart
-for_window [window_role="About"] floating enable
-for_window [window_role="Organizer"] floating enable
-for_window [window_role="Preferences"] floating enable
-for_window [window_role="bubble"] floating enable
-for_window [window_role="page-info"] floating enable
-for_window [window_role="pop-up"] floating enable
-for_window [window_role="task_dialog"] floating enable
-for_window [window_role="toolbox"] floating enable
-for_window [window_role="webconsole"] floating enable
-for_window [window_type="dialog"] floating enable
-for_window [window_type="menu"] floating enable
-for_window [window_role="pop-up"] floating enable
-for_window [window_role="task_dialog"] floating enable
-for_window [class="Dunst"] floating enable
-for_window [title="Upload image$"] floating enable
-for_window [title="Message Filters$"] floating enable
-for_window [all] title_window_icon on
-for_window [all] title_window_icon padding 3px
 
 # Launch Applications
 # Press $mod+o followed by either f, t, Escape or Return to launch firefox,
 # thunderbird or return to the default mode, respectively.
-set $mode_launcher Launch: [f]irefox [c]rome [b]rave [t]hunderbird tv[h]dmi
+set $mode_launcher Launch: [t]hunar [f]irefox [c]rome thunder[b]ird tv[h]dmi [s]potify [w]allpaper
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
-    bindsym f exec firefox
-    bindsym t exec thunderbird
-    bindsym b exec brave
-    bindsym c exec google-chrome
-    bindsym h exec ~/.local/bin/tvhdmi
+    bindsym f exec firefox, mode "default"
+    bindsym b exec thunderbird, mode "default
+    bindsym c exec google-chrome, mode "default"
+    bindsym h exec ~/.local/bin/tvhdmi, mode "default"
+    bindsym s exec spotify, mode "default"
+    bindsym t exec thunar, mode "default"
+    bindsym w exec --no-startup-id feh --bg-scale --randomize ~/Pictures/wl
+
     bindsym Escape mode "default"
     bindsym Return mode "default"
+    bindsym $mod+r mode "default"
 }
+
+# grave
+bindsym $mod+grave scratchpad show
+bindsym $mod+Shift+grave move scratchpad
+
 
 bindsym $mod+b exec --no-startup-id brave
 bindsym $mod+$Alt+f exec --no-startup-id firefox
@@ -77,6 +95,7 @@ bindsym --release Shift+Print exec --no-startup-id ~/.local/bin/screenshot -c -u
 # Use Mouse+$mod to drag floating windows to their wanted position
 mouse_warping none
 focus_follows_mouse no
+focus_on_window_activation smart
 floating_modifier $mod
 
 # tiling_drag modifier titlebar
@@ -112,8 +131,8 @@ bindsym $mod+Right focus right
 # move focused window
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -141,8 +160,6 @@ bindsym $mod+t focus mode_toggle
 # focus the parent container
 bindsym $mod+a focus parent
 
-# Define names for default workspaces for which we configure key bindings later on.
-# We use variables to avoid repeating the names in multiple places.
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -153,6 +170,12 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
+
+workspace $ws1 output $monitor_primary
+workspace $ws2 output $monitor_primary
+workspace $ws3 output $monitor_primary
+workspace $ws4 output $monitor_left
+workspace $ws5 output $monitor_top
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -178,38 +201,65 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
-# reload the configuration file
-bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-# resize window (you can also use the mouse for that)
+# Exit menu
+bindsym $mod+Shift+e exec i3-nagbar -f "pango:Terminus 12" \
+-m "Exit i3? This will end your current X session." \
+-B "Exit now" "i3-msg exit" \
+-B "Suspend" "systemctl suspend && pkill i3-nagbar" \
+-B "Reboot" "systemctl reboot" \
+-B "Power off" "systemctl poweroff" \
+
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym k resize grow height 10 px or 10 ppt
+    bindsym j resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym j resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+    # same bindings, but for the arrow keys
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-
-        # back to normal: Enter or Escape or $mod+r
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
+    # back to normal: Enter or Escape or $mod+r
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
 }
 
 bindsym $mod+r mode "resize"
 
+popup_during_fullscreen smart
+for_window [window_type="normal"] border normal
+for_window [window_role="About"] floating enable
+for_window [window_role="Organizer"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="page-info"] floating enable
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="toolbox"] floating enable
+for_window [window_role="webconsole"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [class="Dunst"] floating enable
+for_window [title="Upload image$"] floating enable
+for_window [title="Message Filters$"] floating enable
+for_window [all] title_window_icon on
+for_window [all] title_window_icon padding 3px
+for_window [class="thunderbird$" title="^Write\:"] floating enable
+
+# Scratchpad
+for_window [class="Spotify"] floating toggle, move to scratchpad
+
+# assign application to a workspace
+for_window [class="thunderbird"] move container to workspace 3
+for_window [class="discord"] move container to workspace 2
+for_window [class="Skype"] move container to workspace 2
+for_window [class="Whatsapp-for-linux"] move container to workspace 2
 
