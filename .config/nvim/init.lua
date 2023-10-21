@@ -6,9 +6,5 @@
 -- Date: 2023-07-19
 -- Base Template: Kickstart (https://github.com/nvim-lua/kickstart.nvim)
 
--- Set global variables
-require('k1ng.globals')
-
 -- Load Configs
 require('k1ng.configs')
-

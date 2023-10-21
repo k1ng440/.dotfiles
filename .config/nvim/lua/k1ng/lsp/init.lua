@@ -157,8 +157,8 @@ mason_lspconfig.setup_handlers({
     -- clangd
     if server_name == 'clangd' then
       opts.cmd = {
-        "clangd",
-        "--offset-encoding=utf-16",
+        'clangd',
+        '--offset-encoding=utf-16',
       }
     end
 
@@ -172,4 +172,3 @@ local efmls_config = require('k1ng.lsp.efm')
 require('lspconfig').efm.setup(vim.tbl_extend('force', efmls_config, {
   capabilities = capabilities,
 }))
-

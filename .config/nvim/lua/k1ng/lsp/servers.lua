@@ -1,6 +1,6 @@
 local servers = {
   ansiblels = {},
-  clangd = { },
+  clangd = {},
   rust_analyzer = {},
   terraformls = {},
   tsserver = {},
@@ -14,24 +14,63 @@ local servers = {
     python = {
       analysis = {
         autoSearchPaths = true,
-        diagnosticMode = "workspace",
+        diagnosticMode = 'workspace',
         useLibraryCodeForTypes = true,
       },
     },
   },
   intelephense = {
     stubs = {
-      "bcmath", "bz2", "Core", "curl", "date", "dom", "fileinfo", "filter", "gd", "gettext", "hash", "iconv", "imap",
-      "intl",
-      "json", "libxml", "mbstring", "mcrypt", "mysql", "mysqli", "password", "pcntl", "pcre", "PDO", "pdo_mysql", "Phar",
-      "readline", "regex", "session", "SimpleXML", "sockets", "sodium", "standard", "superglobals", "tokenizer", "xml",
-      "xdebug", "xmlreader", "xmlwriter", "yaml", "zip", "zlib", "genesis-stubs", "polylang-stubs",
+      'bcmath',
+      'bz2',
+      'Core',
+      'curl',
+      'date',
+      'dom',
+      'fileinfo',
+      'filter',
+      'gd',
+      'gettext',
+      'hash',
+      'iconv',
+      'imap',
+      'intl',
+      'json',
+      'libxml',
+      'mbstring',
+      'mcrypt',
+      'mysql',
+      'mysqli',
+      'password',
+      'pcntl',
+      'pcre',
+      'PDO',
+      'pdo_mysql',
+      'Phar',
+      'readline',
+      'regex',
+      'session',
+      'SimpleXML',
+      'sockets',
+      'sodium',
+      'standard',
+      'superglobals',
+      'tokenizer',
+      'xml',
+      'xdebug',
+      'xmlreader',
+      'xmlwriter',
+      'yaml',
+      'zip',
+      'zlib',
+      'genesis-stubs',
+      'polylang-stubs',
     },
     files = {
       maxSize = 5000000,
     },
     environment = {
-      includePaths = { "~/.composer/vendor/php-stubs/" },
+      includePaths = { '~/.composer/vendor/php-stubs/' },
     },
   },
   jsonls = {
@@ -42,12 +81,12 @@ local servers = {
         parentSkeletonSelectedFirst = true,
       },
       schemas = {
-        ["https://json.schemastore.org/github-action"] = ".github/action.{yaml,yml}",
-        ["https://json.schemastore.org/github-workflow"] = ".github/workflows/*",
-        ["https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json"] = "*lab-ci.{yaml,yml}",
-        ["https://json.schemastore.org/helmfile"] = "helmfile.{yaml,yml}",
-        ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "docker-compose.yml.{yml,yaml}",
-        ["https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json"] = "resume.{json,yml,yaml}",
+        ['https://json.schemastore.org/github-action'] = '.github/action.{yaml,yml}',
+        ['https://json.schemastore.org/github-workflow'] = '.github/workflows/*',
+        ['https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json'] = '*lab-ci.{yaml,yml}',
+        ['https://json.schemastore.org/helmfile'] = 'helmfile.{yaml,yml}',
+        ['https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json'] = 'docker-compose.yml.{yml,yaml}',
+        ['https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json'] = 'resume.{json,yml,yaml}',
         -- stylua: ignore
         kubernetes = {
           '*-deployment.yaml', '*-deployment.yml', '*-service.yaml', '*-service.yml',
@@ -106,20 +145,31 @@ local servers = {
       usePlaceholders = true,
       completeUnimported = true,
       staticcheck = true,
-      directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+      directoryFilters = { '-.git', '-.vscode', '-.idea', '-.vscode-test', '-node_modules' },
       semanticTokens = true,
     },
   },
   lua_ls = {
     Lua = {
-      telemetry = { enable = false },
-      completion = {
-        callSnippet = "Replace"
+      runtime = {
+        version = 'LuaJIT',
       },
+      diagnostics = {
+        globals = { 'vim' },
+      },
+      workspace = {
+        library = {
+          -- Make the server aware of Neovim runtime files
+          vim.fn.expand('$VIMRUNTIME/lua'),
+          vim.fn.stdpath('config') .. '/lua',
+        },
+        checkThirdParty = false,
+      },
+      telemetry = { enable = false },
+      completion = { callSnippet = 'Replace' },
     },
   },
 }
-
 
 return servers
 

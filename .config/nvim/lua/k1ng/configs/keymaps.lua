@@ -9,13 +9,13 @@ map('n', '<Tab>', '%', { desc = 'Remap % to Tab' })
 
 -- Close buffer
 map('n', '<leader>ub', '<cmd>bdelete<cr>', { desc = '[U]nload [B]uffer' })
-map('n', '<leader>bd', '<cmd>DeleteFile<cr>', { desc = 'Delete buffer and file' })
+map('n', '<leader>bd', '<cmd>bdelete<cr>', { desc = '[B]uffer [D]elete' })
+map('n', '<leader>bD', '<cmd>DeleteFile<cr>', { desc = 'Delete buffer and file' })
 
 -- quit
 map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
 
 -- Tree and explorer
-map({ 'n', 'i' }, '<c-n>', '<cmd>NvimTreeFindFileToggle<cr>', { desc = 'Explorer' })
 map({ 'n' }, '-', '<cmd>Oil<cr>', { desc = 'Oil' })
 
 -- Move selection up/down/left/right

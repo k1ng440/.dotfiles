@@ -7,6 +7,8 @@ return {
       'text',
       'markdown',
       'oil',
+      'dashboard',
+      'alpha',
     },
     custom_colorcolumn = {},
     scope = 'line',

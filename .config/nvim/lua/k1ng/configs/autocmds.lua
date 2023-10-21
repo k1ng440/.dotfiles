@@ -1,5 +1,5 @@
 local function augroup(name)
-  return vim.api.nvim_create_augroup('nvimtraap_' .. name, { clear = true })
+  return vim.api.nvim_create_augroup('nvimtrap_' .. name, { clear = true })
 end
 
 -- Disable ColorScheme when opening large files
@@ -99,12 +99,25 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
   end,
 })
 
--- Auto remove whitespace
 vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-  pattern = { '*' },
+  group = augroup('save_current_session'),
   callback = function()
-    local save_cursor = vim.fn.getpos('.')
-    vim.cmd([[%s/\s\+$//e]])
-    vim.fn.setpos('.', save_cursor)
+    local project_root = vim.g.project_root
+    if project_root == nil then
+      return
+    end
+
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      if vim.api.nvim_get_option_value('buftype', { buf = buf }) == 'nofile' then
+        return
+      end
+    end
+    require('session_manager').save_current_session()
   end,
+})
+
+vim.api.nvim_create_autocmd({ 'User' }, {
+  group = augroup('vimfugitive'),
+  pattern = 'ProjectRoot',
+  callback = function() end,
 })

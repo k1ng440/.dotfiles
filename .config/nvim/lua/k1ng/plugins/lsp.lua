@@ -1,56 +1,59 @@
 return {
   {
     'neovim/nvim-lspconfig',
-    event = 'BufReadPre',
+    -- event = 'BufReadPre',
+    event = { 'BufReadPost', 'BufNewFile' },
+    cmd = { 'LspInfo', 'LspInstall', 'LspUninstall' },
     dependencies = {
       'williamboman/mason-lspconfig.nvim',
       'folke/neodev.nvim',
       'folke/neoconf.nvim',
       'smjonas/inc-rename.nvim',
-      "hrsh7th/nvim-cmp",
+      'hrsh7th/nvim-cmp',
     },
     config = function()
       require('k1ng.lsp')
     end,
   },
   {
-    "hrsh7th/nvim-cmp",
+    'hrsh7th/nvim-cmp',
     dependencies = {
       'L3MON4D3/LuaSnip',
       {
         'saadparwaiz1/cmp_luasnip',
-        version = "2.*",
-        build = 'make install_jsregexp'
+        version = '2.*',
+        build = 'make install_jsregexp',
       },
       'hrsh7th/cmp-nvim-lsp',
-      "hrsh7th/cmp-path",
+      'hrsh7th/cmp-path',
       'rafamadriz/friendly-snippets',
     },
   },
   {
-    "j-hui/fidget.nvim",
-    branch = "legacy",
+    'j-hui/fidget.nvim',
+    branch = 'legacy',
     opts = {
       text = {
-        spinner = "dots",
-        done = "󰗡",
-        commenced = "init",
-        completed = "done",
+        spinner = 'dots',
+        done = '󰗡',
+        commenced = 'init',
+        completed = 'done',
       },
       window = { blend = 0 },
       sources = {
-        ["copilot"] = { ignore = true },
-        ["null-ls"] = { ignore = true },
+        ['copilot'] = { ignore = true },
+        ['null-ls'] = { ignore = true },
       },
     },
   },
   {
-    "ray-x/go.nvim",
+    'ray-x/go.nvim',
+
     dependencies = {
-      "neovim/nvim-lspconfig",
-      "nvim-treesitter/nvim-treesitter",
+      'neovim/nvim-lspconfig',
+      'nvim-treesitter/nvim-treesitter',
     },
-    ft = { "go", 'gomod' },
+    ft = { 'go', 'gomod' },
     build = ':lua require("go.install").update_all_sync()',
     config = function()
       require('k1ng.lsp.go').setup()
@@ -62,22 +65,22 @@ return {
     dependencies = { 'neovim/nvim-lspconfig' },
   },
   {
-    "SmiteshP/nvim-navic",
+    'SmiteshP/nvim-navic',
     event = 'LspAttach',
     init = function()
       vim.g.navic_silence = true
-      require("k1ng.util").on_attach(function(client, buffer)
+      require('k1ng.util').on_attach(function(client, buffer)
         if client.server_capabilities.documentSymbolProvider then
-          require("nvim-navic").attach(client, buffer)
+          require('nvim-navic').attach(client, buffer)
         end
       end)
     end,
     opts = function()
       return {
-        separator = " ",
+        separator = ' ',
         highlight = true,
         depth_limit = 5,
-        icons = require("k1ng.configs.icons").kinds,
+        icons = require('k1ng.configs.icons').kinds,
       }
     end,
   },

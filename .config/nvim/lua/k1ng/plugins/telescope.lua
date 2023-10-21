@@ -98,7 +98,7 @@ return {
     },
     build = 'make',
     cond = function()
-      return vim.fn.executable 'make' == 1
+      return vim.fn.executable('make') == 1
     end,
   },
   {
@@ -115,9 +115,9 @@ return {
     dependencies = {
       'nvim-telescope/telescope.nvim',
     },
-    opts = function ()
-      require("telescope").load_extension("software-licenses")
-    end
+    opts = function()
+      require('telescope').load_extension('software-licenses')
+    end,
   },
   {
     'nvim-telescope/telescope-ui-select.nvim',
@@ -132,8 +132,8 @@ return {
     dependencies = {
       'nvim-telescope/telescope.nvim',
     },
-    opts = function ()
-      require("telescope").load_extension("windowizer")
+    opts = function()
+      require('telescope').load_extension('windowizer')
     end,
   },
   {
@@ -142,8 +142,8 @@ return {
     dependencies = {
       'nvim-telescope/telescope.nvim',
     },
-    opts = function ()
-      require("telescope").load_extension("luasnip")
+    opts = function()
+      require('telescope').load_extension('luasnip')
     end,
   },
   {
@@ -151,10 +151,16 @@ return {
     event = 'VeryLazy',
     dependencies = { 'nvim-telescope/telescope.nvim' },
     keys = {
-      {'<leader>rg', function () require("telescope").extensions.live_grep_args.live_grep_args() end, desc = 'Grep (root dir)'},
+      {
+        '<leader>rg',
+        function()
+          require('telescope').extensions.live_grep_args.live_grep_args()
+        end,
+        desc = 'Grep (root dir)',
+      },
     },
     config = function()
       require('telescope').load_extension('live_grep_args')
     end,
-  }
+  },
 }

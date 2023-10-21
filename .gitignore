@@ -1,3 +1,7 @@
 # Ignore everything.
 # Use git add -f to add file
 *
+!.config/
+!.config/**
+.config/Slack
+.config/lazygit/state.yml

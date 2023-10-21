@@ -1,1 +1,1 @@
-autocmd FileType go setlocal noexpandtab tabstop=4 shiftwidth=4
+setlocal noexpandtab tabstop=4 shiftwidth=4
