@@ -3,7 +3,7 @@ local M = {
 }
 
 function M.setup()
-  local status, gonvim = pcall(require, "go")
+  local status, gonvim = pcall(require, 'go')
   if not status then
     vim.notify('go.nvim is not enabled', vim.log.levels.WARN)
     return false

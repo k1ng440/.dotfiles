@@ -55,6 +55,25 @@ return {
       vim.keymap.set('n', '<leader>gg', toggle_lazygit, { desc = 'Lazygit' })
       vim.keymap.set('n', '<leader>pt', toggle_python, { desc = 'Python' })
       vim.keymap.set('n', '<leader>ft', '<cmd>ToggleTerm direction=float<cr>', { desc = '[F]loating [T]erminal' })
+
+      -- Better navigation to and from terminal
+      local buf_map = vim.api.nvim_buf_set_keymap
+      local set_terminal_keymaps = function()
+        local bufopts = { noremap = true }
+        buf_map(0, 't', '<esc>', [[<C-\><C-n>]], bufopts)
+        buf_map(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], bufopts)
+        buf_map(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], bufopts)
+        buf_map(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], bufopts)
+        buf_map(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], bufopts)
+      end
+      -- if you only want these mappings for toggle term use term://*toggleterm#* instead
+      vim.api.nvim_create_autocmd('TermOpen', {
+        pattern = 'term://*',
+        callback = function()
+          set_terminal_keymaps()
+        end,
+        desc = 'Mappings for navigation with a terminal',
+      })
     end,
   },
 }

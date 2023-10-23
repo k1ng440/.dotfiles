@@ -1,18 +1,3 @@
--- Copyright (C) 2023  Asaduzzaman, Pavel <contact@iampavel.dev>
---
--- This program is free software: you can redistribute it and/or modify
--- it under the terms of the GNU General Public License as published by
--- the Free Software Foundation, either version 3 of the License, or
--- (at your option) any later version.
---
--- This program is distributed in the hope that it will be useful,
--- but WITHOUT ANY WARRANTY; without even the implied warranty of
--- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
--- GNU General Public License for more details.
---
--- You should have received a copy of the GNU General Public License
--- along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.licenses_copyright_holders_name = 'Asaduzzaman, Pavel <contact@iampavel.dev>'
@@ -67,6 +52,11 @@ opt.colorcolumn = '80'
 opt.title = true
 opt.titlestring = [[%f %h%m%r%w %{v:progname} (%{tabpagenr()} of %{tabpagenr('$')})]]
 opt.exrc = true
+
+opt.foldmethod = 'expr' -- code folding
+opt.foldexpr = 'nvim_treesitter#foldexpr()' -- code folding with treesitter
+opt.foldenable = false -- can be enabled directly in opened file - using 'zi' - toogle fold
+
 opt.path:append('**')
 opt.wildignore:append('*/node_modules/*')
 opt.wildignore:append('*/.git/*')

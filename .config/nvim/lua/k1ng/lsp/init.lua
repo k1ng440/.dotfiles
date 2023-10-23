@@ -34,13 +34,25 @@ require('k1ng.luasnip')
 
 -- border style
 require('lspconfig.ui.windows').default_options.border = 'double'
+
+-- hover
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+  width = 80,
   border = vim.g.bc.style,
+  focusable = false,
+})
+
+-- publishDiagnostics
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  underline = true,
+  virtual_text = false,
+  signs = true,
+  update_in_insert = false,
 })
 
 local cmp_window = {
   border = { vim.g.bc.topleft, vim.g.bc.horiz, vim.g.bc.topright, vim.g.bc.vert, vim.g.bc.botright, vim.g.bc.horiz, vim.g.bc.botleft, vim.g.bc.vert },
-  winhighlight = 'Normal:Pmenu,FloatBorder:CmpBorder,CursorLine:PmenuSel,Search:None',
+  -- winhighlight = 'Normal:Pmenu,CursorLine:PmenuSel',
 }
 -- EOF border style
 
@@ -61,17 +73,29 @@ cmp.setup({
       luasnip.lsp_expand(args.body)
     end,
   },
+  view = {
+    docs = {
+      auto_open = false,
+    },
+  },
   window = {
     completion = cmp_window,
     documentation = cmp_window,
   },
   mapping = cmp.mapping.preset.insert({
+    ['<C-g>'] = function()
+      if cmp.visible_docs() then
+        cmp.close_docs()
+      else
+        cmp.open_docs()
+      end
+    end,
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-p>'] = cmp.mapping.select_prev_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete({}),
-    ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+    ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true }),
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
@@ -115,6 +139,26 @@ cmp.setup({
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+if not capabilities.workspace then
+  capabilities.workspace = {}
+end
+capabilities.workspace.didChangeWatchedFiles = {
+  dynamicRegistration = true,
+}
+
+---@diagnostic disable-next-line: missing-fields
+capabilities.textDocument.completion.completionItem = {
+  documentationFormat = { 'markdown', 'plaintext' },
+  snippetSupport = true,
+  preselectSupport = true,
+  insertReplaceSupport = true,
+  deprecatedSupport = true,
+  commitCharactersSupport = true,
+  tagSupport = { valueSet = { 1 } },
+  resolveSupport = {
+    properties = { 'documentation', 'detail', 'additionalTextEdits' },
+  },
+}
 
 -- Configure vim.diagnostic
 vim.diagnostic.config({

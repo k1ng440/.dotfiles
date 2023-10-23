@@ -6,7 +6,7 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'LSP: Go to next di
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'LSP: Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'LSP: Open diagnostics list' })
 
-Util.on_attach(function (client, buffer)
+Util.on_attach(function(client, buffer)
   local map = function(mode, lhs, rhs, desc)
     desc = desc or rhs
     local opts = { buffer = buffer, noremap = true, silent = true, desc = 'LSP: ' .. desc }
@@ -22,7 +22,7 @@ Util.on_attach(function (client, buffer)
   end
 
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-  nmap('<leader>ca', '<cmd> Format <cr>', '[C]ode [F]ormat')
+  nmap('<leader>cf', '<cmd>Format<cr>', '[C]ode [F]ormat')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
@@ -35,11 +35,14 @@ Util.on_attach(function (client, buffer)
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
   imap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
   nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
   nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-  nmap('<leader>wl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, '[W]orkspace [L]ist Folders') end)
+  nmap('<leader>wl', function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, '[W]orkspace [L]ist Folders')
+end)
+

@@ -7,6 +7,8 @@ set $monitor_primary "DP-0"
 set $monitor_left "DP-2"
 set $monitor_top "HDMI-0"
 
+set $locker ~/.config/i3/lock.sh ~/Pictures/lockscreen
+set $i3_resurrect ~/.local/bin/i3-resurrect
 
 mouse_warping none
 focus_follows_mouse no
@@ -26,8 +28,7 @@ exec_always --no-startup-id ~/.local/bin/remaps
 exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc
 exec_always --no-startup-id sleep 1; feh --bg-scale --randomize ~/Pictures/wl/wallpapers/
 exec_always --no-startup-id sleep 1; xset dpms 300 300 500
-exec --no-startup-id xss-lock --transfer-sleep-lock -- \
-    ~/code/i3-wm-scripts/i3lock.sh ~/Pictures/lockscreen/
+exec --no-startup-id xss-lock --transfer-sleep-lock -- $locker
 
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id nm-appleth
@@ -39,6 +40,12 @@ bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+# Exit menu
+bindsym $mod+Shift+e exec rofi -show powermenu -modi powermenu:~/.config/rofi/scripts/rofi-power-menu
 
 # Launch Applications
 # Press $mod+o followed by either f, t, Escape or Return to launch firefox,
@@ -92,6 +99,7 @@ bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
+bindsym $mod+x [urgent=latest] focus
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -131,16 +139,16 @@ bindsym $mod+t focus mode_toggle
 # focus the parent container
 bindsym $mod+a focus parent
 
-set $ws1 "1:"
-set $ws2 "2:󰖟"
-set $ws3 "3:󱂵"
-set $ws4 "4:"
-set $ws5 "5:󱌖"
-set $ws6 "6:"
-set $ws7 "7:󱌖"
-set $ws8 "8:󱌖"
-set $ws9 "9:󱌖"
-set $ws10 "10:󱌖"
+set $ws1  "1"
+set $ws2  "2"
+set $ws3  "3"
+set $ws4  "4"
+set $ws5  "5"
+set $ws6  "6"
+set $ws7  "7"
+set $ws8  "8"
+set $ws9  "9"
+set $ws10 "10"
 
 workspace $ws1 output $monitor_primary
 workspace $ws2 output $monitor_primary
@@ -189,11 +197,48 @@ mode "$workspace_mover" {
     bindsym $mod+r mode "default"
 }
 
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+set $save Save: Pick 1-10 to save workspace
+bindsym $mod+F7 mode $save
+set $restore Restore: Pick 1-10 to restore workspace
+bindsym $mod+F8 mode $restore
 
-# Exit menu
-bindsym $mod+Shift+e exec rofi -show powermenu -modi powermenu:~/.config/rofi/scripts/rofi-power-menu
+mode "$save" {
+  bindsym 1 exec $i3_resurrect save -w $ws1, mode "default" 
+  bindsym 2 exec $i3_resurrect save -w $ws2, mode "default"
+  bindsym 3 exec $i3_resurrect save -w $ws3, mode "default"
+  bindsym 4 exec $i3_resurrect save -w $ws4, mode "default"
+  bindsym 5 exec $i3_resurrect save -w $ws5, mode "default"
+  bindsym 6 exec $i3_resurrect save -w $ws6, mode "default"
+  bindsym 7 exec $i3_resurrect save -w $ws7, mode "default"
+  bindsym 8 exec $i3_resurrect save -w $ws8, mode "default"
+  bindsym 9 exec $i3_resurrect save -w $ws9, mode "default"
+  bindsym 0 exec $i3_resurrect save -w $ws10, mode "default"
+
+  # Back to normal: Enter, Escape, or s
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+  bindsym s mode "default"
+  bindsym $mod+s mode "default"
+}
+
+mode "$restore" {
+  bindsym 1 exec $i3_resurrect restore -w $ws1, mode "default"
+  bindsym 2 exec $i3_resurrect restore -w $ws2, mode "default"
+  bindsym 3 exec $i3_resurrect restore -w $ws3, mode "default"
+  bindsym 4 exec $i3_resurrect restore -w $ws4, mode "default"
+  bindsym 5 exec $i3_resurrect restore -w $ws5, mode "default"
+  bindsym 6 exec $i3_resurrect restore -w $ws6, mode "default"
+  bindsym 7 exec $i3_resurrect restore -w $ws7, mode "default"
+  bindsym 8 exec $i3_resurrect restore -w $ws8, mode "default"
+  bindsym 9 exec $i3_resurrect restore -w $ws9, mode "default"
+  bindsym 0 exec $i3_resurrect restore -w $ws10, mode "default"
+
+  # Back to normal: Enter, Escape, or n
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+  bindsym n mode "default"
+  bindsym $mod+n mode "default"
+}
 
 bindsym $mod+r mode "resize"
 mode "resize" {

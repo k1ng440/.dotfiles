@@ -55,7 +55,7 @@ local yadm_git_root = function()
     return
   end
 
-  if vim.g.project_root == config_home or string.sub(vim.g.project_root, 1, #config_home) then
+  if vim.g.project_root == config_home or string.sub(vim.g.project_root, 1, #config_home) == config_home then
     Util.set_yadm_git()
     return
   end

@@ -14,15 +14,11 @@ local disabled_built_ins = {
   'vimballPlugin',
   'zip',
   'zipPlugin',
-  -- 'netrw',
-  -- 'netrwPlugin',
 }
 
 for _, plugin in pairs(disabled_built_ins) do
   vim.g['loaded_' .. plugin] = 1
 end
-
-
 
 vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0

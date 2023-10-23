@@ -2,9 +2,14 @@ local function augroup(name)
   return vim.api.nvim_create_augroup('nvimtrap_' .. name, { clear = true })
 end
 
+vim.api.nvim_create_autocmd('BufEnter', {
+  group = augroup('no_auto_comment'),
+  command = [[set formatoptions-=cro]],
+})
+
 -- Disable ColorScheme when opening large files
 vim.api.nvim_create_autocmd('BufRead', {
-  command = [[if getfsize(expand('%')) > 1000000 | setlocal eventignore+=ColorScheme | endif]],
+  command = [[if getfsize(expand('%')) > 100000 | setlocal eventignore+=ColorScheme | endif]],
   group = augroup('disable_colorscheme'),
 })
 
@@ -30,46 +35,30 @@ vim.api.nvim_create_autocmd({ 'vimresized' }, {
   end,
 })
 
--- go to last loc when opening a buffer
-vim.api.nvim_create_autocmd('BufReadPost', {
-  group = augroup('last_loc'),
-  callback = function()
-    local exclude = { 'gitcommit' }
-    local buf = vim.api.nvim_get_current_buf()
-    if vim.tbl_contains(exclude, vim.bo[buf].filetype) then
-      return
-    end
-    local mark = vim.api.nvim_buf_get_mark(buf, "'")
-    local lcount = vim.api.nvim_buf_line_count(buf)
-    if mark[1] > 0 and mark[1] <= lcount then
-      pcall(vim.api.nvim_win_set_cursor, 0, mark)
-    end
-  end,
-})
-
 -- close some filetypes with <q>
 vim.api.nvim_create_autocmd('FileType', {
   group = augroup('close_with_q'),
   pattern = {
+    'NvimTree',
     'PlenaryTestPopup',
+    'Trouble',
+    'checkhealth',
+    'copilot',
+    'dap-float',
+    'fugitive',
     'help',
     'lspinfo',
     'man',
+    'neo-tree',
+    'neotest-output',
+    'neotest-output-panel',
+    'neotest-summary',
+    'netrw',
     'notify',
     'qf',
     'spectre_panel',
     'startuptime',
     'tsplayground',
-    'neotest-output',
-    'checkhealth',
-    'neotest-summary',
-    'neotest-output-panel',
-    'fugitive',
-    'copilot',
-    'NvimTree',
-    'Trouble',
-    'neo-tree',
-    'netrw',
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
@@ -99,6 +88,7 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
   end,
 })
 
+-- Auto save sessions
 vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
   group = augroup('save_current_session'),
   callback = function()
@@ -116,8 +106,41 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
   end,
 })
 
-vim.api.nvim_create_autocmd({ 'User' }, {
-  group = augroup('vimfugitive'),
-  pattern = 'ProjectRoot',
-  callback = function() end,
+-- tmux reload on config change
+vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+  group = augroup('tmux_reload'),
+  pattern = '*tmux.conf',
+  callback = function(opts)
+    if vim.env.TMUX ~= nil then
+      vim.fn.jobstart({ 'tmux', 'source-file', opts.file })
+    end
+  end,
+})
+
+-- reload config on save
+vim.api.nvim_create_autocmd('BufWritePost', {
+  group = augroup('config_reload'),
+  pattern = {
+    '**/lua/k1ng/*.lua',
+    '**/lua/k1ng/configs/*.lua',
+  },
+  callback = function()
+    local filepath = vim.fn.expand('%')
+    dofile(filepath)
+    vim.notify('Reloaded \n' .. filepath, nil)
+  end,
+  desc = 'Reload config on save',
+})
+
+-- HACK: re-caclulate folds when entering a buffer through Telescope
+-- @see https://github.com/nvim-telescope/telescope.nvim/issues/699
+vim.api.nvim_create_autocmd('BufEnter', {
+  group = augroup('fix_folds'),
+  callback = function()
+    if vim.opt.foldmethod:get() == 'expr' then
+      vim.schedule(function()
+        vim.opt.foldmethod = 'expr'
+      end)
+    end
+  end,
 })

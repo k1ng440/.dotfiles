@@ -1,1 +1,0 @@
-/home/k1ng/.dotfiles/.tmux

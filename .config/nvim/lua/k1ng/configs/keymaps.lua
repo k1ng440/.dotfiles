@@ -35,22 +35,12 @@ map('n', '<esc><esc>', ':nohlsearch<CR>', { desc = 'Clear highlights' })
 -- windows
 map('n', '<leader>ww', '<C-W>p', { desc = 'Other window' })
 map('n', '<leader>wd', '<C-W>c', { desc = 'Delete window' })
+
+-- Split {{{
 map('n', '<leader>w-', '<C-W>s', { desc = 'Split window below' })
 map('n', '<leader>w|', '<C-W>v', { desc = 'Split window right' })
 map('n', '<leader>-', '<C-W>s', { desc = 'Split window below' })
 map('n', '<leader>|', '<C-W>v', { desc = 'Split window right' })
-
--- Split navigation
-map('n', '<C-h>', '<C-w>h', { desc = 'Go to left window' })
-map('n', '<C-j>', '<C-w>j', { desc = 'Go to lower window' })
-map('n', '<C-k>', '<C-w>k', { desc = 'Go to upper window' })
-map('n', '<C-l>', '<C-w>l', { desc = 'Go to right window' })
-
--- Split reslizing
-map({ 'n', 't' }, '<C-Up>', ':resize -2<CR>', { desc = '[Up] Resize split up' })
-map({ 'n', 't' }, '<C-Down>', ':resize +2<CR>', { desc = '[Down] Resize split down' })
-map({ 'n', 't' }, '<C-Left>', ':vertical resize -2<CR>', { desc = '[Left] Resize split left' })
-map({ 'n', 't' }, '<C-Right>', ':vertical resize +2<CR>', { desc = '[Right] Resize split right' })
 
 -- Navigate buffers
 map('n', '[b', ':bprevious<CR>', { desc = 'Previous buffer' })
@@ -62,6 +52,11 @@ map('n', 'gp', ':bprevious<CR>', { desc = 'Previous buffer' })
 map('n', 'gn', ':bnext<CR>', { desc = 'Next buffer' })
 map('n', 'tp', ':tabprevious<CR>', { desc = 'Previous tab' })
 map('n', 'tn', ':tabnext<CR>', { desc = 'Next tab' })
+
+-- Other keymaps
+map('n', '<leader>vim', ':tabedit ~/.config/nvim/<Return>')
+map('n', '<leader>nvim', ':tabedit ~/.config/nvim/<Return>')
+map('n', '<leader>tmux', ':tabedit ~/.config/tmux/<Return>')
 
 -- Terminal Mappings
 map('t', '<esc><esc>', '<c-\\><c-n>', { desc = 'Enter Normal Mode' })

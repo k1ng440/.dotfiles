@@ -77,6 +77,27 @@ function M.telescope(builtin, opts)
   end
 end
 
+function M.telescope_neovim_config()
+  require('telescope.builtin').find_files({
+    cwd = vim.env.HOME .. '/.config/nvim',
+    prompt = '~ Neovim Configs ~',
+    -- height = 10,
+    layout_strategy = 'horizontal',
+  })
+end
+
+function M.telescope_keymaps()
+  require('telescope.builtin')['keymaps']({
+    lhs_filter = function(lhs)
+      if string.find(lhs, 'Þ') or string.find(lhs, 'Plug') then
+        return false
+      end
+
+      return true
+    end,
+  })
+end
+
 function M.border_color(border, color)
   local result = {}
   for _, v in ipairs(border) do
