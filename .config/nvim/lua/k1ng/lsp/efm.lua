@@ -21,6 +21,9 @@ languages = vim.tbl_extend('force', languages, {
     require('efmls-configs.formatters.gofmt'),
     require('efmls-configs.formatters.golines'),
   },
+  ['*'] = {
+    require('efmls-configs.linters.codespell'),
+  },
 })
 
 return {

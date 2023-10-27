@@ -9,10 +9,11 @@ set $monitor_top "HDMI-0"
 
 set $locker ~/.config/i3/lock.sh ~/Pictures/lockscreen
 set $i3_resurrect ~/.local/bin/i3-resurrect
+set $fehbg feh --bg-scale --randomize ~/Pictures/wl/wallpapers/
 
-mouse_warping none
+mouse_warping output
 focus_follows_mouse no
-focus_on_window_activation smart
+focus_on_window_activation focus
 
 font pango:Ubuntu Mono 14
 
@@ -21,17 +22,20 @@ client.focused_inactive #002b36 #073642 #839496 #073642
 client.unfocused        #002b36 #073642 #839496 #073642
 client.urgent           #002b36 #dc322f #fdf6e3 #002b36
 
-# @@@
-exec_always --no-startup-id ~/.config/xrandr.sh
-exec_always --no-startup-id picom --config ~/.config/i3/picom.conf
-exec_always --no-startup-id ~/.local/bin/remaps
-exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc
-exec_always --no-startup-id sleep 1; feh --bg-scale --randomize ~/Pictures/wl/wallpapers/
-exec_always --no-startup-id sleep 1; xset dpms 300 300 500
-exec --no-startup-id xss-lock --transfer-sleep-lock -- $locker
-
 exec --no-startup-id dex --autostart --environment i3
+exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc
+exec --no-startup-id xss-lock --transfer-sleep-lock -- $locker
+exec_always --no-startup-id sleep 1; $fehbg
+exec_always --no-startup-id picom
+exec_always --no-startup-id ~/.local/bin/tvhdmi
+exec_always --no-startup-id sleep 1; xset dpms 300 300 500
+exec_always --no-startup-id xset r rate 300 50
 exec --no-startup-id nm-appleth
+
+# Nvidia settings
+exec --no-startup-id nvidia-settings --load-config-only
+exec --no-startup-id nvidia-settings -a 'SyncToVBlank=0'
+exec --no-startup-id nvidia-settings -a 'AllowFlipping=0'
 
 # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks
@@ -46,7 +50,6 @@ bindsym $mod+Shift+r restart
 
 # Exit menu
 bindsym $mod+Shift+e exec rofi -show powermenu -modi powermenu:~/.config/rofi/scripts/rofi-power-menu
-
 # Launch Applications
 # Press $mod+o followed by either f, t, Escape or Return to launch firefox,
 # thunderbird or return to the default mode, respectively.
@@ -60,7 +63,7 @@ mode "$mode_launcher" {
     bindsym h exec ~/.local/bin/tvhdmi, mode "default"
     bindsym s exec spotify, mode "default"
     bindsym t exec thunar, mode "default"
-    bindsym w exec --no-startup-id feh --bg-scale --randomize ~/Pictures/wl/wallpapers
+    bindsym w exec --no-startup-id $fehbg
 
     bindsym Escape mode "default"
     bindsym Return mode "default"
@@ -81,10 +84,11 @@ bindsym $mod+Shift+f floating toggle, resize set 50 ppt 80 ppt, resize shrink do
 bindsym button3 floating toggle, resize set 50 ppt 80 ppt, resize shrink down 20 px, move position center
 bindsym --whole-window $mod+button3 floating toggle, resize set 50 ppt 80 ppt, resize shrink down 20 px, move position center
 bindsym button9 move left
-bindsym button8 move right
+bindsym button10 move right
 
 # start a terminal
-bindsym $mod+Return exec ~/.local/bin/kitty
+bindsym $mod+Return exec ~/.local/bin/kitty -o allow_remote_control=yes --single-instance --listen-on unix:@mykitty
+
 
 # kill focused window
 bindsym $mod+q kill
@@ -279,15 +283,17 @@ for_window [class="Dunst"] floating enable
 for_window [title="Upload image$"] floating enable
 for_window [title="Message Filters$"] floating enable
 for_window [title="Authy"] floating enable
-for_window [all] title_window_icon on
-for_window [all] title_window_icon padding 3px
-for_window [class="thunderbird$" title="^Write\:"] floating enable
+for_window [all]  title_window_icon on, padding 3px, title_format "<b>%title</b>"
+for_window [class="thunderbird" title="^Write\:.*"] floating enable, resize set 1900 1200, move center
+for_window [class="zoom"] floating enable
+for_window [class="Blueman-manager"] floating enable, resize set 900 500, move center
+for_window [class="Nvidia-settings"] floating enable, move center
 
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
 
 # Scratchpad
-for_window [class="Spotify"] floating toggle, resize set 800 600, move position center, move to scratchpad
+for_window [class="Spotify"] floating toggle, resize set 1900 1200, move position center, move to scratchpad
 
 # assign application to a workspace
 assign [class="Slack"] $ws4

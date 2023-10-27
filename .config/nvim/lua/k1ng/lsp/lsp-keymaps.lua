@@ -1,12 +1,32 @@
 local Util = require('k1ng.util')
 
+if vim.lsp.inlay_hint then
+  vim.keymap.set('n', '<leader>lh', function()
+    vim.lsp.inlay_hint(0, nil)
+  end, { desc = '[T]oggle Inlay [H]ints' })
+
+  -- vim.api.nvim_create_autocmd('InsertEnter', {
+  --   group = vim.api.nvim_create_augroup('inlay_hint_insert', { clear = true }),
+  --   callback = function()
+  --     vim.lsp.inlay_hint(0, true)
+  --   end,
+  -- })
+  --
+  -- vim.api.nvim_create_autocmd('InsertLeave', {
+  --   group = vim.api.nvim_create_augroup('inlay_hint_leave', { clear = true }),
+  --   callback = function()
+  --     vim.lsp.inlay_hint(0, false)
+  --   end,
+  -- })
+end
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'LSP: Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'LSP: Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'LSP: Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'LSP: Open diagnostics list' })
 
-Util.on_attach(function(client, buffer)
+Util.on_attach(function(_, buffer)
   local map = function(mode, lhs, rhs, desc)
     desc = desc or rhs
     local opts = { buffer = buffer, noremap = true, silent = true, desc = 'LSP: ' .. desc }
@@ -25,11 +45,13 @@ Util.on_attach(function(client, buffer)
   nmap('<leader>cf', '<cmd>Format<cr>', '[C]ode [F]ormat')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-  nmap('gD', vim.lsp.buf.definition, '[G]oto [D]efinition')
-  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+  -- see plugins/trouble.lua
+  -- nmap('gd', '<cmd>TroubleToggle lsp_definitions<cr>', '[G]oto [D]efinition')
+  -- nmap('gD', '<cmd>TroubleToggle lsp_definitions<cr>', '[G]oto [D]efinition')
+  -- nmap('gr', '<cmd>TroubleToggle lsp_references<cr>', '[G]oto [R]eferences')
+  -- nmap('<leader>D', '<cmd>TroubleToggle lsp_type_definitions<cr>', 'Type [D]efinition')
+
   nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-  nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
@@ -45,4 +67,3 @@ Util.on_attach(function(client, buffer)
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
 end)
-

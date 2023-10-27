@@ -2,10 +2,9 @@ local Util = require('k1ng.util')
 return {
   {
     'nvim-telescope/telescope.nvim',
-    event = 'VimEnter',
+    event = 'VeryLazy',
     dependencies = {
-      'nvim-wua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
+      'nvim-lua/plenary.nvim',
       'barrett-ruth/telescope-http.nvim',
       'barrett-ruth/telescope-http.nvim',
       'nvim-telescope/telescope-ui-select.nvim',
@@ -14,8 +13,10 @@ return {
       return require('k1ng.plugin-configs.telescope-config')
     end,
   },
+
   {
     'nvim-telescope/telescope-fzf-native.nvim',
+    event = 'VeryLazy',
     dependencies = {
       'nvim-telescope/telescope.nvim',
     },
@@ -24,8 +25,22 @@ return {
       require('telescope').load_extension('fzf')
     end,
   },
+
+  {
+    'nvim-telescope/telescope-cheat.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'kkharji/sqlite.lua',
+      'nvim-telescope/telescope.nvim',
+    },
+    config = function()
+      require('telescope').load_extension('cheat')
+    end,
+  },
+
   {
     'prochri/telescope-all-recent.nvim',
+    event = 'VeryLazy',
     dependencies = {
       'nvim-telescope/telescope.nvim',
       'kkharji/sqlite.lua',

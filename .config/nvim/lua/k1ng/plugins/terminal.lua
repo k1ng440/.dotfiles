@@ -1,5 +1,43 @@
 return {
   {
+    'fladson/vim-kitty',
+    ft = 'kitty',
+  },
+  {
+    'aserowy/tmux.nvim',
+    enabled = false,
+    lazy = false,
+    config = function()
+      return require('tmux').setup({
+        copy_sync = {
+          enable = false,
+        },
+      })
+    end,
+  },
+
+  {
+    'knubie/vim-kitty-navigator',
+    enabled = true,
+    cmd = {
+      'KittyNavigateRight',
+      'KittyNavigateUp',
+      'KittyNavigateDown',
+      'KittyNavigateLeft',
+    },
+    -- build = 'cp ./*.py ~/.config/kitty/',
+    keys = {
+      { '<C-h>', '<cmd>KittyNavigateLeft<cr>', desc = 'Navigate window left' },
+      { '<C-j>', '<cmd>KittyNavigateDown<cr>', desc = 'Navigate window down' },
+      { '<C-k>', '<cmd>KittyNavigateUp<cr>', desc = 'Navigate window up' },
+      { '<C-l>', '<cmd>KittyNavigateRight<cr>', desc = 'Navigate window right' },
+    },
+    config = function()
+      vim.g.kitty_navigator_no_mappings = 1
+    end,
+  },
+
+  {
     'akinsho/toggleterm.nvim',
     event = 'VeryLazy',
     version = '*',

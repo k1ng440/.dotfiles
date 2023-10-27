@@ -1,67 +1,53 @@
 return {
   {
     'neovim/nvim-lspconfig',
-    -- event = 'BufReadPre',
     event = { 'BufReadPost', 'BufNewFile' },
+    -- event = 'LazyFile',
     cmd = { 'LspInfo', 'LspInstall', 'LspUninstall' },
     dependencies = {
       'williamboman/mason-lspconfig.nvim',
       'folke/neodev.nvim',
       'folke/neoconf.nvim',
       'smjonas/inc-rename.nvim',
-      'hrsh7th/nvim-cmp',
     },
     config = function()
       require('k1ng.lsp')
     end,
   },
   {
-    'hrsh7th/nvim-cmp',
-    dependencies = {
-      'L3MON4D3/LuaSnip',
-      {
-        'saadparwaiz1/cmp_luasnip',
-        version = '2.*',
-        build = 'make install_jsregexp',
-      },
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-path',
-      'rafamadriz/friendly-snippets',
-    },
-  },
-  {
-    'j-hui/fidget.nvim',
-    branch = 'legacy',
-    opts = {
-      text = {
-        spinner = 'dots',
-        done = '󰗡',
-        commenced = 'init',
-        completed = 'done',
-      },
-      window = { blend = 0 },
-      sources = {
-        ['copilot'] = { ignore = true },
-        ['null-ls'] = { ignore = true },
-      },
-    },
-  },
-  {
-    'ray-x/go.nvim',
-    dependencies = {
-      'neovim/nvim-lspconfig',
+    'olexsmir/gopher.nvim',
+    build = '<cmd>GoInstallDeps<cr>',
+    ft = 'go',
+    dependencies = { -- dependencies
+      'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
     },
-    ft = { 'go', 'gomod' },
-    build = ':lua require("go.install").update_all_sync()',
-    config = function()
-      require('k1ng.lsp.go').setup()
-    end,
   },
   {
     'creativenull/efmls-configs-nvim',
+    event = 'LspAttach',
     version = 'v1.x.x',
     dependencies = { 'neovim/nvim-lspconfig' },
+  },
+  {
+    'someone-stole-my-name/yaml-companion.nvim',
+    enabled = false,
+    ft = { 'yaml' },
+    opts = {
+      builtin_matchers = {
+        kubernetes = { enabled = true },
+      },
+    },
+    dependencies = {
+      { 'neovim/nvim-lspconfig' },
+      { 'nvim-lua/plenary.nvim' },
+      { 'nvim-telescope/telescope.nvim' },
+    },
+    config = function(_, opts)
+      local cfg = require('yaml-companion').setup(opts)
+      require('lspconfig')['yamlls'].setup(cfg)
+      require('telescope').load_extension('yaml_schema')
+    end,
   },
   {
     'SmiteshP/nvim-navic',

@@ -1,5 +1,5 @@
 local M = {}
-local icons = require("k1ng.configs.icons").kinds
+local icons = require('k1ng.configs.icons').kinds
 
 local blackOrWhiteFg = function(r, g, b)
   return ((r * 0.299 + g * 0.587 + b * 0.114) > 186) and '#000000' or '#ffffff'
@@ -9,9 +9,6 @@ function M.cmp_formatter(min, max, ellipsis_char)
   local ellipsis_len = string.len(ellipsis_char)
   local ellipsis_padding = string.rep(' ', ellipsis_len)
   return function(entry, item)
-    --@label string|number
-    local label = item.abbr
-
     -- tailwindcss
     if item.kind == 'Color' and entry.completion_item.documentation then
       local _, _, r, g, b = string.find(entry.completion_item.documentation, '^rgb%((%d+), (%d+), (%d+)')
@@ -36,7 +33,7 @@ function M.cmp_formatter(min, max, ellipsis_char)
     end
 
     if icons[item.kind] then
-      item.kind = icons[item.kind]
+      item.kind = ' ' .. icons[item.kind]
     end
 
     return item

@@ -1,17 +1,33 @@
 return {
-  { 'tpope/vim-surround', lazy = false },
-  { 'tpope/vim-repeat', event = 'VeryLazy' },
-  { 'AndrewRadev/splitjoin.vim', event = 'VeryLazy' },
-  { 'chentoast/marks.nvim', event = 'VeryLazy' },
+  { 'tpope/vim-surround', event = 'BufEnter' },
+  { 'farmergreg/vim-lastplace', event = 'BufEnter' },
+  { 'tpope/vim-repeat', event = 'BufEnter' },
+  {
+    'AndrewRadev/splitjoin.vim',
+    keys = { 'gS', 'gJ' },
+  },
+  {
+    'chentoast/marks.nvim',
+    event = 'BufEnter',
+    config = function()
+      require('marks').setup({
+        mappings = {
+          set_next = 'm,',
+          next = 'm]',
+          preview = 'm:',
+          set_bookmark0 = 'm0',
+        },
+      })
+    end,
+  },
   {
     'mbbill/undotree',
-    event = 'VeryLazy',
-    keys = {
-      { '<leader>ut', '<cmd>UndotreeToggle<CR>', desc = '[U]ndo [T]ree' },
-    },
+    cmd = 'UndotreeToggle',
+    keys = { { '<leader>ut', '<cmd>UndotreeToggle<CR>', desc = '[U]ndo [T]ree' } },
   },
   {
     'numToStr/Comment.nvim',
+    event = 'BufEnter',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     opts = function()
       return {
@@ -21,17 +37,14 @@ return {
   },
   {
     'lukas-reineke/indent-blankline.nvim',
-    event = 'BufRead',
+    event = { 'BufRead', 'BufNewFile' },
     main = 'ibl',
-    opts = {
-      indent = {
-        char = '┊',
-      },
-    },
+    config = require('k1ng.plugin-configs.indent-blankline').setup,
   },
   {
     'iamcco/markdown-preview.nvim',
     ft = 'markdown',
+    cmd = { 'MarkdownPreview', 'MarkdownPreviewToggle' },
     build = function()
       vim.fn['mkdp#util#install']()
     end,
@@ -46,11 +59,31 @@ return {
   },
   {
     'jinh0/eyeliner.nvim',
-    event = 'VeryLazy',
+    event = 'BufRead',
     config = function()
       require('eyeliner').setup({
         highlight_on_key = true,
         dim = true,
+      })
+    end,
+  },
+  {
+    'NvChad/nvim-colorizer.lua',
+    -- stylua: ignore
+    keys = {
+      {
+        '<leader>cl',
+        function()
+          require('colorizer').attach_to_buffer(0, { mode = 'background', css = true })
+        end,
+        'Color Highlighter',
+      },
+    },
+    config = function()
+      require('colorizer').setup({
+        filetypes = { '*' },
+        user_default_options = {},
+        buftypes = {},
       })
     end,
   },

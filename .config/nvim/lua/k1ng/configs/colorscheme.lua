@@ -1,20 +1,10 @@
--- local colors = require('catppuccin.palettes').get_palette()
--- local TelescopeColor = {
---   TelescopeMatching = { fg = colors.flamingo },
---   TelescopeSelection = { fg = colors.text, bg = colors.surface0, bold = true },
---
---   TelescopePromptPrefix = { bg = colors.surface0 },
---   TelescopePromptNormal = { bg = colors.surface0 },
---   TelescopeResultsNormal = { bg = colors.mantle },
---   TelescopePreviewNormal = { bg = colors.mantle },
---   TelescopePromptBorder = { bg = colors.surface0, fg = colors.surface0 },
---   TelescopeResultsBorder = { bg = colors.mantle, fg = colors.mantle },
---   TelescopePreviewBorder = { bg = colors.mantle, fg = colors.mantle },
---   TelescopePromptTitle = { bg = colors.pink, fg = colors.mantle },
---   TelescopeResultsTitle = { fg = colors.mantle },
---   TelescopePreviewTitle = { bg = colors.green, fg = colors.mantle },
--- }
---
--- for hl, col in pairs(TelescopeColor) do
---   vim.api.nvim_set_hl(0, hl, col)
--- end
+local icons = require('k1ng.configs.icons')
+-- dap
+vim.api.nvim_set_hl(0, 'DapStoppedLine', { default = true, link = 'Visual' })
+for name, sign in pairs(icons.dap) do
+  sign = type(sign) == 'table' and sign or { sign }
+  vim.fn.sign_define('Dap' .. name, { text = sign[1], texthl = sign[2] or 'DiagnosticInfo', linehl = sign[3], numhl = sign[3] })
+end
+
+-- cmp-tabnine
+vim.api.nvim_set_hl(0, 'CmpItemKindTabNine', { fg = '#77E6EF' })

@@ -1,37 +1,37 @@
-addToPath() {
+function addToPath() {
     if [[ "$PATH" != *"$1"* ]]; then
         export PATH=$PATH:$1
     fi
 }
 
-addToPathFront() {
+function addToPathFront() {
     if [[ "$PATH" != *"$1"* ]]; then
         export PATH=$1:$PATH
     fi
 }
 
-die () {
+function die () {
     echo >&2 "$@"
     exit 1
 }
 
-editnvimconfig() {
-    (cd ~/.config/nvim && nvim ~/.config/nvim)
+function editnvimconfig() {
+    (cd ~/.config/nvim && nvim)
 }
 
-i3edit() {
+function i3edit() {
     (cd ~/.config/i3 && nvim ~/.config/i3/config)
 }
 
-kitty-reload() {
+function kitty-reload() {
     kill -SIGUSR1 $(pidof kitty)
 }
 
-window-class() {
+function window-class() {
     xprop | grep 'CLASS'
 }
 
-wallpaper() {
+function wallpaper() {
     feh --bg-scale $(find $HOME/Pictures/wl/ -type f \( -name "*.png" -o -name '*.jpeg' -o -name '*.jpg' \) | fzf)
 }
 
@@ -44,6 +44,10 @@ function server() {
 function i3cheatsheet() {
     grep -E "^bindsym" ~/.config/i3/config | awk '{$1=""; print $0}' | sed 's/^ *//g' | \
         grep -vE "^XF86" | column | pr -2 -w 160 -t | less
+}
+
+function sail() {
+    "`pwd`/vendor/bin/sail" "$@"
 }
 
 
@@ -73,6 +77,6 @@ function remove_file_from_git_history() {
         git filter-branch -f --index-filter \ 
             "git rm -r --cached $file --ignore-unmatch" \
             --prune-empty --tag-name-filter cat -- $range
-    fi}
-
+    fi
+}
 

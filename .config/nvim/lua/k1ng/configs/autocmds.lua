@@ -121,7 +121,6 @@ vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
 vim.api.nvim_create_autocmd('BufWritePost', {
   group = augroup('config_reload'),
   pattern = {
-    '**/lua/k1ng/*.lua',
     '**/lua/k1ng/configs/*.lua',
   },
   callback = function()

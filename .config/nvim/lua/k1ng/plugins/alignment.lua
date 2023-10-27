@@ -1,6 +1,6 @@
 return {
   {
     'godlygeek/tabular',
-    commands = { 'Tab', 'Tabularize' },
+    cmd = { 'Tab', 'Tabularize' },
   },
 }

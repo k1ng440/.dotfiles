@@ -9,9 +9,12 @@ function M.keymap(mode, lhs, rhs, opts)
     noremap = true,
     silent = true,
   }
-
   if opts then
-    options = vim.tbl_extend('force', options, opts)
+    if type(opts) == 'string' then
+      options.desc = opts
+    elseif type(opts) == 'table' then
+      options = vim.tbl_extend('force', options, opts)
+    end
   end
   vim.keymap.set(mode, lhs, rhs, options)
 end
@@ -23,9 +26,39 @@ M.buf_keymap = function(bufnr, mode, lhs, rhs, opts)
     silent = true,
   }
   if opts then
-    options = vim.tbl_extend('force', options, opts)
+    if type(opts) == 'string' then
+      options.desc = opts
+    elseif type(opts) == 'table' then
+      options = vim.tbl_extend('force', options, opts)
+    end
   end
   vim.keymap.set(mode, lhs, rhs, opts)
+end
+
+function M.autocmd(group_name, event, pattern, callback)
+  local augroup = vim.api.nvim_create_augroup('core_' .. group_name, { clear = true })
+  vim.api.nvim_create_autocmd(event, {
+    group = augroup,
+    pattern = pattern,
+    callback = callback,
+  })
+end
+
+-- filetype keymap
+function M.ft_keymap(filetype, mode, lhs, rhs, opts)
+  M.autocmd(filetype .. '_' .. mode .. '_' .. lhs, 'FileType', { filetype }, function()
+    M.keymap(mode, lhs, rhs, opts)
+  end)
+end
+
+-- Function using buffernames to see if "Trouble" is open
+function M.has_buffer_in_list(name)
+  for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
+    if string.match(vim.api.nvim_buf_get_name(buffer), name) then
+      return true
+    end
+  end
+  return false
 end
 
 -- borrowed from LazyVim

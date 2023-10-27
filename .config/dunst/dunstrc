@@ -152,3 +152,12 @@
     background = "#24273A"
     foreground = "#CAD3F5"
     frame_color = "#F5A97F"
+
+[snapstore]
+    summary = "*Close the app*"
+    skip_display = true
+    history_ignore = yes
+    
+
+
+

@@ -51,6 +51,26 @@ local ivy_tall = function(options)
   return ivy(vim.tbl_deep_extend('force', defaults, options or {}))
 end
 
+local open_with_trouble = function(...)
+  return require('trouble.providers.telescope').open_with_trouble(...)
+end
+
+local open_selected_with_trouble = function(...)
+  return require('trouble.providers.telescope').open_selected_with_trouble(...)
+end
+
+local find_files_no_ignore = function()
+  local action_state = require('telescope.actions.state')
+  local line = action_state.get_current_line()
+  Util.telescope('find_files', { no_ignore = true, default_text = line })()
+end
+
+local find_files_with_hidden = function()
+  local action_state = require('telescope.actions.state')
+  local line = action_state.get_current_line()
+  Util.telescope('find_files', { hidden = true, default_text = line })()
+end
+
 telescope.setup({
   ------------ pickers ------------
   pickers = {
@@ -120,7 +140,7 @@ telescope.setup({
     entry_prefix = '  ',
     layout_strategy = 'vertical',
     preview = {
-      hide_on_startup = true, -- hide previewer when picker starts
+      hide_on_startup = false, -- hide previewer when picker starts
     },
     file_previewer = previewers.vim_buffer_cat.new,
     grep_previewer = previewers.vim_buffer_vimgrep.new,
@@ -135,8 +155,12 @@ telescope.setup({
       -- stylua: ignore
       i = {
         -- Trouble
-        ['<c-t>'] = require('trouble.providers.telescope').open_with_trouble,
-        ['<a-t>'] = require('trouble.providers.telescope').open_selected_with_trouble,
+        ['<c-t>'] = open_with_trouble,
+        ['<a-t>'] = open_selected_with_trouble,
+
+        -- toggle
+        ["<a-i>"] = find_files_no_ignore,
+        ["<a-h>"] = find_files_with_hidden,
 
         -- Cycle history
         ['<C-Down>'] = actions.cycle_history_next,
@@ -225,7 +249,7 @@ local find_dotfiles = function(subdir)
 end
 
 local find_files = function()
-  local cwd = vim.fn.expand('%:p:h')
+  local cwd = vim.fn.expand('%:p:h') -- string
   if vim.startswith(cwd, vim.env.HOME .. '/.dotfiles') then
     return find_dotfiles()
   end

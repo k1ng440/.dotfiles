@@ -9,8 +9,9 @@ return {
       'oil',
       'dashboard',
       'alpha',
+      'man',
+      'lazy',
     },
-    custom_colorcolumn = {},
     scope = 'line',
   },
 }
