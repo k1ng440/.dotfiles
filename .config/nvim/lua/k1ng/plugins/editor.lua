@@ -10,14 +10,16 @@ return {
     'chentoast/marks.nvim',
     event = 'BufEnter',
     config = function()
-      require('marks').setup({
-        mappings = {
-          set_next = 'm,',
-          next = 'm]',
-          preview = 'm:',
-          set_bookmark0 = 'm0',
-        },
-      })
+      vim.schedule(function()
+        require('marks').setup({
+          mappings = {
+            set_next = 'm,',
+            next = 'm]',
+            preview = 'm:',
+            set_bookmark0 = 'm0',
+          },
+        })
+      end)
     end,
   },
   {
@@ -29,17 +31,21 @@ return {
     'numToStr/Comment.nvim',
     event = 'BufEnter',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    opts = function()
-      return {
-        pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
-      }
+    config = function()
+      vim.schedule(function()
+        require('Comment').setup({
+          pre_hook = require('ts_context_commentstring.internal').pre_hook,
+        })
+      end)
     end,
   },
   {
     'lukas-reineke/indent-blankline.nvim',
-    event = { 'BufRead', 'BufNewFile' },
+    event = { 'BufReadPost' },
     main = 'ibl',
-    config = require('k1ng.plugin-configs.indent-blankline').setup,
+    config = function()
+      vim.schedule(require('k1ng.plugin-configs.indent-blankline').setup)
+    end,
   },
   {
     'iamcco/markdown-preview.nvim',
@@ -61,30 +67,28 @@ return {
     'jinh0/eyeliner.nvim',
     event = 'BufRead',
     config = function()
-      require('eyeliner').setup({
-        highlight_on_key = true,
-        dim = true,
-      })
+      vim.schedule(function()
+        require('eyeliner').setup({
+          highlight_on_key = true,
+          dim = true,
+        })
+      end)
     end,
   },
   {
     'NvChad/nvim-colorizer.lua',
     -- stylua: ignore
     keys = {
-      {
-        '<leader>cl',
-        function()
-          require('colorizer').attach_to_buffer(0, { mode = 'background', css = true })
-        end,
-        'Color Highlighter',
-      },
+      { '<leader>cl', function() require('colorizer').attach_to_buffer(0, { mode = 'background', css = true }) end, 'Color Highlighter' },
     },
     config = function()
-      require('colorizer').setup({
-        filetypes = { '*' },
-        user_default_options = {},
-        buftypes = {},
-      })
+      vim.schedule(function()
+        require('colorizer').setup({
+          filetypes = { '*' },
+          user_default_options = {},
+          buftypes = {},
+        })
+      end)
     end,
   },
 }

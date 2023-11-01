@@ -10,6 +10,7 @@ set $monitor_top "HDMI-0"
 set $locker ~/.config/i3/lock.sh ~/Pictures/lockscreen
 set $i3_resurrect ~/.local/bin/i3-resurrect
 set $fehbg feh --bg-scale --randomize ~/Pictures/wl/wallpapers/
+set $demu rofi -show drun -run-shell-command '{terminal} -e zsh -ic "{cmd} && read"'
 
 mouse_warping output
 focus_follows_mouse no
@@ -23,13 +24,14 @@ client.unfocused        #002b36 #073642 #839496 #073642
 client.urgent           #002b36 #dc322f #fdf6e3 #002b36
 
 exec --no-startup-id dex --autostart --environment i3
+exec_always --no-startup-id /home/k1ng/.config/xrandr.sh
+exec_always --no-startup-id ~/.local/bin/tvhdmi
 exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc
 exec --no-startup-id xss-lock --transfer-sleep-lock -- $locker
-exec_always --no-startup-id sleep 1; $fehbg
 exec_always --no-startup-id picom
-exec_always --no-startup-id ~/.local/bin/tvhdmi
 exec_always --no-startup-id sleep 1; xset dpms 300 300 500
-exec_always --no-startup-id xset r rate 300 50
+exec_always --no-startup-id sleep 1; xset r rate 300 50
+exec_always --no-startup-id sleep 2; $fehbg
 exec --no-startup-id nm-appleth
 
 # Nvidia settings
@@ -87,16 +89,14 @@ bindsym button9 move left
 bindsym button10 move right
 
 # start a terminal
-bindsym $mod+Return exec ~/.local/bin/kitty -o allow_remote_control=yes --single-instance --listen-on unix:@mykitty
-
+bindsym $mod+Return exec flatpak run org.wezfurlong.wezterm
 
 # kill focused window
 bindsym $mod+q kill
-bindsym $mod+Shift+q kill -9
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id rofi -show drun -run-shell-command '{terminal} -e zsh -ic "{cmd} && read"'
-bindsym $mod+space exec --no-startup-id rofi -show drun -run-shell-command '{terminal} -e zsh -ic "{cmd} && read"'
+bindsym $mod+d exec --no-startup-id $demu
+bindsym $mod+space exec --no-startup-id $demu
 
 # change focus
 bindsym $mod+h focus left

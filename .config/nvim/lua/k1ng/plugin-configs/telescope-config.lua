@@ -3,6 +3,7 @@ if not telescope_installed then
   return vim.warn('telescope.nvim is not installed.')
 end
 
+local Util = require('k1ng.util')
 local keymap = require('k1ng.util').keymap
 
 local actions = require('telescope.actions')
@@ -158,7 +159,7 @@ telescope.setup({
         ['<c-t>'] = open_with_trouble,
         ['<a-t>'] = open_selected_with_trouble,
 
-        -- toggle
+        -- Toggle
         ["<a-i>"] = find_files_no_ignore,
         ["<a-h>"] = find_files_with_hidden,
 
@@ -199,10 +200,8 @@ telescope.setup({
 pcall(telescope.load_extension, 'fzf')
 pcall(telescope.load_extension, 'ui-select')
 pcall(telescope.load_extension, 'http')
-pcall(telescope.load_extension, 'harpoon')
 pcall(telescope.load_extension, 'trouble')
 
-local Util = require('k1ng.util')
 local pickers = require('telescope.builtin')
 
 keymap('n', '<leader>,', '<cmd>Telescope buffers show_all_buffers=true ignore_current_buffer=true sort_lastused=true<cr>', { desc = 'Switch Buffer' })
@@ -244,13 +243,14 @@ local find_dotfiles = function(subdir)
     prompt_title = '~ dotfiles ~',
     hidden = true,
     follow = true,
-    cwd = cwd,
+    cwd = vim.env.HOME,
+    find_command = { 'yadm', 'ls-files' },
   })
 end
 
 local find_files = function()
-  local cwd = vim.fn.expand('%:p:h') -- string
-  if vim.startswith(cwd, vim.env.HOME .. '/.dotfiles') then
+  local cwd = vim.fn.expand('%:p:h')
+  if vim.startswith(cwd, vim.env.HOME .. '/.dotfiles') or vim.startswith(cwd, vim.env.HOME .. '/.config') then
     return find_dotfiles()
   end
 

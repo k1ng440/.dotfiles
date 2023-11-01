@@ -2,7 +2,11 @@ return {
   'kristijanhusak/vim-dadbod-ui',
   dependencies = {
     { 'tpope/vim-dadbod' },
-    { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' } },
+    {
+      'kristijanhusak/vim-dadbod-completion',
+      ft = { 'sql', 'mysql', 'plsql' },
+      after = 'vim-dadbod',
+    },
     { 'jsborjesson/vim-uppercase-sql' },
   },
   cmd = { 'DBUI', 'DBUIToggle', 'DBUIAddConnection', 'DBUIFindBuffer' },

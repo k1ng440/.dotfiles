@@ -30,7 +30,7 @@ local servers = {
       maxSize = 5000000,
     },
     environment = {
-      includePaths = { '~/.composer/vendor/php-stubs/' },
+      includePaths = { '~/.config/composer/vendor/php-stubs/' },
     },
   },
   jsonls = {
@@ -146,11 +146,7 @@ local servers = {
         path = vim.split(package.path, ';'),
       },
       hint = {
-        enable = true,
-        -- await = true,
-        -- paramName = true,
-        -- paramType = true,
-        -- setType = true,
+        enable = false,
       },
       diagnostics = {
         globals = { 'vim', 'C' },
@@ -161,7 +157,6 @@ local servers = {
           vim.fn.expand('$VIMRUNTIME/lua'),
           vim.fn.stdpath('config') .. '/lua',
         },
-        checkThirdParty = false,
         -- adjust these two values if your performance is not optimal
         maxPreload = 2000,
         preloadFileSize = 1000,

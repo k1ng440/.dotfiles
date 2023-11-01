@@ -29,14 +29,14 @@ map('v', '=', '=gv', { desc = '[=] Reindent selection' })
 map('v', 'p', '"_dP', { desc = 'Paste without overwriting clipboard' })
 map('n', 'Y', 'y$', { desc = 'Copy to end of line' })
 
--- nohlsearch
+-- Nohlsearch
 map('n', '<esc><esc>', ':nohlsearch<CR>', { desc = 'Clear highlights' })
 
--- windows
+-- Windows
 map('n', '<leader>ww', '<C-W>p', { desc = 'Other window' })
 map('n', '<leader>wd', '<C-W>c', { desc = 'Delete window' })
 
--- Split {{{
+-- Split
 map('n', '<leader>w-', '<C-W>s', { desc = 'Split window below' })
 map('n', '<leader>w|', '<C-W>v', { desc = 'Split window right' })
 map('n', '<leader>-', '<C-W>s', { desc = 'Split window below' })
@@ -53,6 +53,14 @@ map('n', 'gn', ':bnext<CR>', { desc = 'Next buffer' })
 map('n', 'tp', ':tabprevious<CR>', { desc = 'Previous tab' })
 map('n', 'tn', ':tabnext<CR>', { desc = 'Next tab' })
 
+-- Tab navigation
+map('n', '<C-Tab>', ':tabnext<CR>', { desc = 'Next tab' })
+map('n', '<S-Tab>', ':tabprevious<CR>', { desc = 'Previous tab' })
+map('n', '<leader>tn', ':tabnew<CR>', { desc = '[T]ab [N]ew' })
+map('n', '<leader>tc', ':tabclose<CR>', { desc = '[T]ab [C]lose' })
+map('n', '<leader>to', ':tabonly<CR>', { desc = '[T]ab [O]nly' })
+map('n', '<leader>tm', ':tabmove<CR>', { desc = '[T]ab [M]ove' })
+
 -- Other keymaps
 map('n', '<leader>vim', ':tabedit ~/.config/nvim/<Return>')
 map('n', '<leader>nvim', ':tabedit ~/.config/nvim/<Return>')
@@ -68,10 +76,10 @@ map('t', '<C-/>', '<cmd>close<cr>', { desc = 'Hide Terminal' })
 map('t', '<c-_>', '<cmd>close<cr>', { desc = 'which_key_ignore' })
 
 -- Trouble.nvim
+-- @@@ Move this to lua/k1ng/plugins/trouble.lua
 map('n', '<leader>xx', '<cmd>TroubleToggle<CR>', { silent = true, noremap = true, desc = 'Toggle Trouble' })
 map('n', '<leader>xw', '<cmd>TroubleToggle workspace_diagnostics<cr>', { silent = true, noremap = true, desc = 'Toggle Trouble [W]orkspace diagnostics' })
 map('n', '<leader>xd', '<cmd>TroubleToggle document_diagnostics<cr>', { silent = true, noremap = true, desc = 'Toggle Trouble [D]ocument diagnostics' })
 map('n', '<leader>xl', '<cmd>TroubleToggle loclist<cr>', { silent = true, noremap = true, desc = 'Toggle Trouble [L]ocation list' })
 map('n', '<leader>xq', '<cmd>TroubleToggle quickfix<cr>', { silent = true, noremap = true, desc = 'Toggle Trouble [Q]uickfix' })
 map('n', 'gR', '<cmd>TroubleToggle lsp_references<cr>', { silent = true, noremap = true, desc = 'Toggle Trouble [R]eferences' })
--- stylua: ignore end

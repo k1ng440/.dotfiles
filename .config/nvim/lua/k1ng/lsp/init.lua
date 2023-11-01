@@ -79,6 +79,7 @@ mason_lspconfig.setup_handlers({
       opts.cmd = {
         'clangd',
         '--offset-encoding=utf-16',
+        '--enable-config',
       }
     end
 

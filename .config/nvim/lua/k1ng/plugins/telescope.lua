@@ -27,19 +27,8 @@ return {
   },
 
   {
-    'nvim-telescope/telescope-cheat.nvim',
-    event = 'VeryLazy',
-    dependencies = {
-      'kkharji/sqlite.lua',
-      'nvim-telescope/telescope.nvim',
-    },
-    config = function()
-      require('telescope').load_extension('cheat')
-    end,
-  },
-
-  {
     'prochri/telescope-all-recent.nvim',
+    enabled = false,
     event = 'VeryLazy',
     dependencies = {
       'nvim-telescope/telescope.nvim',
@@ -47,11 +36,7 @@ return {
     },
     init = function()
       -- print(vim.inspect(require('telescope').extensions))
-      require('telescope-all-recent').setup({
-        ['harpoon#marks'] = {
-          disable = true,
-        },
-      })
+      require('telescope-all-recent').setup({})
     end,
   },
 }

@@ -22,7 +22,7 @@
 
     # idle_threshold = 120
 
-    font = Monospace 10
+    font = Monospace 12
     line_height = 5
     markup = full
 
@@ -138,7 +138,7 @@
     context = ctrl+shift+period
 
     frame_color = "#8AADF4"
-    separator_color= frame
+    separator_color = frame
 
 [urgency_low]
     background = "#24273A"
@@ -157,7 +157,9 @@
     summary = "*Close the app*"
     skip_display = true
     history_ignore = yes
-    
 
-
+[snapstore2]
+    summary = "Pending update of*"
+    skip_display = true
+    history_ignore = yes
 

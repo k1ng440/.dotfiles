@@ -1,5 +1,5 @@
 local M = {}
-local icons = require('k1ng.configs.icons').kinds
+local icons = require('k1ng.core.icons').kinds
 
 local blackOrWhiteFg = function(r, g, b)
   return ((r * 0.299 + g * 0.587 + b * 0.114) > 186) and '#000000' or '#ffffff'

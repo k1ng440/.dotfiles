@@ -121,7 +121,8 @@ vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
 vim.api.nvim_create_autocmd('BufWritePost', {
   group = augroup('config_reload'),
   pattern = {
-    '**/lua/k1ng/configs/*.lua',
+    '**/lua/k1ng/coreF*.lua',
+    '**/lua/k1ng/plugin-configs/*.lua',
   },
   callback = function()
     local filepath = vim.fn.expand('%')

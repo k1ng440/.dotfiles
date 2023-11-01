@@ -1,42 +1,85 @@
+local close_terminal_on_zero_exit = function(terminal, _, exit_code)
+  if exit_code == 0 then
+    terminal:close()
+  end
+end
+
+local toggle_lazygit = function()
+  local Terminal = require('toggleterm.terminal').Terminal
+  local cmd = 'lazygit'
+  local git_dir = vim.b[vim.api.nvim_get_current_buf()].git_dir
+
+  if git_dir ~= nil then
+    cmd = cmd .. ' --work-tree=$HOME'
+    cmd = cmd .. ' --git-dir=' .. git_dir
+  else
+    cmd = cmd .. ' --work-tree=' .. vim.g.project_root
+  end
+
+  local lazygit = Terminal:new({
+    cmd = cmd,
+    close_on_exit = true,
+    direction = 'float',
+    hidden = true,
+    on_exit = close_terminal_on_zero_exit,
+    on_open = function(term)
+      vim.cmd('startinsert!')
+      vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', '<cmd>close<CR>', { noremap = true, silent = true })
+    end,
+  })
+
+  lazygit:toggle()
+end
+
+local term = nil
+local toggle_term = function(direction)
+  local Terminal = require('toggleterm.terminal').Terminal
+
+  if term ~= nil then
+    term:toggle()
+  end
+
+  term = Terminal:new({
+    direction = direction,
+    hidden = true,
+    dir = vim.g.project_root,
+    cmd = vim.o.shell,
+    close_on_exit = true,
+    on_open = function(termT)
+      vim.cmd('startinsert!')
+      vim.api.nvim_buf_set_keymap(termT.bufnr, 'n', 'q', '<cmd>close<CR>', { noremap = true, silent = true })
+      vim.api.nvim_buf_set_keymap(termT.bufnr, 't', '<C-q>', '<cmd>close<CR>', { noremap = true, silent = true })
+
+      -- if direction == 'horizontal' then
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 't', '<C-h>', [[<C-\><C-n><C-W>h]], { noremap = true, silent = true })
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 't', '<C-j>', [[<C-\><C-n><C-W>j]], { noremap = true, silent = true })
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 't', '<C-k>', [[<C-\><C-n><C-W>k]], { noremap = true, silent = true })
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 't', '<C-l>', [[<C-\><C-n><C-W>l]], { noremap = true, silent = true })
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 'n', '<C-h>', [[<C-\><C-n><C-W>h]], { noremap = true, silent = true })
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 'n', '<C-j>', [[<C-\><C-n><C-W>j]], { noremap = true, silent = true })
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 'n', '<C-k>', [[<C-\><C-n><C-W>k]], { noremap = true, silent = true })
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 'n', '<C-l>', [[<C-\><C-n><C-W>l]], { noremap = true, silent = true })
+      -- elseif direction == 'float' then
+      --   -- close terminal on any direction keymaps in float mode and then send the direction keymap to the underlying buffer
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 't', '<C-h>', [[<cmd>close<CR><C-W>h]], { noremap = true, silent = true })
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 't', '<C-j>', [[<cmd>close<CR><C-W>j]], { noremap = true, silent = true })
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 't', '<C-k>', [[<cmd>close<CR><C-W>k]], { noremap = true, silent = true })
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 't', '<C-l>', [[<cmd>close<CR><C-W>l]], { noremap = true, silent = true })
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 'n', '<C-h>', [[<cmd>close<CR><C-W>h]], { noremap = true, silent = true })
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 'n', '<C-j>', [[<cmd>close<CR><C-W>j]], { noremap = true, silent = true })
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 'n', '<C-k>', [[<cmd>close<CR><C-W>k]], { noremap = true, silent = true })
+      --   vim.api.nvim_buf_set_keymap(termT.bufnr, 'n', '<C-l>', [[<cmd>close<CR><C-W>l]], { noremap = true, silent = true })
+      -- end
+    end,
+    on_exit = function()
+      term = nil
+    end,
+  })
+
+  term:toggle()
+end
+
 return {
-  {
-    'fladson/vim-kitty',
-    ft = 'kitty',
-  },
-  {
-    'aserowy/tmux.nvim',
-    enabled = false,
-    lazy = false,
-    config = function()
-      return require('tmux').setup({
-        copy_sync = {
-          enable = false,
-        },
-      })
-    end,
-  },
-
-  {
-    'knubie/vim-kitty-navigator',
-    enabled = true,
-    cmd = {
-      'KittyNavigateRight',
-      'KittyNavigateUp',
-      'KittyNavigateDown',
-      'KittyNavigateLeft',
-    },
-    -- build = 'cp ./*.py ~/.config/kitty/',
-    keys = {
-      { '<C-h>', '<cmd>KittyNavigateLeft<cr>', desc = 'Navigate window left' },
-      { '<C-j>', '<cmd>KittyNavigateDown<cr>', desc = 'Navigate window down' },
-      { '<C-k>', '<cmd>KittyNavigateUp<cr>', desc = 'Navigate window up' },
-      { '<C-l>', '<cmd>KittyNavigateRight<cr>', desc = 'Navigate window right' },
-    },
-    config = function()
-      vim.g.kitty_navigator_no_mappings = 1
-    end,
-  },
-
   {
     'akinsho/toggleterm.nvim',
     event = 'VeryLazy',
@@ -49,69 +92,16 @@ return {
         border = 'curved',
       },
     },
+    cmd = { 'ToggleTerm' },
+    -- stylua: ignore
+    keys = {
+      { '<leader>gg', toggle_lazygit,  desc = 'Lazygit'  },
+      { '<leader>tf', function() toggle_term('float') end, desc = '[T]erminal [F]loating' },
+      { '<leader>tb', function() toggle_term('horizontal') end, desc = '[T]erminal [B]ottom' },
+      { '<leader>tn', function() toggle_term('tab') end, desc = '[T]erminal [N]ew Tab' },
+    },
     config = function(_, opts)
       require('toggleterm').setup(opts)
-
-      local function close_terminal_on_zero_exit(terminal, _, exit_code)
-        if exit_code == 0 then
-          terminal:close()
-        end
-      end
-
-      local Terminal = require('toggleterm.terminal').Terminal
-
-      local toggle_lazygit = function()
-        local cmd = 'lazygit'
-        local git_dir = vim.b[vim.api.nvim_get_current_buf()].git_dir
-        if git_dir ~= nil then
-          cmd = cmd .. ' --work-tree=$HOME'
-          cmd = cmd .. ' --git-dir=' .. git_dir
-        else
-          cmd = cmd .. ' --work-tree=' .. vim.g.project_root
-        end
-
-        local lazygit = Terminal:new({
-          cmd = cmd,
-          close_on_exit = true,
-          direction = 'float',
-          hidden = true,
-          on_exit = close_terminal_on_zero_exit,
-          on_open = function(term)
-            vim.cmd('startinsert!')
-            vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', '<cmd>close<CR>', { noremap = true, silent = true })
-          end,
-        })
-
-        lazygit:toggle()
-      end
-
-      local python = Terminal:new({ cmd = 'python3', hidden = true, direction = 'float' })
-      local function toggle_python()
-        python:toggle()
-      end
-
-      vim.keymap.set('n', '<leader>gg', toggle_lazygit, { desc = 'Lazygit' })
-      vim.keymap.set('n', '<leader>pt', toggle_python, { desc = 'Python' })
-      vim.keymap.set('n', '<leader>ft', '<cmd>ToggleTerm direction=float<cr>', { desc = '[F]loating [T]erminal' })
-
-      -- Better navigation to and from terminal
-      local buf_map = vim.api.nvim_buf_set_keymap
-      local set_terminal_keymaps = function()
-        local bufopts = { noremap = true }
-        buf_map(0, 't', '<esc>', [[<C-\><C-n>]], bufopts)
-        buf_map(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], bufopts)
-        buf_map(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], bufopts)
-        buf_map(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], bufopts)
-        buf_map(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], bufopts)
-      end
-      -- if you only want these mappings for toggle term use term://*toggleterm#* instead
-      vim.api.nvim_create_autocmd('TermOpen', {
-        pattern = 'term://*',
-        callback = function()
-          set_terminal_keymaps()
-        end,
-        desc = 'Mappings for navigation with a terminal',
-      })
     end,
   },
 }

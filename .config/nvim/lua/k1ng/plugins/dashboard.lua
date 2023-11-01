@@ -36,11 +36,11 @@ return {
       }
 
       config.center = {
+        { action = 'Telescope oldfiles', desc = ' Recent files', icon = ' ', key = 'r' },
         { action = 'Telescope find_files', desc = ' Find file', icon = ' ', key = 'f' },
         { action = 'ene | startinsert', desc = ' New file', icon = ' ', key = 'n' },
-        { action = 'Telescope oldfiles', desc = ' Recent files', icon = ' ', key = 'r' },
         { action = 'Telescope live_grep', desc = ' Find text', icon = ' ', key = 'g' },
-        { action = 'SessionManager load_session', desc = ' List Session', icon = ' ', key = 's' },
+        -- { action = 'SessionManager load_session', desc = ' List Session', icon = ' ', key = 's' },
         { action = 'Lazy', desc = ' Lazy', icon = '󰒲 ', key = 'l' },
         {
           icon = '  ',
@@ -52,7 +52,7 @@ return {
               find_command = { 'yadm', 'ls-files' },
             })
           end,
-          shortcut = 'SPC f d',
+          key = 'd',
         },
         { action = 'qa', desc = ' Quit', icon = ' ', key = 'q' },
       }

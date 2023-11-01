@@ -2,7 +2,7 @@ return {
   {
     'hrsh7th/nvim-cmp',
     version = false,
-    event = 'InsertEnter',
+    event = 'VeryLazy',
     dependencies = {
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
@@ -11,7 +11,6 @@ return {
       {
         'saadparwaiz1/cmp_luasnip',
         version = '2.*',
-        build = 'make install_jsregexp',
         config = function()
           require('luasnip.loaders.from_vscode').lazy_load({
             path = { vim.fn.stdpath('config') .. '/snippets' },

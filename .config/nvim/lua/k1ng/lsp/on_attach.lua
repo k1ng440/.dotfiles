@@ -14,7 +14,7 @@ require('k1ng.util').on_attach(function(client, _)
     }
   end
 
-  for name, icon in pairs(require('k1ng.configs.icons').diagnostics) do
+  for name, icon in pairs(require('k1ng.core.icons').diagnostics) do
     name = 'DiagnosticSign' .. name
     vim.fn.sign_define(name, { text = icon, texthl = name, numhl = '' })
   end

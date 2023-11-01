@@ -65,8 +65,21 @@ return {
         separator = ' ',
         highlight = true,
         depth_limit = 5,
-        icons = require('k1ng.configs.icons').kinds,
+        icons = require('k1ng.core.icons').kinds,
       }
+    end,
+  },
+  {
+    'j-hui/fidget.nvim',
+    tag = 'legacy',
+    event = 'LspAttach',
+    config = function()
+      require('fidget').setup({
+        window = {
+          blend = 0,
+          relative = 'editor',
+        },
+      })
     end,
   },
 }

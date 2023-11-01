@@ -1,1 +1,1 @@
-require('k1ng.configs')
+require('k1ng.core')

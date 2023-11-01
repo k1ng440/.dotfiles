@@ -1,7 +1,7 @@
 return {
   {
     'williamboman/mason.nvim',
-    event = 'BufEnter',
+    cmd = { 'Mason', 'MasonInstall', 'MasonUpdate', 'MasonUninstall', 'MasonUninstallAll', 'MasonLog' },
     opts = function(_, opts)
       local sources = {
         'gopls',
@@ -12,7 +12,6 @@ return {
         'goimports_reviser',
         'gomodifytags',
         'codespell',
-        'mdformat',
       }
       if not opts.ensure_installed then
         opts.ensure_installed = {}

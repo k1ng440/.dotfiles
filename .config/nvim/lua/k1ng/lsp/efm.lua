@@ -13,13 +13,13 @@ languages = vim.tbl_extend('force', languages, {
   terraform = {
     require('efmls-configs.formatters.terraform_fmt'),
   },
-  markdown = {
-    require('efmls-configs.formatters.mdformat'),
-  },
   go = {
     require('efmls-configs.formatters.goimports'),
     require('efmls-configs.formatters.gofmt'),
     require('efmls-configs.formatters.golines'),
+  },
+  php = {
+    require('efmls-configs.formatters.php_cs_fixer'),
   },
   ['*'] = {
     require('efmls-configs.linters.codespell'),
@@ -29,7 +29,7 @@ languages = vim.tbl_extend('force', languages, {
 return {
   filetypes = vim.tbl_keys(languages),
   settings = {
-    rootMarkers = { '.git/' },
+    rootMarkers = { '.git/', '.nvimroot' },
     languages = languages,
   },
   init_options = {

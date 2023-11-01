@@ -11,7 +11,12 @@ return {
     'mfussenegger/nvim-dap',
     dependencies = {
       'rcarriga/nvim-dap-ui',
-      'theHamsta/nvim-dap-virtual-text',
+      {
+        'theHamsta/nvim-dap-virtual-text',
+        config = function()
+          require('nvim-dap-virtual-text').setup()
+        end,
+      },
       'jbyuki/one-small-step-for-vimkind',
       'jay-babu/mason-nvim-dap.nvim',
       'nvim-telescope/telescope-dap.nvim',
@@ -30,7 +35,8 @@ return {
       { '<leader>ds', function() require('dap').session() end, desc = '[S]ession' },
       { '<leader>dp', function() require('dap.ui.widgets').preview() end, desc = '[D]ap [P]review' },
       { '<leader>dh', function() require('dap.ui.widgets').hover() end, desc = '[D]ap [H]over' },
-      { '<F5>', continue, 'Debug: Start/Continue' }, { '<F6>', function() require('dap').run_last() end, desc = 'Debug: Run Last' },
+      { '<F5>', continue, 'Debug: Start/Continue' },
+      { '<F6>', function() require('dap').run_last() end, desc = 'Debug: Run Last' },
       { '<F10>', function() require('dap').step_over() end, desc = 'Debug: Step Over' },
       { '<F11>', function() require('dap').step_into() end, desc = 'Debug: Step Into' },
       { '<F12>', function() require('dap').step_into() end, desc = 'Debug: Step Out' },
@@ -41,8 +47,6 @@ return {
     },
 
     cmd = {
-      'DapInstall',
-      'DapUninstall',
       'DapContinue',
       'DapToggleBreakpoint',
       'DapToggleRepl',
@@ -57,20 +61,20 @@ return {
     config = function()
       local dap = require('dap')
       local dapui = require('dapui')
-      local icons = require('k1ng.configs.icons')
+      local icons = require('k1ng.core.icons')
       local ftkeymap = require('k1ng.util').ft_keymap
 
       require('telescope').load_extension('dap')
       require('mason-nvim-dap').setup({
         automatic_setup = true,
-        ensure_installed = { 'delve', 'js-debug-adapter' },
+        ensure_installed = { 'delve', 'js-debug-adapter', 'codelldb' },
         automatic_installation = true,
       })
 
       -- dap ui
       dapui.setup({
         icons = icons.dapui.ui,
-        controls = { icons = require('k1ng.configs.icons').dapui.controls },
+        controls = { icons = require('k1ng.core.icons').dapui.controls },
       })
       dap.listeners.after.event_initialized['dapui_config'] = dapui.open
       dap.listeners.before.event_terminated['dapui_config'] = dapui.close
@@ -201,6 +205,51 @@ return {
       local debugpy = require('mason-registry').get_package('debugpy'):get_install_path()
       require('dap-python').setup(debugpy .. '/venv/bin/python')
       -- EOF python
+
+      -- CPlusPlus, C, Rust
+      local codelldb_root = require('mason-registry').get_package('codelldb'):get_install_path() .. '/extension/'
+      local codelldb_path = codelldb_root .. 'adapter/codelldb'
+      local liblldb_path = codelldb_root .. 'lldb/lib/liblldb.so'
+      dap.adapters.lldb = {
+        type = 'server',
+        port = '${port}',
+        host = '127.0.0.1',
+        executable = {
+          command = codelldb_path,
+          args = { '--liblldb', liblldb_path, '--port', '${port}' },
+        },
+      }
+
+      dap.configurations.cpp = {
+        {
+          name = 'Launch',
+          type = 'lldb',
+          request = 'launch',
+          program = function()
+            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+          end,
+          cwd = '${workspaceFolder}',
+          stopOnEntry = false,
+          args = {},
+
+          -- 💀
+          -- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
+          --
+          --    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+          --
+          -- Otherwise you might get the following error:
+          --
+          --    Error on launch: Failed to attach to the target process
+          --
+          -- But you should be aware of the implications:
+          -- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
+          -- runInTerminal = false,
+        },
+      }
+
+      dap.configurations.c = dap.configurations.cpp
+      dap.configurations.rust = dap.configurations.cpp
+      -- EOF CPlusPlus, C, Rust
     end,
   },
   {
