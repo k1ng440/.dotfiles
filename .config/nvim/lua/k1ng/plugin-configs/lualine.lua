@@ -1,4 +1,7 @@
 local Util = require('k1ng.util')
+local navic = require('nvim-navic')
+local icons = require('k1ng.core.icons')
+
 local colors = {
   [''] = Util.fg('Special'),
   ['Normal'] = Util.fg('Special'),
@@ -6,7 +9,6 @@ local colors = {
   ['InProgress'] = Util.fg('DiagnosticWarn'),
 }
 
-local icons = require('k1ng.core.icons')
 local opts = {
   options = {
     theme = 'catppuccin',
@@ -37,20 +39,24 @@ local opts = {
       },
       { 'filename', path = 1, shorting_target = 40, symbols = { modified = '  ', readonly = '', unnamed = '' } },
       {
-        require('nvim-navic').get_location,
+        function()
+          return navic.get_location()
+        end,
         cond = function()
-          return package.loaded['nvim-navic'] and require('nvim-navic').is_available()
+          return navic.is_available()
         end,
       },
     },
     lualine_x = {
       {
         function()
-          local icon = require('k1ng.core.icons').kinds.Copilot
           local status = require('copilot.api').status.data
-          return icon .. (status.message or '')
+          return icons.kinds.Copilot .. (status.message or '')
         end,
         cond = function()
+          if not package.loaded['copilot'] then
+            return
+          end
           local ok, clients = pcall(vim.lsp.get_clients, { name = 'copilot', bufnr = 0 })
           return ok and #clients > 0
         end,

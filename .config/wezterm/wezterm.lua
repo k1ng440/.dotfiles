@@ -4,22 +4,14 @@ local theme = require('theme')
 local gpus = wezterm.gui.enumerate_gpus()
 require('bar')
 
-local font = fonts.get_font('CascadiaCode')
--- local font = fonts.get_font('JetBrainsMono')
--- local font = fonts.get_font('FiraCode')
-
-wezterm.on('window-config-reloaded', function(window, pane)
-  -- remove any overridden wallpaper
-  local overrides = window:get_config_overrides() or {}
-  overrides.window_background_image = nil
-  window:set_config_overrides(overrides)
-end)
+local font = fonts.get_font('ComicCode')
+-- local font = fonts.get_font('CascadiaCode')
 
 local config = {
   -- keys
   disable_default_key_bindings = true,
   leader = { key = 's', mods = 'CTRL', timeout_milliseconds = 5000 },
-  keys = require('shortcuts'),
+  keys = require('shortcuts')(),
 
   -- fonts
   font = font.font,
@@ -28,7 +20,7 @@ local config = {
   -- window
   window_background_opacity = 0.80,
   window_decorations = 'RESIZE',
-  window_padding = { left = 4, right = 0, top = 0, bottom = 0 },
+  window_padding = { left = 0, right = 0, top = 0, bottom = 0 },
   inactive_pane_hsb = { saturation = 1.0, brightness = 0.6 },
 
   -- theme
@@ -51,11 +43,10 @@ local config = {
   cursor_blink_ease_out = 'Constant',
   cursor_blink_rate = 0,
 
-  -- unix domain sockets
-  -- unix_domains = { {
-  --   name = 'unix',
-  --   connect_automatically = true,
-  -- } },
+  -- rendering
+  webgpu_preferred_adapter = gpus[1],
+  front_end = 'OpenGL',
+  max_fps = 100,
 
   -- etc.
   window_close_confirmation = 'NeverPrompt',
@@ -64,11 +55,6 @@ local config = {
   audible_bell = 'Disabled',
   clean_exit_codes = { 130 },
   enable_scroll_bar = false,
-
-  -- rendering
-  webgpu_preferred_adapter = gpus[1],
-  front_end = 'OpenGL',
-  max_fps = 100,
 }
 
 -- use WebGPU on integrated GPUs

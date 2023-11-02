@@ -52,34 +52,38 @@ return {
   {
     'SmiteshP/nvim-navic',
     event = 'LspAttach',
-    init = function()
+    config = function(_, opts)
       vim.g.navic_silence = true
+
+      local navic = require('nvim-navic')
+      navic.setup(opts)
+
       require('k1ng.util').on_attach(function(client, buffer)
+        if client.name == 'copilot' then
+          return
+        end
+
         if client.server_capabilities.documentSymbolProvider then
-          require('nvim-navic').attach(client, buffer)
+          navic.attach(client, buffer)
         end
       end)
     end,
-    opts = function()
-      return {
-        separator = ' ',
-        highlight = true,
-        depth_limit = 5,
-        icons = require('k1ng.core.icons').kinds,
-      }
-    end,
+    opts = {
+      separator = ' ',
+      highlight = true,
+      depth_limit = 5,
+      icons = require('k1ng.core.icons').kinds,
+    },
   },
   {
     'j-hui/fidget.nvim',
     tag = 'legacy',
     event = 'LspAttach',
-    config = function()
-      require('fidget').setup({
-        window = {
-          blend = 0,
-          relative = 'editor',
-        },
-      })
-    end,
+    opts = {
+      window = {
+        blend = 0,
+        relative = 'editor',
+      },
+    },
   },
 }

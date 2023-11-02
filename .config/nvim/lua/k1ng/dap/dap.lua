@@ -11,12 +11,7 @@ return {
     'mfussenegger/nvim-dap',
     dependencies = {
       'rcarriga/nvim-dap-ui',
-      {
-        'theHamsta/nvim-dap-virtual-text',
-        config = function()
-          require('nvim-dap-virtual-text').setup()
-        end,
-      },
+      'theHamsta/nvim-dap-virtual-text',
       'jbyuki/one-small-step-for-vimkind',
       'jay-babu/mason-nvim-dap.nvim',
       'nvim-telescope/telescope-dap.nvim',
@@ -37,6 +32,7 @@ return {
       { '<leader>dh', function() require('dap.ui.widgets').hover() end, desc = '[D]ap [H]over' },
       { '<F5>', continue, 'Debug: Start/Continue' },
       { '<F6>', function() require('dap').run_last() end, desc = 'Debug: Run Last' },
+      { '<F9>', function() require('dap').step_back() end, desc = 'Debug: Step Over' },
       { '<F10>', function() require('dap').step_over() end, desc = 'Debug: Step Over' },
       { '<F11>', function() require('dap').step_into() end, desc = 'Debug: Step Into' },
       { '<F12>', function() require('dap').step_into() end, desc = 'Debug: Step Out' },

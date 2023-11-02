@@ -1,8 +1,8 @@
 local wezterm = require('wezterm')
 local act = wezterm.action
-local wallpaper = require('wallpaper')
+local smartsplits = require('smartsplits')
 
-return {
+local shortcuts = {
   -- use 'Backslash' to split horizontally
   { key = '\\', mods = 'LEADER', action = act.SplitHorizontal({ domain = 'CurrentPaneDomain' }) },
   -- and 'Minus' to split vertically
@@ -27,8 +27,7 @@ return {
   { key = '7', mods = 'LEADER', action = act.ActivateTab(6) },
   { key = '8', mods = 'LEADER', action = act.ActivateTab(7) },
   { key = '9', mods = 'LEADER', action = act.ActivateTab(8) },
-  { key = '9', mods = 'LEADER', action = act.ActivateTab(9) },
-  { key = '0', mods = 'LEADER', action = act.ActivateTab(0) },
+  { key = '0', mods = 'LEADER', action = act.ActivateTab(9) },
   { key = '1', mods = 'SUPER', action = act.ActivateTab(0) },
   { key = '2', mods = 'SUPER', action = act.ActivateTab(1) },
   { key = '3', mods = 'SUPER', action = act.ActivateTab(2) },
@@ -38,8 +37,8 @@ return {
   { key = '7', mods = 'SUPER', action = act.ActivateTab(6) },
   { key = '8', mods = 'SUPER', action = act.ActivateTab(7) },
   { key = '9', mods = 'SUPER', action = act.ActivateTab(8) },
-  { key = '9', mods = 'SUPER', action = act.ActivateTab(9) },
-  { key = '0', mods = 'SUPER', action = act.ActivateTab(-1) },
+  { key = '0', mods = 'SUPER', action = act.ActivateTab(9) },
+
   -- 'c' to create a new tab
   { key = 'c', mods = 'LEADER', action = act.SpawnTab('CurrentPaneDomain') },
   -- 'x' to kill the current pane
@@ -99,3 +98,13 @@ return {
   { key = 'w', mods = 'SUPER', action = act.CloseCurrentTab({ confirm = true }) },
   { key = 'u', mods = 'SHIFT|CTRL', action = act.CharSelect({ copy_on_select = true, copy_to = 'ClipboardAndPrimarySelection' }) },
 }
+
+return function()
+  local smart_keys = smartsplits.get_keys()
+
+  for _, key in ipairs(smart_keys) do
+    table.insert(shortcuts, key)
+  end
+
+  return shortcuts
+end

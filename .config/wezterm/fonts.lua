@@ -25,7 +25,7 @@ function M.get_font(name)
       size = 16,
     },
 
-    victor = {
+    VictorMono = {
       font = {
         family = 'Victor Mono',
         weight = 'DemiBold',
@@ -41,6 +41,14 @@ function M.get_font(name)
         harfbuzz_features = { 'calt=1', 'ss01=1' },
       },
       size = 16,
+    },
+
+    ComicCode = {
+      font = {
+        family = 'Comic Code Ligatures',
+        weight = 'Medium',
+      },
+      size = 15,
     },
   }
 

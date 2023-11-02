@@ -26,8 +26,11 @@ return {
       output = { open_on_run = true },
       quickfix = {
         open = function()
-          -- TODO Add check if trouble is installed otherwise show quickfix
-          require('trouble').open({ mode = 'quickfix', focus = false })
+          if vim.fn.exists(':Trouble') ~= 0 then
+            require('trouble').open({ mode = 'quickfix', focus = false })
+          else
+            vim.cmd([[copen]])
+          end
         end,
       },
     },

@@ -17,6 +17,7 @@ function M.setup()
     'RainbowViolet',
     'RainbowCyan',
   }
+
   hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
     vim.api.nvim_set_hl(0, 'RainbowRed', { fg = '#E06C75' })
     vim.api.nvim_set_hl(0, 'RainbowYellow', { fg = '#E5C07B' })
@@ -30,12 +31,28 @@ function M.setup()
   hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
 
   ibl.setup({
-    enabled = true,
+    enabled = false,
     debounce = 200,
     exclude = {
-      filetypes = { 'help', 'alpha', 'dashboard', '*oil*', 'neo-tree', 'Trouble', 'lazy', 'mason', 'notify', 'toggleterm', 'lazyterm', 'asm' },
+      filetypes = {
+        'help',
+        'alpha',
+        'dashboard',
+        '*oil*',
+        'neo-tree',
+        'Trouble',
+        'lazy',
+        'mason',
+        'notify',
+        'toggleterm',
+        'lazyterm',
+        'asm',
+      },
     },
-    scope = { highlight = highlight },
+    scope = {
+      enabled = false,
+      highlight = highlight,
+    },
     indent = {
       char = '┊',
     },

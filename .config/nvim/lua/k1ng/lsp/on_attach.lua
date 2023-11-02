@@ -1,4 +1,4 @@
-require('k1ng.util').on_attach(function(client, _)
+require('k1ng.util').on_attach(function(client, bufnr)
   -- Go
   -- workaround for gopls not supporting semanticTokensProvider
   -- https://github.com/golang/go/issues/54531#issuecomment-1464982242

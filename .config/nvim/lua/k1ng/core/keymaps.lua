@@ -29,12 +29,8 @@ map('v', '=', '=gv', { desc = '[=] Reindent selection' })
 map('v', 'p', '"_dP', { desc = 'Paste without overwriting clipboard' })
 map('n', 'Y', 'y$', { desc = 'Copy to end of line' })
 
--- Nohlsearch
+-- nohlsearch
 map('n', '<esc><esc>', ':nohlsearch<CR>', { desc = 'Clear highlights' })
-
--- Windows
-map('n', '<leader>ww', '<C-W>p', { desc = 'Other window' })
-map('n', '<leader>wd', '<C-W>c', { desc = 'Delete window' })
 
 -- Split
 map('n', '<leader>w-', '<C-W>s', { desc = 'Split window below' })
@@ -42,29 +38,24 @@ map('n', '<leader>w|', '<C-W>v', { desc = 'Split window right' })
 map('n', '<leader>-', '<C-W>s', { desc = 'Split window below' })
 map('n', '<leader>|', '<C-W>v', { desc = 'Split window right' })
 
--- Navigate buffers
+-- Move between splits
+map('n', '<C-h>', '<cmd>wincmd h<cr>', { desc = 'Go to left window' })
+map('n', '<C-j>', '<cmd>wincmd j<cr>', { desc = 'Go to lower window' })
+map('n', '<C-k>', '<cmd>wincmd k<cr>', { desc = 'Go to upper window' })
+map('n', '<C-l>', '<cmd>wincmd l<cr>', { desc = 'Go to right window' })
+
+-- Buffer navigation
 map('n', '[b', ':bprevious<CR>', { desc = 'Previous buffer' })
 map('n', ']b', ':bnext<CR>', { desc = 'Next buffer' })
-map('n', '[t', ':tabprevious<CR>', { desc = 'Previous tab' })
-map('n', ']t', ':tabnext<CR>', { desc = 'Next tab' })
-
-map('n', 'gp', ':bprevious<CR>', { desc = 'Previous buffer' })
-map('n', 'gn', ':bnext<CR>', { desc = 'Next buffer' })
-map('n', 'tp', ':tabprevious<CR>', { desc = 'Previous tab' })
-map('n', 'tn', ':tabnext<CR>', { desc = 'Next tab' })
 
 -- Tab navigation
+map('n', '[t', ':tabprevious<CR>', { desc = 'Previous tab' })
+map('n', ']t', ':tabnext<CR>', { desc = 'Next tab' })
 map('n', '<C-Tab>', ':tabnext<CR>', { desc = 'Next tab' })
 map('n', '<S-Tab>', ':tabprevious<CR>', { desc = 'Previous tab' })
 map('n', '<leader>tn', ':tabnew<CR>', { desc = '[T]ab [N]ew' })
 map('n', '<leader>tc', ':tabclose<CR>', { desc = '[T]ab [C]lose' })
-map('n', '<leader>to', ':tabonly<CR>', { desc = '[T]ab [O]nly' })
 map('n', '<leader>tm', ':tabmove<CR>', { desc = '[T]ab [M]ove' })
-
--- Other keymaps
-map('n', '<leader>vim', ':tabedit ~/.config/nvim/<Return>')
-map('n', '<leader>nvim', ':tabedit ~/.config/nvim/<Return>')
-map('n', '<leader>tmux', ':tabedit ~/.config/tmux/<Return>')
 
 -- Terminal Mappings
 map('t', '<esc><esc>', '<c-\\><c-n>', { desc = 'Enter Normal Mode' })

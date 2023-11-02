@@ -34,6 +34,12 @@ return {
   dependencies = {
     'nvim-tree/nvim-web-devicons',
   },
+  cmd = {
+    'Trouble',
+    'TroubleToggle',
+    'TroubleClose',
+    'TroubleRefresh',
+  },
   -- stylua: ignore
   keys = {
     { 'gr', '<cmd>TroubleToggle lsp_references<cr>', desc = '[G]oto [R]eferences' },

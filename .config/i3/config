@@ -7,7 +7,7 @@ set $monitor_primary "DP-0"
 set $monitor_left "DP-2"
 set $monitor_top "HDMI-0"
 
-set $locker ~/.config/i3/lock.sh ~/Pictures/lockscreen
+set $locker i3lock --nofork --color 181a1b --pointer default --show-failed-attempts --ignore-empty-password
 set $i3_resurrect ~/.local/bin/i3-resurrect
 set $fehbg feh --bg-scale --randomize ~/Pictures/wl/wallpapers/
 set $demu rofi -show drun -run-shell-command '{terminal} -e zsh -ic "{cmd} && read"'
@@ -23,21 +23,21 @@ client.focused_inactive #002b36 #073642 #839496 #073642
 client.unfocused        #002b36 #073642 #839496 #073642
 client.urgent           #002b36 #dc322f #fdf6e3 #002b36
 
-exec --no-startup-id dex --autostart --environment i3
-exec_always --no-startup-id /home/k1ng/.config/xrandr.sh
-exec_always --no-startup-id ~/.local/bin/tvhdmi
-exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc
-exec --no-startup-id xss-lock --transfer-sleep-lock -- $locker
-exec_always --no-startup-id picom
-exec_always --no-startup-id sleep 1; xset dpms 300 300 500
-exec_always --no-startup-id sleep 1; xset r rate 300 50
-exec_always --no-startup-id sleep 2; $fehbg
 exec --no-startup-id nm-appleth
+exec --no-startup-id dex --autostart --environment i3
+exec --no-startup-id dunst -config ~/.config/dunst/dunstrc
+exec --no-startup-id $fehbg
+exec_always --no-startup-id ~/.local/bin/tvhdmi
+# exec --no-startup-id /home/k1ng/.config/xrandr.sh
+# exec_always --no-startup-id xss-lock --transfer-sleep-lock -- $locker
+# exec_always --no-startup-id picom
+exec_always --no-startup-id xset dpms 1000 1200 1500
+exec_always --no-startup-id xset r rate 300 50
 
 # Nvidia settings
 exec --no-startup-id nvidia-settings --load-config-only
-exec --no-startup-id nvidia-settings -a 'SyncToVBlank=0'
-exec --no-startup-id nvidia-settings -a 'AllowFlipping=0'
+# exec --no-startup-id nvidia-settings -a 'SyncToVBlank=0'
+# exec --no-startup-id nvidia-settings -a 'AllowFlipping=0'
 
 # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks
