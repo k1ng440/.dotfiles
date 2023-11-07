@@ -1,4 +1,3 @@
---
 -- Neovim Configuration
 -- Auther: Asaduzzaman Pavel
 -- Github: https://github.com/k1ng440

@@ -16,7 +16,7 @@ function die () {
 }
 
 function editnvimconfig() {
-    (cd ~/.config/nvim && nvim)
+    (cd ~/.config/nvim && nvim init.lua)
 }
 
 function i3edit() {

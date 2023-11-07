@@ -55,15 +55,11 @@ local config = {
   audible_bell = 'Disabled',
   clean_exit_codes = { 130 },
   enable_scroll_bar = false,
-}
 
--- use WebGPU on integrated GPUs
-for _, gpu in ipairs(wezterm.gui.enumerate_gpus()) do
-  if gpu.backend == 'Vulkan' and gpu.device_type == 'IntegratedGpu' then
-    config.webgpu_preferred_adapter = gpu
-    config.front_end = 'WebGpu'
-    break
-  end
-end
+  -- environment variables
+  set_environment_variables = {
+    TERM = 'wezterm',
+  },
+}
 
 return config

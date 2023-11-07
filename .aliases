@@ -18,6 +18,5 @@ alias drop_cache="sudo sh -c \"echo 3 >'/proc/sys/vm/drop_caches' && swapoff -a 
 # git
 alias g='git'
 
-
-
 # vim: filetype=zsh
+

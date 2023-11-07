@@ -2,8 +2,8 @@ local Util = require('k1ng.util')
 local map = Util.keymap
 
 map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true, desc = 'Disable <Space>' })
-map('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = '[k] Move up' })
-map('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = '[j] Move down' })
+-- map('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = '[k] Move up' })
+-- map('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = '[j] Move down' })
 map('n', 'Q', '@q', { desc = 'Replay macro' })
 map('n', '<Tab>', '%', { desc = 'Remap % to Tab' })
 
@@ -39,10 +39,11 @@ map('n', '<leader>-', '<C-W>s', { desc = 'Split window below' })
 map('n', '<leader>|', '<C-W>v', { desc = 'Split window right' })
 
 -- Move between splits
-map('n', '<C-h>', '<cmd>wincmd h<cr>', { desc = 'Go to left window' })
-map('n', '<C-j>', '<cmd>wincmd j<cr>', { desc = 'Go to lower window' })
-map('n', '<C-k>', '<cmd>wincmd k<cr>', { desc = 'Go to upper window' })
-map('n', '<C-l>', '<cmd>wincmd l<cr>', { desc = 'Go to right window' })
+-- see plugins/wezterm-smart-splits.lua
+-- map('n', '<C-h>', '<cmd>wincmd h<cr>', { desc = 'Go to left window' })
+-- map('n', '<C-j>', '<cmd>wincmd j<cr>', { desc = 'Go to lower window' })
+-- map('n', '<C-k>', '<cmd>wincmd k<cr>', { desc = 'Go to upper window' })
+-- map('n', '<C-l>', '<cmd>wincmd l<cr>', { desc = 'Go to right window' })
 
 -- Buffer navigation
 map('n', '[b', ':bprevious<CR>', { desc = 'Previous buffer' })

@@ -11,12 +11,14 @@ set $locker i3lock --nofork --color 181a1b --pointer default --show-failed-attem
 set $i3_resurrect ~/.local/bin/i3-resurrect
 set $fehbg feh --bg-scale --randomize ~/Pictures/wl/wallpapers/
 set $demu rofi -show drun -run-shell-command '{terminal} -e zsh -ic "{cmd} && read"'
+# set $term ~/git/wezterm/target/release/wezterm start --always-new-process
+set $term contour
 
 mouse_warping output
 focus_follows_mouse no
 focus_on_window_activation focus
 
-font pango:Ubuntu Mono 14
+font pango:Comic Code Ligatures 12
 
 client.focused          #002b36 #586e75 #fdf6e3 #268bd2
 client.focused_inactive #002b36 #073642 #839496 #073642
@@ -89,7 +91,7 @@ bindsym button9 move left
 bindsym button10 move right
 
 # start a terminal
-bindsym $mod+Return exec flatpak run org.wezfurlong.wezterm
+bindsym $mod+Return exec $term
 
 # kill focused window
 bindsym $mod+q kill
@@ -207,41 +209,41 @@ set $restore Restore: Pick 1-10 to restore workspace
 bindsym $mod+F8 mode $restore
 
 mode "$save" {
-  bindsym 1 exec $i3_resurrect save -w $ws1, mode "default" 
-  bindsym 2 exec $i3_resurrect save -w $ws2, mode "default"
-  bindsym 3 exec $i3_resurrect save -w $ws3, mode "default"
-  bindsym 4 exec $i3_resurrect save -w $ws4, mode "default"
-  bindsym 5 exec $i3_resurrect save -w $ws5, mode "default"
-  bindsym 6 exec $i3_resurrect save -w $ws6, mode "default"
-  bindsym 7 exec $i3_resurrect save -w $ws7, mode "default"
-  bindsym 8 exec $i3_resurrect save -w $ws8, mode "default"
-  bindsym 9 exec $i3_resurrect save -w $ws9, mode "default"
-  bindsym 0 exec $i3_resurrect save -w $ws10, mode "default"
+    bindsym 1 exec $i3_resurrect save -w $ws1, mode "default" 
+    bindsym 2 exec $i3_resurrect save -w $ws2, mode "default"
+    bindsym 3 exec $i3_resurrect save -w $ws3, mode "default"
+    bindsym 4 exec $i3_resurrect save -w $ws4, mode "default"
+    bindsym 5 exec $i3_resurrect save -w $ws5, mode "default"
+    bindsym 6 exec $i3_resurrect save -w $ws6, mode "default"
+    bindsym 7 exec $i3_resurrect save -w $ws7, mode "default"
+    bindsym 8 exec $i3_resurrect save -w $ws8, mode "default"
+    bindsym 9 exec $i3_resurrect save -w $ws9, mode "default"
+    bindsym 0 exec $i3_resurrect save -w $ws10, mode "default"
 
-  # Back to normal: Enter, Escape, or s
-  bindsym Return mode "default"
-  bindsym Escape mode "default"
-  bindsym s mode "default"
-  bindsym $mod+s mode "default"
+    # Back to normal: Enter, Escape, or s
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym s mode "default"
+    bindsym $mod+s mode "default"
 }
 
 mode "$restore" {
-  bindsym 1 exec $i3_resurrect restore -w $ws1, mode "default"
-  bindsym 2 exec $i3_resurrect restore -w $ws2, mode "default"
-  bindsym 3 exec $i3_resurrect restore -w $ws3, mode "default"
-  bindsym 4 exec $i3_resurrect restore -w $ws4, mode "default"
-  bindsym 5 exec $i3_resurrect restore -w $ws5, mode "default"
-  bindsym 6 exec $i3_resurrect restore -w $ws6, mode "default"
-  bindsym 7 exec $i3_resurrect restore -w $ws7, mode "default"
-  bindsym 8 exec $i3_resurrect restore -w $ws8, mode "default"
-  bindsym 9 exec $i3_resurrect restore -w $ws9, mode "default"
-  bindsym 0 exec $i3_resurrect restore -w $ws10, mode "default"
+    bindsym 1 exec $i3_resurrect restore -w $ws1, mode "default"
+    bindsym 2 exec $i3_resurrect restore -w $ws2, mode "default"
+    bindsym 3 exec $i3_resurrect restore -w $ws3, mode "default"
+    bindsym 4 exec $i3_resurrect restore -w $ws4, mode "default"
+    bindsym 5 exec $i3_resurrect restore -w $ws5, mode "default"
+    bindsym 6 exec $i3_resurrect restore -w $ws6, mode "default"
+    bindsym 7 exec $i3_resurrect restore -w $ws7, mode "default"
+    bindsym 8 exec $i3_resurrect restore -w $ws8, mode "default"
+    bindsym 9 exec $i3_resurrect restore -w $ws9, mode "default"
+    bindsym 0 exec $i3_resurrect restore -w $ws10, mode "default"
 
-  # Back to normal: Enter, Escape, or n
-  bindsym Return mode "default"
-  bindsym Escape mode "default"
-  bindsym n mode "default"
-  bindsym $mod+n mode "default"
+    # Back to normal: Enter, Escape, or n
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym n mode "default"
+    bindsym $mod+n mode "default"
 }
 
 bindsym $mod+r mode "resize"
@@ -288,6 +290,8 @@ for_window [class="thunderbird" title="^Write\:.*"] floating enable, resize set 
 for_window [class="zoom"] floating enable
 for_window [class="Blueman-manager"] floating enable, resize set 900 500, move center
 for_window [class="Nvidia-settings"] floating enable, move center
+for_window [class="Lutris" title="Add games to Lutris"] floating enable, resize set 729 577, move center
+for_window [class="Lutris" title="^Install.*"] floating enable, resize set 1000 877, move center
 
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
@@ -301,7 +305,7 @@ assign [class="thunderbird"] $ws4
 assign [class="discord"] $ws3
 assign [class="Skype"] $ws3
 assign [class="Whatsapp-for-linux"] $ws3
-assign [class="Plex"] $ws5
+assign [class="Plex"] $ws6
 
 bar {
     status_command i3blocks -c ~/.config/i3blocks/i3blocks.conf
@@ -312,7 +316,7 @@ bar {
     strip_workspace_numbers no
     tray_padding 10
     mode dock
-    font pango:Hack Nerd Font, MesloLGS NF 12
+    font pango:Comic Code Ligatures, Hack Nerd Font, MesloLGS NF 12
 
     colors {
         background #002b36

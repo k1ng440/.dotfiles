@@ -7,7 +7,7 @@ local opt = vim.opt
 
 opt.autowrite = true -- Enable auto write
 opt.clipboard:append('unnamedplus') -- Sync with system clipboard
-opt.completeopt = 'menuone,noselect'
+opt.completeopt = 'menuone,menu,noselect,noinsert,'
 opt.conceallevel = 0
 opt.cursorline = true -- Enable highlighting of the current line
 opt.expandtab = true -- Use spaces instead of tabs
@@ -19,6 +19,7 @@ opt.inccommand = 'split' -- preview incremental substitute
 -- opt.laststatus = 2
 opt.list = false -- Show some invisible characters (tabs...
 opt.mouse = 'a' -- Enable mouse mode
+opt.mousemodel = '' -- Disable right click menu
 opt.number = true -- Print line number
 opt.pumblend = 10 -- Popup blend
 opt.pumheight = 10 -- Maximum number of entries in a popup
@@ -50,10 +51,8 @@ opt.hidden = true
 opt.lazyredraw = true
 -- opt.colorcolumn = '80'
 opt.title = true
-opt.titlestring = [[%f %h%m%r%w %{v:progname}]]
+opt.titlelen = 70
 opt.exrc = true -- Enable local .nvimrc
-
--- spell
 
 opt.foldmethod = 'expr' -- code folding
 opt.foldexpr = 'nvim_treesitter#foldexpr()' -- code folding with treesitter
@@ -79,7 +78,6 @@ opt.wildignore:append('*/.env.local')
 opt.wildignore:append('*/.vscode/*')
 opt.wildignore:append('*/.idea/*')
 opt.wildignore:append('*/.gitignore')
-
 
 -- stylua: ignore
 local borderchars = {
@@ -140,24 +138,3 @@ vim.opt.fillchars:append({
   vertleft = vim.g.bc.vertleft,
   verthoriz = vim.g.bc.verthoriz
 })
-
-if vim.env.USER == 'root' then
-  vim.opt.shada = ''
-else
-  -- Defaults:
-  --   Neovim: !,'100,<50,s10,h
-  --
-  -- - ! save/restore global variables (only all-uppercase variables)
-  -- - '100 save/restore marks from last 100 files
-  -- - <50 save/restore 50 lines from each register
-  -- - s10 max item size 10KB
-  -- - h do not save/restore 'hlsearch' setting
-  --
-  -- Our overrides:
-  -- - '0 store marks for 0 files
-  -- - <0 don't save registers
-  -- - f0 don't store file marks
-  -- - n: store in ~/.config/nvim/
-  --
-  -- vim.opt.shada = "'0,<0,f0,n~/.config/nvim/shada"
-end

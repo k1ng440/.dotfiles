@@ -1,3 +1,4 @@
+-- settings for each language server
 local servers = {
   ansiblels = {},
   clangd = {},
@@ -103,6 +104,7 @@ local servers = {
   },
   quick_lint_js = {},
   denols = {},
+  templ = {},
   gopls = {
     gopls = {
       gofumpt = true,
@@ -152,6 +154,7 @@ local servers = {
         globals = { 'vim', 'C' },
       },
       workspace = {
+        checkThirdParty = false,
         library = {
           -- Make the server aware of Neovim runtime files
           vim.fn.expand('$VIMRUNTIME/lua'),

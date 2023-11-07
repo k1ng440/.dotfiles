@@ -227,7 +227,6 @@ keymap('n', '<leader>sM', '<cmd>Telescope man_pages<cr>', { desc = 'Man Pages' }
 keymap('n', '<leader>sm', '<cmd>Telescope marks<cr>', { desc = 'Jump to Mark' })
 keymap('n', '<leader>li', '<cmd>Telescope lsp_incoming_calls<cr>', { desc = '[l]sp [i]ncoming calls' })
 keymap('n', '<leader>lo', '<cmd>Telescope lsp_outgoing_calls<cr>', { desc = '[l]sp [o]utgoing calls' })
-keymap('n', '<leader>en', require('k1ng.util').telescope_neovim_config, { desc = '[e]dit [n]eovim config' })
 -- stylua: ignore
 keymap('n', '<leader>ss', Util.telescope( 'lsp_document_symbols', { symbols = { 'Class', 'Function', 'Method', 'Constructor', 'Interface', 'Module', 'Struct', 'Trait', 'Field', 'Property' } }), { desc = 'Goto Symbol' })
 -- stylua: ignore

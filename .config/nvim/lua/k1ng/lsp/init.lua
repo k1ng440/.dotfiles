@@ -18,9 +18,6 @@ if neodevstatus then
 end
 -- EOF neodev and neoconf
 
--- border style
-require('lspconfig.ui.windows').default_options.border = 'double'
-
 -- hover
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
   width = 80,
@@ -39,10 +36,13 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
 -- Configure vim.diagnostic
 vim.diagnostic.config({
   underline = true,
-  virtual_text = false,
+  virtual_text = true,
   signs = true,
   update_in_insert = false,
   severity_sort = true,
+  float = {
+    border = vim.g.bc.style,
+  },
 })
 
 -- Configure LSP using Mason lspconfig

@@ -2,6 +2,7 @@ return {
   {
     'Shatur/neovim-session-manager',
     dependencies = { 'nvim-lua/plenary.nvim' },
+    lazy = false,
     config = function()
       local Path = require('plenary.path')
       local home = require('session_manager').setup({
