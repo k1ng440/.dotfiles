@@ -24,8 +24,8 @@ images:
 
 profiles:
     main:
-        shell: "/usr/local/bin/tmux"
-        arguments: ["-u", "-2", "new-session", "-A", "-s", "main"]
+        # shell: "/usr/local/bin/tmux"
+        # arguments: ["-u", "-2", "new-session", "-A", "-s", "main"]
 
         escape_sandbox: true
         copy_last_mark_range_offset: 0
@@ -93,8 +93,8 @@ profiles:
             render_mode: gray
             strict_spacing: true
             regular:
-                family: "ComicCodeLigatures Nerd Font"
-                weight: Regular
+                family: "Comic Code Ligatures"
+                weight: Medium
                 slant: normal
                 features: []
             bold:
@@ -111,8 +111,8 @@ profiles:
 
         # Terminal cursor display configuration
         cursor:
-            shape: "bar"
-            blinking: true
+            shape: block
+            blinking: false
             blinking_interval: 500
 
         normal_mode:
@@ -502,7 +502,7 @@ input_mapping:
     # - { mods: [Control, Shift], key: N,             action: NewTerminal }
     - { mods: [Control, Shift], key: V,             action: PasteClipboard, strip: false }
     - { mods: [Control, Alt],   key: V,             action: PasteClipboard, strip: true }
-    - { mods: [Control],        key: C,             action: CopySelection, mode: 'Select|Insert' }
+    - { mods: [Control, Shift], key: C,             action: CopySelection, mode: 'Select|Insert' }
     - { mods: [Control],        key: C,             action: CancelSelection, mode: 'Select|Insert' }
     - { mods: [Control],        key: V,             action: PasteClipboard, strip: false, mode: 'Select|Insert' }
     - { mods: [Control],        key: V,             action: CancelSelection, mode: 'Select|Insert' }

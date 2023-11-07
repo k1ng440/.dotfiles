@@ -2,15 +2,15 @@ local Util = require('k1ng.util')
 return {
   {
     'nvim-telescope/telescope.nvim',
-    event = 'VeryLazy',
+    cmd = 'Telescope',
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'barrett-ruth/telescope-http.nvim',
-      'barrett-ruth/telescope-http.nvim',
       'nvim-telescope/telescope-ui-select.nvim',
     },
-    init = function()
-      return require('k1ng.plugin-configs.telescope-config')
+    config = function()
+      vim.schedule(function()
+        require('k1ng.plugin-configs.telescope-config').setup()
+      end)
     end,
   },
 
@@ -35,7 +35,6 @@ return {
       'kkharji/sqlite.lua',
     },
     init = function()
-      -- print(vim.inspect(require('telescope').extensions))
       require('telescope-all-recent').setup({})
     end,
   },

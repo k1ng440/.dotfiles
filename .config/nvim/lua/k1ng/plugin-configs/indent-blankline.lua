@@ -1,13 +1,8 @@
 local M = {}
 function M.setup()
-  -- use a protected call so we don't error out on first use
-  local status_ok, ibl = pcall(require, 'ibl')
-  if not status_ok then
-    vim.notify('Plugin [ibl] failed to load', vim.log.levels.WARN)
-    return
-  end
-
+  local ibl = require('ibl')
   local hooks = require('ibl.hooks')
+
   local highlight = {
     'RainbowRed',
     'RainbowYellow',
@@ -31,7 +26,7 @@ function M.setup()
   hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
 
   ibl.setup({
-    enabled = false,
+    enabled = true,
     debounce = 200,
     exclude = {
       filetypes = {
@@ -50,7 +45,7 @@ function M.setup()
       },
     },
     scope = {
-      enabled = false,
+      enabled = true,
       highlight = highlight,
     },
     indent = {

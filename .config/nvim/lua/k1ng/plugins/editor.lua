@@ -41,10 +41,11 @@ return {
   },
   {
     'lukas-reineke/indent-blankline.nvim',
-    event = { 'BufReadPost' },
-    main = 'ibl',
+    event = { 'BufReadPost', 'BufNewFile' },
     config = function()
-      vim.schedule(require('k1ng.plugin-configs.indent-blankline').setup)
+      vim.schedule(function()
+        require('k1ng.plugin-configs.indent-blankline').setup()
+      end)
     end,
   },
   {

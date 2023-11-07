@@ -1,0 +1,6 @@
+base: 
+  - ~/code/**/{.git}
+  - ~/Projects/**/{.git}
+  - ~/Projects/**/{go.mod}
+  - ~/.config/**/{.nvimroot}
+  - ~/Projects/**/{.nvimroot}
