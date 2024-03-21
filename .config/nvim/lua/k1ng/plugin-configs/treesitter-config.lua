@@ -5,7 +5,7 @@ vim.defer_fn(function()
     auto_install = true,
     highlight = { enable = true },
     indent = {
-      enable = true,
+      enable = false,
       disable = { 'python' },
     },
     incremental_selection = {

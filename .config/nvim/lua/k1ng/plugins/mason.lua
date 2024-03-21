@@ -5,14 +5,17 @@ return {
     opts = function(_, opts)
       local sources = {
         'gopls',
+        'golangci-lint',
         'stylua',
-        'prettierd',
         'golines',
         'golangci-lint',
         'goimports_reviser',
         'gomodifytags',
         'codespell',
+        'pretty-php',
+        'prettierd',
       }
+
       if not opts.ensure_installed then
         opts.ensure_installed = {}
       end

@@ -3,16 +3,15 @@
 set $mod Mod4
 set $alt Mod1
 
-set $monitor_primary "DP-0"
-set $monitor_left "DP-2"
+set $monitor_primary "DP-2"
+set $monitor_left "DP-4"
 set $monitor_top "HDMI-0"
 
-set $locker i3lock --nofork --color 181a1b --pointer default --show-failed-attempts --ignore-empty-password
+set $locker i3lock --nofork --color 181a1b --show-failed-attempts --ignore-empty-password
 set $i3_resurrect ~/.local/bin/i3-resurrect
 set $fehbg feh --bg-scale --randomize ~/Pictures/wl/wallpapers/
 set $demu rofi -show drun -run-shell-command '{terminal} -e zsh -ic "{cmd} && read"'
-# set $term ~/git/wezterm/target/release/wezterm start --always-new-process
-set $term contour
+set $term ~/.local/bin/kitty
 
 mouse_warping output
 focus_follows_mouse no
@@ -31,10 +30,11 @@ exec --no-startup-id dunst -config ~/.config/dunst/dunstrc
 exec --no-startup-id $fehbg
 exec_always --no-startup-id ~/.local/bin/tvhdmi
 # exec --no-startup-id /home/k1ng/.config/xrandr.sh
-# exec_always --no-startup-id xss-lock --transfer-sleep-lock -- $locker
-# exec_always --no-startup-id picom
-exec_always --no-startup-id xset dpms 1000 1200 1500
+exec --no-startup-id xss-lock --transfer-sleep-lock -- $locker
+exec --no-startup-id picom
+exec_always --no-startup-id xset dpms 300 300 300
 exec_always --no-startup-id xset r rate 300 50
+exec --no-startup-id ~/.config/i3/i3-disable-standby-fs
 
 # Nvidia settings
 exec --no-startup-id nvidia-settings --load-config-only
@@ -125,8 +125,8 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-bindcode $mod+Shift+v split h
-bindcode $mod+v split v
+bindcode $mod+51 split h
+bindcode $mod+20 split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -290,6 +290,9 @@ for_window [class="thunderbird" title="^Write\:.*"] floating enable, resize set 
 for_window [class="zoom"] floating enable
 for_window [class="Blueman-manager"] floating enable, resize set 900 500, move center
 for_window [class="Nvidia-settings"] floating enable, move center
+
+# Games
+for_window [class="steam_app_1174180" title="^Rockstar Games Launcher$"] floating enable
 for_window [class="Lutris" title="Add games to Lutris"] floating enable, resize set 729 577, move center
 for_window [class="Lutris" title="^Install.*"] floating enable, resize set 1000 877, move center
 

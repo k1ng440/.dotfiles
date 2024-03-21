@@ -5,7 +5,6 @@ return {
   opts = {
     default_file_explorer = true,
     delete_to_trash = true,
-    trash_command = 'trash-put',
     keymaps = {
       ['g?'] = 'actions.show_help',
       ['<CR>'] = 'actions.select',

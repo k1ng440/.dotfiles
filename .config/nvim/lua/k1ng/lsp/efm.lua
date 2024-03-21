@@ -1,8 +1,32 @@
--- Register linters and formatters per language
-local languages = require('efmls-configs.defaults').languages()
-languages = vim.tbl_extend('force', languages, {
+local util = require('k1ng.util')
+
+local prettierd = {
+  formatCommand = 'prettierd "${INPUT}"',
+  formatStdin = true,
+  FormatCanRanage = true,
+  env = {
+    string.format('PRETTIERD_DEFAULT_CONFIG=%s', util.linterConfigFolder .. '/.prettierrc.json'),
+  },
+}
+
+local languages = {
   html = {
-    require('efmls-configs.formatters.prettier'),
+    prettierd,
+  },
+  javascript = {
+    prettierd,
+  },
+  typescript = {
+    prettierd,
+  },
+  css = {
+    prettierd,
+  },
+  scss = {
+    prettierd,
+  },
+  sass = {
+    prettierd,
   },
   json = {
     require('efmls-configs.formatters.jq'),
@@ -14,17 +38,10 @@ languages = vim.tbl_extend('force', languages, {
     require('efmls-configs.formatters.terraform_fmt'),
   },
   go = {
-    require('efmls-configs.formatters.goimports'),
+    -- require('efmls-configs.formatters.goimports'),
     require('efmls-configs.formatters.gofmt'),
-    require('efmls-configs.formatters.golines'),
   },
-  php = {
-    require('efmls-configs.formatters.php_cs_fixer'),
-  },
-  ['*'] = {
-    require('efmls-configs.linters.codespell'),
-  },
-})
+}
 
 return {
   filetypes = vim.tbl_keys(languages),

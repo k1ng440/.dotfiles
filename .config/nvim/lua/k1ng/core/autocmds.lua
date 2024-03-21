@@ -98,10 +98,12 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
     end
 
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-      if vim.api.nvim_get_option_value('buftype', { buf = buf }) == 'nofile' then
+      local buf_option_value = vim.api.nvim_get_option_value('buftype', { buf = buf })
+      if buf_option_value == 'nofile' or buf_option_value == '' then
         return
       end
     end
+
     require('session_manager').save_current_session()
   end,
 })
@@ -121,11 +123,11 @@ vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
 vim.api.nvim_create_autocmd('BufWritePost', {
   group = augroup('config_reload'),
   pattern = {
-    '**/lua/k1ng/coreF*.lua',
+    '**/lua/k1ng/configs/*.lua',
     '**/lua/k1ng/plugin-configs/*.lua',
   },
   callback = function()
-    local filepath = vim.fn.expand('%')
+    local filepath = vim.fs.normalize(vim.fn.expand('%') --[[@as string]])
     dofile(filepath)
     vim.notify('Reloaded \n' .. filepath, nil)
   end,

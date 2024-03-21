@@ -6,7 +6,7 @@ return {
     Breakpoint = ' ',
     BreakpointCondition = ' ',
     BreakpointRejected = { ' ', 'DiagnosticError' },
-    LogPoint = '.>',
+    LogPoint = '◆',
   },
   dapui = {
     ui = {
@@ -15,15 +15,15 @@ return {
       current_frame = '*',
     },
     controls = {
-      pause = '⏸',
-      play = '▶',
-      step_into = '⏎',
-      step_over = '⏭',
-      step_out = '⏮',
-      step_back = 'b',
-      run_last = '▶▶',
-      terminate = '⏹',
-      disconnect = '⏏',
+      disconnect = '',
+      pause = '',
+      play = '',
+      run_last = '',
+      step_back = '',
+      step_into = '',
+      step_out = '',
+      step_over = '',
+      terminate = '',
     },
   },
   diagnostics = {
@@ -73,5 +73,13 @@ return {
     Unit = ' ',
     Value = ' ',
     Variable = ' ',
+  },
+  todo = {
+    fix = ' ',
+    todo = ' ',
+    hack = ' ',
+    warn = ' ',
+    perf = ' ',
+    note = ' ',
   },
 }

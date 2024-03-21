@@ -35,12 +35,6 @@ function wallpaper() {
     feh --bg-scale $(find $HOME/Pictures/wl/ -type f \( -name "*.png" -o -name '*.jpeg' -o -name '*.jpg' \) | fzf)
 }
 
-function server() {
-    local port="${1:-8000}"
-    sleep 1 && open "http://localhost:${port}/" &
-    python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port"
-}
-
 function i3cheatsheet() {
     grep -E "^bindsym" ~/.config/i3/config | awk '{$1=""; print $0}' | sed 's/^ *//g' | \
         grep -vE "^XF86" | column | pr -2 -w 160 -t | less
@@ -49,7 +43,6 @@ function i3cheatsheet() {
 function sail() {
     "`pwd`/vendor/bin/sail" "$@"
 }
-
 
 function remove_file_from_git_history() {
     local file=""

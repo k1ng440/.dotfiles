@@ -7,6 +7,7 @@ return {
         stages = 'fade_in_slide_out',
         timeout = 2000,
         background_colour = '#1e222a',
+
         icons = {
           ERROR = '',
           WARN = '',

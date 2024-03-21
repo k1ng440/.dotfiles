@@ -30,10 +30,6 @@ end
 
 return {
   'folke/trouble.nvim',
-  events = 'BufEnter',
-  dependencies = {
-    'nvim-tree/nvim-web-devicons',
-  },
   cmd = {
     'Trouble',
     'TroubleToggle',
@@ -44,10 +40,10 @@ return {
   keys = {
     { 'gr', '<cmd>TroubleToggle lsp_references<cr>', desc = '[G]oto [R]eferences' },
     { 'gd', '<cmd>TroubleToggle lsp_definitions<cr>', desc = '[G]oto [D]efinitions' },
-    { 'gD', '<cmd>TroubleToggle lsp_definitions<cr>', desc = '[G]oto [D]efinitions' },
+    { 'gD', '<cmd>TroubleToggle lsp_definitions<cr>', desc = '[G]to [D]efinitions' },
     { '<leader>D', '<cmd>TroubleToggle lsp_type_definitions<cr>', desc = 'Type [D]efinition'},
-    { '<C-p>', function() next_diagnostic_or_trouble(false) end },
-    { '<C-n>', function() next_diagnostic_or_trouble(true) end },
+    -- { '<C-p>', function() next_diagnostic_or_trouble(false) end },
+    -- { '<C-n>', function() next_diagnostic_or_trouble(true) end },
     { '<C-t>', close_or_open_with_diagnostics, { noremap = true } },
   },
   config = function()

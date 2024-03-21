@@ -1,6 +1,8 @@
-Xcursor.size: 12
-
-
+Xcursor.size:   12
+Xft.antialias:	1
+Xft.hinting:	1
+Xft.hintstyle:	hintslight
+Xft.rgba:	    rgb
 
 !======== Theme =============
 ! Copyright (c) 2016-present Sven Greb <development@svengreb.de>
@@ -44,3 +46,4 @@ Xcursor.size: 12
 *.color13: nord15
 *.color14: nord7
 *.color15: nord6
+

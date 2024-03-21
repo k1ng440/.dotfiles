@@ -24,8 +24,8 @@ images:
 
 profiles:
     main:
-        # shell: "/usr/local/bin/tmux"
-        # arguments: ["-u", "-2", "new-session", "-A", "-s", "main"]
+        shell: "/usr/local/bin/tmux"
+        arguments: ["-2", "new-session", "-A", "-s", "main"]
 
         escape_sandbox: true
         copy_last_mark_range_offset: 0
@@ -93,7 +93,7 @@ profiles:
             render_mode: gray
             strict_spacing: true
             regular:
-                family: "Comic Code Ligatures"
+                family: "ComicCodeLigatures Nerd Font"
                 weight: Medium
                 slant: normal
                 features: []
@@ -118,7 +118,7 @@ profiles:
         normal_mode:
             cursor:
                 shape: block
-                blinking: true
+                blinking: false
                 blinking_interval: 500
 
         visual_mode:
@@ -135,7 +135,7 @@ profiles:
             position: bottom
             sync_to_window_title: false
 
-        colors: "catppuccin_macchiato"
+        colors: "catppuccin_mocha"
         background:
             opacity: 1.0
             blur: false
@@ -180,7 +180,7 @@ color_schemes:
             # Specifies the color to be used for the actual cursor shape.
             #
             # Default: CellForeground
-            default: CellForeground
+            default: CellBackground
             # Specifies the color to be used for the characters that would
             # be covered otherwise.
             #

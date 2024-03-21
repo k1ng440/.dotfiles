@@ -2,7 +2,9 @@ local cmp = require('cmp')
 local copilot_ok, copilot_suggestion = pcall(require, 'copilot.suggestion')
 local ok, luasnip = pcall(require, 'luasnip')
 
-require('k1ng.luasnip')
+vim.schedule(function()
+  require('k1ng.luasnip')
+end)
 
 local window = {
   completion = cmp.config.window.bordered({
@@ -22,9 +24,9 @@ local has_words_before = function()
 end
 
 cmp.setup({
-  -- experimental = {
-  --   ghost_text = true,
-  -- },
+  experimental = {
+    ghost_text = true,
+  },
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
@@ -50,6 +52,7 @@ cmp.setup({
     ['<C-Space>'] = cmp.mapping.complete({}),
     ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true }),
     ['<Tab>'] = cmp.mapping(function(fallback)
+      print(vim.inspect(cmp.visible()))
       if cmp.visible() then
         cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
       elseif copilot_ok and copilot_suggestion.is_visible() then
@@ -86,26 +89,6 @@ cmp.setup({
     format = require('k1ng.lsp.utils').cmp_formatter(30, 30, '...'),
   },
 })
-
--- cmp.setup.cmdline(':', {
---   mapping = cmp.mapping.preset.cmdline({}),
---   sources = {
---     { name = 'cmdline' },
---     { name = 'cmdline_history' },
---     { name = 'path' },
---   },
---   enabled = function()
---     -- Set of commands where cmp will be disabled
---     local disabled = {
---       IncRename = true,
---     }
---     -- Get first word of cmdline
---     local cmd = vim.fn.getcmdline():match('%S+')
---     -- Return true if cmd isn't disabled
---     -- else call/return cmp.close(), which returns false
---     return not disabled[cmd] or cmp.close()
---   end,
--- })
 
 cmp.setup.cmdline('/', {
   sources = { { name = 'buffer' } },

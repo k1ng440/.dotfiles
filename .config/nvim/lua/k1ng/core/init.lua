@@ -9,3 +9,5 @@ require('k1ng.core.autocmds')
 require('k1ng.core.commands')
 require('k1ng.core.usercmds')
 require('k1ng.core.lastplace')
+
+vim.cmd([[ packadd matchit ]])

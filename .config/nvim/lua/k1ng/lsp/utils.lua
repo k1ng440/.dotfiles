@@ -1,5 +1,14 @@
 local M = {}
 local icons = require('k1ng.core.icons').kinds
+local lsputil = require 'lspconfig.util'
+
+function M.get_root_dir(pattern, ...)
+  local cwd = vim.fn.getcwd()
+  local root_files = { ... }
+  local root = require('lspconfig.util').root_pattern(unpack(root_files))(pattern)
+  local descendant = lsputil.path.is_descendant(cwd, root) and cwd or root
+  return descendant or cwd
+end
 
 local blackOrWhiteFg = function(r, g, b)
   return ((r * 0.299 + g * 0.587 + b * 0.114) > 186) and '#000000' or '#ffffff'

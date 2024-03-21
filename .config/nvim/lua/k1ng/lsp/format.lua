@@ -1,9 +1,6 @@
 local Util = require('k1ng.util')
 local M = {}
 
--- TODO: Persist this across sessions
-vim.g.autoformat = true
-
 function M.toggle()
   vim.g.autoformat = not vim.g.autoformat
   if vim.g.autoformat then
@@ -23,13 +20,16 @@ end
 -- Priotize efm formatters
 function M.get_formatters(bufnr)
   local ret = {}
-  local efm = vim.lsp.get_active_clients({ name = 'efm', bufnr = bufnr })
-  local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
 
+  -- efm formatter configured for this buffer
+  local efm = vim.lsp.get_clients({ name = 'efm', bufnr = bufnr })
   if efm[1] ~= nil then
     table.insert(ret, efm[1])
+    return ret
   end
 
+  -- LSP formatters
+  local clients = vim.lsp.get_clients({ bufnr = bufnr })
   for _, client in ipairs(clients) do
     if M.supports_format(client) then
       if vim.tbl_count(ret) == 0 then
@@ -55,7 +55,7 @@ function M.format(opts)
   end
 
   vim.lsp.buf.format({
-    timeout_ms = 2000,
+    timeout_ms = 1000,
     bufnr = buf,
     filter = function(client)
       return vim.tbl_contains(client_ids, client.id)

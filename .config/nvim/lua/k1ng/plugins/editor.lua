@@ -1,7 +1,7 @@
 return {
   { 'tpope/vim-surround', event = 'BufEnter' },
-  { 'farmergreg/vim-lastplace', event = 'BufEnter' },
-  { 'tpope/vim-repeat', event = 'BufEnter' },
+  { 'tpope/vim-repeat',   event = 'BufEnter' },
+  { 'tpope/vim-sleuth',   event = 'BufEnter' },
   {
     'AndrewRadev/splitjoin.vim',
     keys = { 'gS', 'gJ' },
@@ -39,15 +39,15 @@ return {
       end)
     end,
   },
-  {
-    'lukas-reineke/indent-blankline.nvim',
-    event = { 'BufReadPost', 'BufNewFile' },
-    config = function()
-      vim.schedule(function()
-        require('k1ng.plugin-configs.indent-blankline').setup()
-      end)
-    end,
-  },
+  -- {
+  --   'lukas-reineke/indent-blankline.nvim',
+  --   event = { 'BufReadPost', 'BufNewFile' },
+  --   config = function()
+  --     vim.schedule(function()
+  --       require('k1ng.plugin-configs.indent-blankline').setup()
+  --     end)
+  --   end,
+  -- },
   {
     'iamcco/markdown-preview.nvim',
     ft = 'markdown',
@@ -66,7 +66,7 @@ return {
   },
   {
     'jinh0/eyeliner.nvim',
-    event = 'BufRead',
+    event = 'BufReadPost',
     config = function()
       vim.schedule(function()
         require('eyeliner').setup({
@@ -77,19 +77,15 @@ return {
     end,
   },
   {
-    'NvChad/nvim-colorizer.lua',
-    -- stylua: ignore
-    keys = {
-      { '<leader>cl', function() require('colorizer').attach_to_buffer(0, { mode = 'background', css = true }) end, 'Color Highlighter' },
-    },
+    'echasnovski/mini.indentscope',
+    event = 'BufReadPost',
     config = function()
       vim.schedule(function()
-        require('colorizer').setup({
-          filetypes = { '*' },
-          user_default_options = {},
-          buftypes = {},
+        require('mini.indentscope').setup({
+          highlight_on_key = true,
+          dim = true,
         })
       end)
     end,
-  },
+  }
 }

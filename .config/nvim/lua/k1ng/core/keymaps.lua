@@ -50,8 +50,6 @@ map('n', '[b', ':bprevious<CR>', { desc = 'Previous buffer' })
 map('n', ']b', ':bnext<CR>', { desc = 'Next buffer' })
 
 -- Tab navigation
-map('n', '[t', ':tabprevious<CR>', { desc = 'Previous tab' })
-map('n', ']t', ':tabnext<CR>', { desc = 'Next tab' })
 map('n', '<C-Tab>', ':tabnext<CR>', { desc = 'Next tab' })
 map('n', '<S-Tab>', ':tabprevious<CR>', { desc = 'Previous tab' })
 map('n', '<leader>tn', ':tabnew<CR>', { desc = '[T]ab [N]ew' })
@@ -70,11 +68,22 @@ map('t', '<c-_>', '<cmd>close<cr>', { desc = 'which_key_ignore' })
 -- Trouble.nvim
 -- @@@ Move this to lua/k1ng/plugins/trouble.lua
 map('n', '<leader>xx', '<cmd>TroubleToggle<CR>', { silent = true, noremap = true, desc = 'Toggle Trouble' })
-map('n', '<leader>xw', '<cmd>TroubleToggle workspace_diagnostics<cr>', { silent = true, noremap = true, desc = 'Toggle Trouble [W]orkspace diagnostics' })
-map('n', '<leader>xd', '<cmd>TroubleToggle document_diagnostics<cr>', { silent = true, noremap = true, desc = 'Toggle Trouble [D]ocument diagnostics' })
-map('n', '<leader>xl', '<cmd>TroubleToggle loclist<cr>', { silent = true, noremap = true, desc = 'Toggle Trouble [L]ocation list' })
-map('n', '<leader>xq', '<cmd>TroubleToggle quickfix<cr>', { silent = true, noremap = true, desc = 'Toggle Trouble [Q]uickfix' })
-map('n', 'gR', '<cmd>TroubleToggle lsp_references<cr>', { silent = true, noremap = true, desc = 'Toggle Trouble [R]eferences' })
+map('n', '<leader>xw', '<cmd>TroubleToggle workspace_diagnostics<cr>',
+  { silent = true, noremap = true, desc = 'Toggle Trouble [W]orkspace diagnostics' })
+map('n', '<leader>xd', '<cmd>TroubleToggle document_diagnostics<cr>',
+  { silent = true, noremap = true, desc = 'Toggle Trouble [D]ocument diagnostics' })
+map('n', '<leader>xl', '<cmd>TroubleToggle loclist<cr>',
+  { silent = true, noremap = true, desc = 'Toggle Trouble [L]ocation list' })
+map('n', '<leader>xq', '<cmd>TroubleToggle quickfix<cr>',
+  { silent = true, noremap = true, desc = 'Toggle Trouble [Q]uickfix' })
+map('n', 'gR', '<cmd>TroubleToggle lsp_references<cr>',
+  { silent = true, noremap = true, desc = 'Toggle Trouble [R]eferences' })
+
+-- maximizer
+map({ 'n', 'v', 't' }, '<leader>mm', '<cmd>MaximizerToggle!<cr>',
+  { silent = true, noremap = true, desc = 'Toggle Maximizer' })
+map({ 'n', 'v', 't' }, '<F3>', '<cmd>MaximizerToggle!<cr>', { silent = true, noremap = true, desc = 'Toggle Maximizer' })
+
 
 -- Telescope
 require('k1ng.plugin-configs.telescope-config').keymaps()

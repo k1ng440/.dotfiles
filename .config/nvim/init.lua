@@ -10,3 +10,4 @@ if vim.loader then
 end
 
 require('k1ng')
+

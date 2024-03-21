@@ -11,8 +11,8 @@ function M.get_font(name)
     CascadiaCode = {
       font = {
         family = 'Cascadia Code',
-        weight = 'Medium',
-        harfbuzz_features = { 'calt=1', 'ss01=0' },
+        weight = 'Regular',
+        harfbuzz_features = {},
       },
       size = 16,
     },

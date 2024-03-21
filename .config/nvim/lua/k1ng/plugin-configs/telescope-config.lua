@@ -98,7 +98,6 @@ function M.setup()
 
     ------------ default ------------
     defaults = {
-      ['ui-select'] = no_preview(),
       theme = 'ivy',
       vimgrep_arguments = {
         'rg',
@@ -201,7 +200,6 @@ function M.setup()
   })
 
   pcall(telescope.load_extension, 'fzf')
-  pcall(telescope.load_extension, 'ui-select')
   pcall(telescope.load_extension, 'trouble')
 end
 
@@ -233,6 +231,8 @@ function M.keymaps()
   keymap('n', '<leader>ss', Util.telescope( 'lsp_document_symbols', { symbols = { 'Class', 'Function', 'Method', 'Constructor', 'Interface', 'Module', 'Struct', 'Trait', 'Field', 'Property' } }), { desc = 'Goto Symbol' })
   -- stylua: ignore
   keymap('n', '<leader>sS', Util.telescope( 'lsp_dynamic_workspace_symbols', { symbols = { 'Class', 'Function', 'Method', 'Constructor', 'Interface', 'Module', 'Struct', 'Trait', 'Field', 'Property' } }), { desc = 'Goto Symbol (Workspace)' })
+  -- stylua: ignore
+  keymap('n', '<leader>st', '<cmd>TodoTelescope theme=ivy initial_mode=normal previewer=false layout_config={bottom_pane={height=12}}<cr>', { desc = '[S]earch [T]odo' })
 
   local find_dotfiles = function(subdir)
     local cwd = vim.env.HOME .. '/.config/'

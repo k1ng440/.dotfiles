@@ -1,9 +1,11 @@
 local M = {}
 
--- {mode}	means the mode for which the mapping is defined (i, n, v, x, s, o, t, c, l)
--- {lhs}	means the left-hand-side key(s) in the mapping
--- {rhs}	means the right-hand-side action(s) in the mapping
--- {opts}	means the options for the mapping (default: {noremap = true, silent = true})
+M.linterConfigFolder = os.getenv('HOME') .. '/.config/nvim/linter-configs/'
+
+--- @param mode "n"|"v"|"x"|"i"|"o"|"c"|"t"|"ia"|"ca"|"!a"|string[]
+--- @param lhs string
+--- @param rhs string|function
+--- @param opts? { unique: boolean, desc: string, buffer: boolean, nowait: boolean, remap: boolean }
 function M.keymap(mode, lhs, rhs, opts)
   local options = {
     noremap = true,
@@ -19,6 +21,11 @@ function M.keymap(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, options)
 end
 
+--- @param bufnr number
+--- @param mode "n"|"v"|"x"|"i"|"o"|"c"|"t"|"ia"|"ca"|"!a"|string[]
+--- @param lhs string
+--- @param rhs string|function
+--- @param opts? { unique: boolean, desc: string, buffer: boolean, nowait: boolean, remap: boolean }
 M.buf_keymap = function(bufnr, mode, lhs, rhs, opts)
   local options = {
     buffer = bufnr,
@@ -67,6 +74,77 @@ function M.fg(name)
   local hl = vim.api.nvim_get_hl and vim.api.nvim_get_hl(0, { name = name }) or vim.api.nvim_get_hl_by_name(name, true)
   local fg = hl and hl.fg or hl.foreground
   return fg and { fg = string.format('#%06x', fg) }
+end
+
+---https://www.reddit.com/r/neovim/comments/oxddk9/comment/h7maerh/
+---@param name string name of highlight group
+---@param key "fg"|"bg"
+---@nodiscard
+---@return string|nil the value, or nil if hlgroup or key is not available
+function M.getHighlightValue(name, key)
+  local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = name })
+  if not ok then
+    return
+  end
+  local value = hl[key]
+  if not value then
+    return
+  end
+  return string.format('#%06x', value)
+end
+
+---runs :normal natively with bang
+---@param cmdStr string
+function M.normal(cmdStr)
+  vim.cmd.normal({ cmdStr, bang = true })
+end
+
+---@param str string
+---@param filePath string line(s) to add
+---@param mode "w"|"a" -- write or append
+---@return string|nil error
+---@nodiscard
+function M.writeToFile(filePath, str, mode)
+  local file, error = io.open(filePath, mode)
+  if not file then
+    return error
+  end
+  file:write(str .. '\n')
+  file:close()
+end
+
+-- reads a template to apply if the file is empty. Add to a filetype config to
+-- activate templates for it
+-- @param ext string extension of the skeleton
+function M.applyTemplateIfEmptyFile(ext)
+  -- prevent buggy duplicate application of template
+  if vim.b.templateWasApplied then
+    return
+  end
+  vim.b.templateWasApplied = true ---@diagnostic disable-line: inject-field
+
+  vim.defer_fn(function()
+    local filename = vim.fn.expand('%')
+    local fileExists = vim.loop.fs_stat(filename) ~= nil
+    if not fileExists then
+      return
+    end
+
+    local skeletonFile = vim.fn.stdpath('config') .. '/templates/skeleton.' .. ext
+    local skeletonExists = vim.loop.fs_stat(skeletonFile) ~= nil
+    if not skeletonExists then
+      vim.notify('Skeleton file not found.', vim.log.levels.ERROR)
+      return
+    end
+
+    local fileIsEmpty = vim.loop.fs_stat(filename).size < 4 -- account for linebreaks
+    if not fileIsEmpty then
+      return
+    end
+
+    vim.cmd('silent keepalt 0read ' .. skeletonFile)
+    M.normal('G')
+  end, 1)
 end
 
 -- borrowed from LazyVim

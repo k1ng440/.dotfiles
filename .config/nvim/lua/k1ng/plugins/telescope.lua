@@ -5,7 +5,6 @@ return {
     cmd = 'Telescope',
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope-ui-select.nvim',
     },
     config = function()
       vim.schedule(function()

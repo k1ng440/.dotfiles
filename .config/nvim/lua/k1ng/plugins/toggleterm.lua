@@ -60,7 +60,7 @@ end
 return {
   {
     'akinsho/toggleterm.nvim',
-    event = 'VeryLazy',
+    cmd = { 'ToggleTerm' },
     version = '*',
     opts = {
       hide_numbers = true,
@@ -70,7 +70,6 @@ return {
         border = 'curved',
       },
     },
-    cmd = { 'ToggleTerm' },
     -- stylua: ignore
     keys = {
       { '<leader>gg', toggle_lazygit,  desc = 'Lazygit'  },
