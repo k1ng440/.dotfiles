@@ -5,6 +5,12 @@ return {
   opts = {
     default_file_explorer = true,
     delete_to_trash = true,
+    win_options = {
+      winbar = "%{v:lua.require('oil').get_current_dir()}",
+    },
+    columns = {
+      "icon",
+    },
     keymaps = {
       ['g?'] = 'actions.show_help',
       ['<CR>'] = 'actions.select',
@@ -23,6 +29,7 @@ return {
       ['gx'] = 'actions.open_external',
       ['g.'] = 'actions.toggle_hidden',
     },
+    use_default_keymaps = false,
     view_options = {
       show_hidden = true,
     },

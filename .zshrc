@@ -9,7 +9,7 @@ DISABLE_UPDATE_PROMPT="true"
 plugins=(
     git docker golang zsh-autosuggestions aliases command-not-found
     common-aliases httpie ripgrep ssh-agent terraform transfer wd
-    gpg-agent rsync tmux zsh-syntax-highlighting asdf
+    gpg-agent rsync tmux zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -45,6 +45,7 @@ source ${HOME}/.aliases
 source ${HOME}/.zsh_profile
 
 # Paths
+addToPath /opt/nvim-linux64/bin
 addToPath $HOME/.yarn/bin
 addToPath $HOME/.config/yarn/global/node_modules/.bin
 addToPath $HOME/.cargo/bin
@@ -72,4 +73,32 @@ if [ -d "$HOME/jdk/jdk-21.0.1" ]; then
     export PATH=$JAVA_HOME/bin:$PATH
 fi
 
+# # Automatically switch node version based on .nvmrc
+# autoload -U add-zsh-hook
+# load-nvmrc() {
+#   local node_version="$(nvm version)"
+#   local nvmrc_path="$(nvm_find_nvmrc)"
+#
+#   if [ -n "$nvmrc_path" ]; then
+#     local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+#
+#     if [ "$nvmrc_node_version" = "N/A" ]; then
+#       nvm install
+#     elif [ "$nvmrc_node_version" != "$node_version" ]; then
+#       nvm use
+#     fi
+#   elif [ "$node_version" != "$(nvm version default)" ]; then
+#     echo "Reverting to nvm default version"
+#     nvm use default
+#   fi
+# }
+# add-zsh-hook chpwd load-nvmrc
+# load-nvmrc
 
+# pnpm
+export PNPM_HOME="/home/k1ng/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

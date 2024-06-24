@@ -1,0 +1,7 @@
+[user]
+	email = contact@iampavel.dev
+	name = Asaduzzaman Pavel
+[init]
+	defaultBranch = master
+[rerere]
+	enabled = true

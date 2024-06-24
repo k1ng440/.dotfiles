@@ -49,4 +49,13 @@ function M.cmp_formatter(min, max, ellipsis_char)
   end
 end
 
+function M.get_mason_install_path(package)
+  local ok, mason_registry = pcall(require, "mason-registry")
+  if not ok then
+    return ""
+  end
+
+  return mason_registry.get_package(package):get_install_path()
+end
+
 return M

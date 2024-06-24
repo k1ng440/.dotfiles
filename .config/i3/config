@@ -65,7 +65,6 @@ mode "$mode_launcher" {
     bindsym b exec thunderbird, mode "default"
     bindsym c exec google-chrome, mode "default"
     bindsym h exec ~/.local/bin/tvhdmi, mode "default"
-    bindsym s exec spotify, mode "default"
     bindsym t exec thunar, mode "default"
     bindsym w exec --no-startup-id $fehbg
 
@@ -300,7 +299,7 @@ for_window [class="Lutris" title="^Install.*"] floating enable, resize set 1000 
 for_window [urgent=latest] focus
 
 # Scratchpad
-for_window [class="Spotify"] floating toggle, resize set 1900 1200, move position center, move to scratchpad
+# for_window [class="Spotify"] floating toggle, resize set 1900 1200, move position center, move to scratchpad
 
 # assign application to a workspace
 assign [class="Slack"] $ws4

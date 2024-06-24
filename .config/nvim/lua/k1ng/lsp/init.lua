@@ -2,8 +2,6 @@ local lspconfig = require('lspconfig')
 
 require('k1ng.lsp.lsp-keymaps')
 require('k1ng.lsp.on_attach')
-require('k1ng.lsp.format')
-require('k1ng.lsp.diagnostics')
 
 local neodevstatus, neodev = pcall(require, 'neodev')
 if neodevstatus then
@@ -59,16 +57,13 @@ mason_lspconfig.setup_handlers({
       return
     end
     local server = servers.getServerConfig(server_name)
+    if server.enabled == false then
+      return
+    end
     server.capabilities = capabilities
     lspconfig[server_name].setup(server)
   end,
 })
-
--- Setup efm
-local efmls_config = require('k1ng.lsp.efm')
-require('lspconfig').efm.setup(vim.tbl_extend('force', efmls_config, {
-  capabilities = capabilities,
-}))
 
 local group = vim.api.nvim_create_augroup('__env', { clear = true })
 vim.api.nvim_create_autocmd('BufEnter', {

@@ -15,6 +15,7 @@ return {
       'jbyuki/one-small-step-for-vimkind',
       'jay-babu/mason-nvim-dap.nvim',
       'nvim-telescope/telescope-dap.nvim',
+      'nvim-neotest/nvim-nio',
 
       -- debuggers
       'leoluz/nvim-dap-go',

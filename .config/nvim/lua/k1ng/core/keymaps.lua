@@ -9,7 +9,7 @@ map('n', '<Tab>', '%', { desc = 'Remap % to Tab' })
 
 -- Close buffer
 map('n', '<leader>ub', '<cmd>bdelete<cr>', { desc = '[U]nload [B]uffer' })
-map('n', '<leader>bd', '<cmd>bdelete<cr>', { desc = '[B]uffer [D]elete' })
+map('n', '<leader>bd', '<cmd>bdelete<cr>', { desc = '[B]buffer [D]elete' })
 map('n', '<leader>bD', '<cmd>DeleteFile<cr>', { desc = 'Delete buffer and file' })
 
 -- quit
@@ -48,11 +48,13 @@ map('n', '<leader>|', '<C-W>v', { desc = 'Split window right' })
 -- Buffer navigation
 map('n', '[b', ':bprevious<CR>', { desc = 'Previous buffer' })
 map('n', ']b', ':bnext<CR>', { desc = 'Next buffer' })
+map('n', '<F3>', ':bprevious<CR>', { desc = 'Previous buffer' })
+map('n', '<F4>', ':bnext<CR>', { desc = 'Next buffer' })
 
 -- Tab navigation
-map('n', '<C-Tab>', ':tabnext<CR>', { desc = 'Next tab' })
+map('n', '<A-Tab>', ':tabnext<CR>', { desc = 'Next tab' })
 map('n', '<S-Tab>', ':tabprevious<CR>', { desc = 'Previous tab' })
-map('n', '<leader>tn', ':tabnew<CR>', { desc = '[T]ab [N]ew' })
+map('n', '<leader>tN', ':tabnew<CR>', { desc = '[T]ab [N]ew' })
 map('n', '<leader>tc', ':tabclose<CR>', { desc = '[T]ab [C]lose' })
 map('n', '<leader>tm', ':tabmove<CR>', { desc = '[T]ab [M]ove' })
 
@@ -67,23 +69,15 @@ map('t', '<c-_>', '<cmd>close<cr>', { desc = 'which_key_ignore' })
 
 -- Trouble.nvim
 -- @@@ Move this to lua/k1ng/plugins/trouble.lua
-map('n', '<leader>xx', '<cmd>TroubleToggle<CR>', { silent = true, noremap = true, desc = 'Toggle Trouble' })
-map('n', '<leader>xw', '<cmd>TroubleToggle workspace_diagnostics<cr>',
-  { silent = true, noremap = true, desc = 'Toggle Trouble [W]orkspace diagnostics' })
-map('n', '<leader>xd', '<cmd>TroubleToggle document_diagnostics<cr>',
-  { silent = true, noremap = true, desc = 'Toggle Trouble [D]ocument diagnostics' })
-map('n', '<leader>xl', '<cmd>TroubleToggle loclist<cr>',
-  { silent = true, noremap = true, desc = 'Toggle Trouble [L]ocation list' })
-map('n', '<leader>xq', '<cmd>TroubleToggle quickfix<cr>',
-  { silent = true, noremap = true, desc = 'Toggle Trouble [Q]uickfix' })
-map('n', 'gR', '<cmd>TroubleToggle lsp_references<cr>',
-  { silent = true, noremap = true, desc = 'Toggle Trouble [R]eferences' })
+map('n', '<leader>xx', '<cmd>Trouble toggle diagnostics<CR>', { silent = true, noremap = true, desc = 'toggle Trouble' })
+map('n', '<leader>xd', '<cmd>Trouble toggle document_diagnostics<cr>', { silent = true, noremap = true, desc = 'toggle Trouble [D]ocument diagnostics' })
+map('n', '<leader>xl', '<cmd>Trouble toggle loclist<cr>', { silent = true, noremap = true, desc = 'toggle Trouble [L]ocation list' })
+map('n', '<leader>xq', '<cmd>Trouble toggle quickfix<cr>', { silent = true, noremap = true, desc = 'toggle Trouble [Q]uickfix' })
+map('n', 'gR', '<cmd>Trouble toggle lsp_references<cr>', { silent = true, noremap = true, desc = 'toggle Trouble [R]eferences' })
 
 -- maximizer
-map({ 'n', 'v', 't' }, '<leader>mm', '<cmd>MaximizerToggle!<cr>',
-  { silent = true, noremap = true, desc = 'Toggle Maximizer' })
+map({ 'n', 'v', 't' }, '<leader>mm', '<cmd>MaximizerToggle!<cr>', { silent = true, noremap = true, desc = 'Toggle Maximizer' })
 map({ 'n', 'v', 't' }, '<F3>', '<cmd>MaximizerToggle!<cr>', { silent = true, noremap = true, desc = 'Toggle Maximizer' })
-
 
 -- Telescope
 require('k1ng.plugin-configs.telescope-config').keymaps()

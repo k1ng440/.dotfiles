@@ -88,6 +88,14 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
   end,
 })
 
+-- Auto open quickfix window
+vim.api.nvim_create_autocmd({ 'QuickFixCmdPost' }, {
+  group = augroup('auto_open_quickfix'),
+  callback = function()
+    vim.cmd('copen')
+  end,
+})
+
 -- Auto save sessions
 vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
   group = augroup('save_current_session'),

@@ -24,27 +24,23 @@ local close_or_open_with_diagnostics = function()
   if is_trouble_open then
     require('trouble').close()
   else
-    vim.cmd([[TroubleToggle workspace_diagnostics]])
+    vim.cmd([[Trouble workspace_diagnostics]])
   end
 end
 
 return {
   'folke/trouble.nvim',
-  cmd = {
-    'Trouble',
-    'TroubleToggle',
-    'TroubleClose',
-    'TroubleRefresh',
-  },
+  cmd = 'Trouble',
   -- stylua: ignore
   keys = {
-    { 'gr', '<cmd>TroubleToggle lsp_references<cr>', desc = '[G]oto [R]eferences' },
-    { 'gd', '<cmd>TroubleToggle lsp_definitions<cr>', desc = '[G]oto [D]efinitions' },
-    { 'gD', '<cmd>TroubleToggle lsp_definitions<cr>', desc = '[G]to [D]efinitions' },
-    { '<leader>D', '<cmd>TroubleToggle lsp_type_definitions<cr>', desc = 'Type [D]efinition'},
-    -- { '<C-p>', function() next_diagnostic_or_trouble(false) end },
-    -- { '<C-n>', function() next_diagnostic_or_trouble(true) end },
-    { '<C-t>', close_or_open_with_diagnostics, { noremap = true } },
+    { 'gr',         '<cmd>Trouble lsp_references<cr>',                            desc = '[G]oto [R]eferences' },
+    { 'gd',         '<cmd>Trouble lsp_definitions<cr>',                           desc = '[G]oto [D]efinitions' },
+    { 'gD',         '<cmd>Trouble lsp_definitions<cr>',                           desc = '[G]to [D]efinitions' },
+    { '<leader>D',  '<cmd>Trouble lsp_type_definitions<cr>',                      desc = 'Type [D]efinition' },
+    { "<leader>xL", "<cmd>Trouble loclist toggle<cr>",                            desc = "Location List (Trouble)" },
+    { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",                             desc = "Quickfix List (Trouble)" },
+    { "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "LSP Definitions / references / ... (Trouble)" },
+    { '<C-t>',      close_or_open_with_diagnostics,                               { noremap = true } },
   },
   config = function()
     require('trouble').setup({

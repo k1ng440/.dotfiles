@@ -5,7 +5,7 @@ M.linterConfigFolder = os.getenv('HOME') .. '/.config/nvim/linter-configs/'
 --- @param mode "n"|"v"|"x"|"i"|"o"|"c"|"t"|"ia"|"ca"|"!a"|string[]
 --- @param lhs string
 --- @param rhs string|function
---- @param opts? { unique: boolean, desc: string, buffer: boolean, nowait: boolean, remap: boolean }
+--- @param opts? { unique: boolean, desc: string, buffer: boolean, nowait: boolean, remap: boolean }|string
 function M.keymap(mode, lhs, rhs, opts)
   local options = {
     noremap = true,

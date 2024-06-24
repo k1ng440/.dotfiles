@@ -6,14 +6,16 @@ vim.schedule(function()
   require('k1ng.luasnip')
 end)
 
+local defaults = require('cmp.config.default')()
+
 local window = {
   completion = cmp.config.window.bordered({
     col_offset = -3,
     side_padding = 0,
-    winhighlight = 'Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None',
+    winhighlight = 'Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual',
   }),
   documentation = cmp.config.window.bordered({
-    winhighlight = 'Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None',
+    winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,Search:None',
   }),
 }
 
@@ -24,8 +26,12 @@ local has_words_before = function()
 end
 
 cmp.setup({
+  auto_brackets = {},
   experimental = {
-    ghost_text = true,
+    native_menu = false,
+    ghost_text = {
+      hl_group = 'CmpGhostText',
+    },
   },
   snippet = {
     expand = function(args)
@@ -35,26 +41,53 @@ cmp.setup({
   view = {
     entries = { name = 'custom', selection_order = 'near_cursor' },
     docs = {
-      auto_open = false,
+      auto_open = true,
     },
   },
   window = {
     completion = window,
-    documentation = window,
+    documentation = window.documentation,
   },
   mapping = cmp.mapping.preset.insert({
     -- stylua: ignore
     ['<C-g>'] = function() if cmp.visible_docs() then cmp.close_docs() else cmp.open_docs() end end,
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
+
+    ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+    ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete({}),
-    ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true }),
+    ['<C-Space>'] = cmp.mapping({
+      i = cmp.mapping.complete(),
+      c = function(_)
+        if cmp.visible() then
+          if not cmp.confirm({ select = true }) then
+            return
+          end
+        else
+          cmp.complete()
+        end
+      end,
+    }),
+    ['<S-CR>'] = cmp.mapping(
+      cmp.mapping.confirm({
+        behavior = cmp.ConfirmBehavior.Insert,
+        select = true,
+      }),
+      { 'i', 'c' }
+    ),
+    ['<CR>'] = cmp.mapping(
+      cmp.mapping.confirm({
+        behavior = cmp.ConfirmBehavior.Replace,
+        select = true,
+      }),
+      { 'i', 'c' }
+    ),
+
     ['<Tab>'] = cmp.mapping(function(fallback)
       print(vim.inspect(cmp.visible()))
       if cmp.visible() then
-        cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
+        cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = false })
       elseif copilot_ok and copilot_suggestion.is_visible() then
         copilot_suggestion.accept()
       elseif luasnip.expand_or_locally_jumpable() then
@@ -77,12 +110,14 @@ cmp.setup({
   }),
   preselect = cmp.PreselectMode.None,
   sources = {
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-    { name = 'path' },
+    { name = 'copilot', group_index = 1 },
+    { name = 'nvim_lsp', group_index = 2 },
+    { name = 'luasnip', group_index = 2 },
+    { name = 'nvim_lsp_signature_help', group_index = 2 },
+    { name = 'path', group_index = 2 },
   },
   completion = {
-    completeopt = 'menu,menuone',
+    completeopt = 'menu,menuone,noinsert',
   },
   formatting = {
     fields = { 'kind', 'abbr' },
@@ -90,6 +125,27 @@ cmp.setup({
   },
 })
 
-cmp.setup.cmdline('/', {
-  sources = { { name = 'buffer' } },
-})
+cmp.event:on('menu_opened', function()
+  vim.b.copilot_suggestion_hidden = true
+end)
+
+cmp.event:on('menu_closed', function()
+  vim.b.copilot_suggestion_hidden = false
+end)
+
+-- gray
+vim.api.nvim_set_hl(0, 'CmpItemAbbrDeprecated', { bg = 'NONE', strikethrough = true, fg = '#808080' })
+-- blue
+vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { bg = 'NONE', fg = '#569CD6' })
+vim.api.nvim_set_hl(0, 'CmpItemAbbrMatchFuzzy', { link = 'CmpIntemAbbrMatch' })
+-- light blue
+vim.api.nvim_set_hl(0, 'CmpItemKindVariable', { bg = 'NONE', fg = '#9CDCFE' })
+vim.api.nvim_set_hl(0, 'CmpItemKindInterface', { link = 'CmpItemKindVariable' })
+vim.api.nvim_set_hl(0, 'CmpItemKindText', { link = 'CmpItemKindVariable' })
+-- pink
+vim.api.nvim_set_hl(0, 'CmpItemKindFunction', { bg = 'NONE', fg = '#C586C0' })
+vim.api.nvim_set_hl(0, 'CmpItemKindMethod', { link = 'CmpItemKindFunction' })
+-- front
+vim.api.nvim_set_hl(0, 'CmpItemKindKeyword', { bg = 'NONE', fg = '#D4D4D4' })
+vim.api.nvim_set_hl(0, 'CmpItemKindProperty', { link = 'CmpItemKindKeyword' })
+vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { link = 'CmpItemKindKeyword' })

@@ -1,11 +1,23 @@
 require('copilot').setup({
   panel = {
-    enabled = false,
+    enabled = true,
+    auto_refresh = false,
+    keymap = {
+      jump_prev = '[[',
+      jump_next = ']]',
+      accept = '<CR>',
+      refresh = 'gr',
+    },
+    layout = {
+      position = 'bottom',
+      ratio = 0.4,
+    },
   },
   suggestion = {
     enabled = true,
     auto_trigger = true,
     accept = false,
+    debounce = 75,
     keymap = {
       accept = '<A-j>',
       accept_line = '<A-l>',
@@ -25,15 +37,3 @@ require('copilot').setup({
     end,
   },
 })
-
--- hide copilot suggestions when cmp menu is open
--- to prevent odd behavior/garbled up suggestions
-local cmp_status_ok, cmp = pcall(require, 'cmp')
-if cmp_status_ok then
-  cmp.event:on('menu_opened', function()
-    vim.b.copilot_suggestion_hidden = true
-  end)
-  cmp.event:on('menu_closed', function()
-    vim.b.copilot_suggestion_hidden = false
-  end)
-end

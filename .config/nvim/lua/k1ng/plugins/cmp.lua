@@ -8,6 +8,8 @@ return {
       'hrsh7th/cmp-buffer',
       'rafamadriz/friendly-snippets',
       'L3MON4D3/LuaSnip',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
+      'hrsh7th/cmp-nvim-lsp-document-symbol',
       {
         'saadparwaiz1/cmp_luasnip',
         version = '2.*',
@@ -23,5 +25,4 @@ return {
     end,
   },
   { 'hrsh7th/cmp-nvim-lsp', event = 'InsertEnter', dependencies = 'hrsh7th/nvim-cmp' },
-  { 'hrsh7th/cmp-cmdline', event = 'InsertEnter', dependencies = 'hrsh7th/nvim-cmp' },
 }

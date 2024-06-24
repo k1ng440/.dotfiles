@@ -74,6 +74,7 @@ function M.setup()
     })
   end
 
+  local detected_root;
   local set_project_root = function()
     local filepath = vim.fn.expand('%:p')
     if vim.fn.filereadable(filepath) ~= 1 then
@@ -100,12 +101,18 @@ function M.setup()
     end
     current_root_marker = root_marker
 
+    if detected_root then
+      return
+    end
+
     local root_dir = vim.fs.dirname(root_marker)
+    vim.notify('Project root: ' .. root_dir)
     vim.fn.chdir(root_dir)
     vim.g.project_root = root_dir
     vim.api.nvim_exec_autocmds('User', { pattern = 'ProjectRoot', data = { dir = root_dir } })
     yadm_git_root()
     read_exrc(root_dir)
+    detected_root = true
   end
 
   -- TODO: This need to be fixed. It's not working as expected.

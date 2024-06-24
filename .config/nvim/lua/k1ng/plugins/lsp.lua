@@ -1,12 +1,12 @@
 return {
   {
     'neovim/nvim-lspconfig',
-    event = { 'BufReadPost', 'BufNewFile', 'BufEnter', },
+    event = { 'BufReadPost', 'BufNewFile', 'BufEnter' },
     cmd = { 'LspInfo', 'LspInstall', 'LspUninstall' },
     dependencies = {
       'williamboman/mason-lspconfig.nvim',
       'folke/neodev.nvim',
-      'b0o/schemastore.nvim'
+      'b0o/schemastore.nvim',
     },
     config = function()
       require('k1ng.lsp')
@@ -29,7 +29,7 @@ return {
   },
   {
     'someone-stole-my-name/yaml-companion.nvim',
-    enabled = false,
+    enabled = true,
     ft = { 'yaml' },
     opts = {
       builtin_matchers = {
@@ -79,13 +79,6 @@ return {
   },
   {
     'j-hui/fidget.nvim',
-    tag = 'legacy',
     event = 'LspAttach',
-    opts = {
-      window = {
-        blend = 0,
-        relative = 'editor',
-      },
-    },
   },
 }

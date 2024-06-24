@@ -18,13 +18,13 @@ function M.setup()
   local bc = vim.g.bc
   local no_preview = function(opts)
     local defaults = require('telescope.themes').get_dropdown({
-    -- stylua: ignore
-    borderchars = {
-      { bc.horiz, bc.vert, bc.horiz, bc.vert, bc.topleft, bc.topright, bc.botright, bc.botleft },
-      prompt = { bc.horiz, bc.vert, " ", bc.vert, bc.topleft, bc.topright, bc.vert, bc.vert },
-      results = { bc.horiz, bc.vert, bc.horiz, bc.vert, bc.vertright, bc.vertleft, bc.botright, bc.botleft },
-      preview = { bc.horiz, bc.vert, bc.horiz, bc.vert, bc.topleft, bc.topright, bc.botright, bc.botleft },
-    },
+      -- stylua: ignore
+      borderchars = {
+        { bc.horiz, bc.vert, bc.horiz, bc.vert, bc.topleft, bc.topright, bc.botright, bc.botleft },
+        prompt = { bc.horiz, bc.vert, " ", bc.vert, bc.topleft, bc.topright, bc.vert, bc.vert },
+        results = { bc.horiz, bc.vert, bc.horiz, bc.vert, bc.vertright, bc.vertleft, bc.botright, bc.botleft },
+        preview = { bc.horiz, bc.vert, bc.horiz, bc.vert, bc.topleft, bc.topright, bc.botright, bc.botleft },
+      },
       width = 0.8,
       previewer = false,
       prompt_title = false,
@@ -53,14 +53,6 @@ function M.setup()
     }
 
     return ivy(vim.tbl_deep_extend('force', defaults, options or {}))
-  end
-
-  local open_with_trouble = function(...)
-    return require('trouble.providers.telescope').open_with_trouble(...)
-  end
-
-  local open_selected_with_trouble = function(...)
-    return require('trouble.providers.telescope').open_selected_with_trouble(...)
   end
 
   local find_files_no_ignore = function()
@@ -94,6 +86,7 @@ function M.setup()
       ['git_files'] = ivy(),
       ['find_files'] = ivy(),
       ['diagnostics'] = ivy(),
+      ['start_open'] = ivy(),
     },
 
     ------------ default ------------
@@ -155,41 +148,47 @@ function M.setup()
       winblend = 0,
       set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
       mappings = {
-      -- stylua: ignore
-      i = {
-        -- Trouble
-        ['<c-t>'] = open_with_trouble,
-        ['<a-t>'] = open_selected_with_trouble,
+        -- stylua: ignore
+        i = {
+          -- quickfix
+          ['<C-q>'] = actions.send_to_qflist,
+          ['<C-t>'] = actions.smart_send_to_qflist,
 
-        -- Toggle
-        ["<a-i>"] = find_files_no_ignore,
-        ["<a-h>"] = find_files_with_hidden,
+          -- Toggle
+          ["<a-i>"] = find_files_no_ignore,
+          ["<a-h>"] = find_files_with_hidden,
 
-        -- Cycle history
-        ['<C-Down>'] = actions.cycle_history_next,
-        ['<C-Up>'] = actions.cycle_history_prev,
+          -- Cycle history
+          ['<C-Down>'] = actions.cycle_history_next,
+          ['<C-Up>'] = actions.cycle_history_prev,
 
-        ["<C-j>"] = actions.move_selection_next,
-        ["<C-k>"] = actions.move_selection_previous,
+          ["<C-j>"] = actions.move_selection_next,
+          ["<C-k>"] = actions.move_selection_previous,
 
-        -- Previewer
-        ['<M-p>'] = layout.toggle_preview,
-        ['<C-f>'] = actions.preview_scrolling_down,
-        ['<C-b>'] = actions.preview_scrolling_up,
+          -- Previewer
+          ['<M-p>'] = layout.toggle_preview,
+          ['<C-f>'] = actions.preview_scrolling_down,
+          ['<C-b>'] = actions.preview_scrolling_up,
 
-        ["<C-Space>"] = actions.to_fuzzy_refine,
-        ["<Esc>"] = actions.close,
-        ['<C-u>'] = false, -- Clear prompt
-      },
-      -- stylua: ignore
-      n = {
-        ['q'] = actions.close,
-      },
+          ["<C-Space>"] = actions.to_fuzzy_refine,
+          ["<Esc>"] = actions.close,
+          ['<C-u>'] = false, -- Clear prompt
+
+          -- buffer
+          ['<C-d>'] = actions.delete_buffer,
+        },
+        -- stylua: ignore
+        n = {
+          ['q'] = actions.close,
+        },
       },
     },
 
     ------------ extensions ------------
     extensions = {
+      smart_open = {
+        theme = 'ivy',
+      },
       fzf = {
         fuzzy = true,
         override_generic_sorter = true,
@@ -228,11 +227,19 @@ function M.keymaps()
   keymap('n', '<leader>li', '<cmd>Telescope lsp_incoming_calls<cr>', { desc = '[l]sp [i]ncoming calls' })
   keymap('n', '<leader>lo', '<cmd>Telescope lsp_outgoing_calls<cr>', { desc = '[l]sp [o]utgoing calls' })
   -- stylua: ignore
-  keymap('n', '<leader>ss', Util.telescope( 'lsp_document_symbols', { symbols = { 'Class', 'Function', 'Method', 'Constructor', 'Interface', 'Module', 'Struct', 'Trait', 'Field', 'Property' } }), { desc = 'Goto Symbol' })
+  keymap('n', '<leader>ss',
+    Util.telescope('lsp_document_symbols',
+      { symbols = { 'Class', 'Function', 'Method', 'Constructor', 'Interface', 'Module', 'Struct', 'Trait', 'Field', 'Property' } }),
+    { desc = 'Goto Symbol' })
   -- stylua: ignore
-  keymap('n', '<leader>sS', Util.telescope( 'lsp_dynamic_workspace_symbols', { symbols = { 'Class', 'Function', 'Method', 'Constructor', 'Interface', 'Module', 'Struct', 'Trait', 'Field', 'Property' } }), { desc = 'Goto Symbol (Workspace)' })
+  keymap('n', '<leader>sS',
+    Util.telescope('lsp_dynamic_workspace_symbols',
+      { symbols = { 'Class', 'Function', 'Method', 'Constructor', 'Interface', 'Module', 'Struct', 'Trait', 'Field', 'Property' } }),
+    { desc = 'Goto Symbol (Workspace)' })
   -- stylua: ignore
-  keymap('n', '<leader>st', '<cmd>TodoTelescope theme=ivy initial_mode=normal previewer=false layout_config={bottom_pane={height=12}}<cr>', { desc = '[S]earch [T]odo' })
+  keymap('n', '<leader>st',
+    '<cmd>TodoTelescope theme=ivy initial_mode=normal previewer=false layout_config={bottom_pane={height=12}}<cr>',
+    { desc = '[S]earch [T]odo' })
 
   local find_dotfiles = function(subdir)
     local cwd = vim.env.HOME .. '/.config/'
@@ -268,10 +275,15 @@ function M.keymaps()
     end
   end
 
+  local smart_open = function()
+    telescope.extensions.smart_open.smart_open({
+      ignore_patterns = { '*/node_modules/*', '*/.git/*', '*/.direnv/*', '*/.sqlx/*', '*/dist/*', '*/.tmp/*', '*/.cache/*', '*/tmp/' },
+    })
+  end
+
   keymap('n', '<Leader>df', find_dotfiles, { desc = '[d]otfiles [f]iles' })
-  keymap('n', '<Leader>ff', function() end)
   keymap('n', '<leader>ff', find_files, { desc = '[F]ind [F]iles' })
-  keymap('n', '<leader>sf', find_files, { desc = '[F]ind [F]iles' })
+  keymap('n', '<leader>sf', smart_open, { desc = '[F]ind [F]iles' })
   keymap('n', '<Leader>fhh', function()
     local pickers = require('telescope.builtin')
     local themes = require('telescope.themes')

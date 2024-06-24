@@ -27,19 +27,41 @@ local M = {
     terraformls = {},
     tsserver = {
       root_dir = function(fname)
-        return require('lspconfig.util').root_pattern('package.json', 'tsconfig.json') or vim.fn.getcwd()
+        local root_files = { 'package.json', 'tsconfig.json', '.git' }
+        return util.get_root_dir(fname, unpack(root_files))
       end,
+      init_options = {
+        plugins = {
+          {
+            name = "@vue/typescript-plugin",
+            location = util.get_mason_install_path('vue-language-server') .. '/node_modules/@vue/language-server',
+            languages = { 'vue' }
+          }
+        },
+      },
+      filetypes = { 'javascript', 'typescript' }
     },
     denols = {
+      autostart = false,
       root_dir = function(fname)
-        return require('lspconfig.util').root_pattern('deno.json', 'deno.jsonc')
-      end,
+        local root_files = { 'deno.json', 'deno.jsonc' }
+        return util.get_root_dir(fname, unpack(root_files))
+      end
     },
     bashls = {},
     dockerls = {},
     helm_ls = {},
+    volar = {
+      init_options = {
+        vue = {
+          hybridMode = false,
+        },
+      }
+    },
     svelte = {},
-    tailwindcss = {},
+    tailwindcss = {
+      autostart = false,
+    },
     html = {},
     emmet_language_server = {},
     pyright = {
@@ -98,8 +120,13 @@ local M = {
       },
     },
     yamlls = {
+      flags = {
+        debounce_text_changes = 150,
+      },
       settigns = {
+        redhat = { telemetry = { enabled = false } },
         yaml = {
+          format = { enable = true },
           schemaStore = {
             enable = false,
             url = '',
@@ -107,6 +134,7 @@ local M = {
           schemas = require('schemastore').yaml.schemas(),
           completion = true,
           hover = true,
+
         },
       },
     },
@@ -142,7 +170,7 @@ local M = {
             unusedwrite = true,
             useany = true,
           },
-          usePlaceholders = true,
+          usePlaceholders = false,
           completeUnimported = true,
           staticcheck = true,
           directoryFilters = { '-.git', '-.vscode', '-.idea', '-.vscode-test', '-node_modules' },
