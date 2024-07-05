@@ -9,7 +9,7 @@ map('n', '<Tab>', '%', { desc = 'Remap % to Tab' })
 
 -- Close buffer
 map('n', '<leader>ub', '<cmd>bdelete<cr>', { desc = '[U]nload [B]uffer' })
-map('n', '<leader>bd', '<cmd>bdelete<cr>', { desc = '[B]buffer [D]elete' })
+map('n', '<leader>bd', '<Plug>BufKillBd<cr>', { desc = '[B]buffer [D]elete' })
 map('n', '<leader>bD', '<cmd>DeleteFile<cr>', { desc = 'Delete buffer and file' })
 
 -- quit
@@ -17,6 +17,9 @@ map('n', '<leader>qq', '<cmd>qa<cr>', { desc = 'Quit all' })
 
 -- Tree and explorer
 map({ 'n' }, '-', '<cmd>Oil<cr>', { desc = 'Oil' })
+map({ 'n' }, '<leader>O', function()
+  require('oil').toggle_float()
+end)
 
 -- Move selection up/down/left/right
 map('v', 'J', ":m '>+1<CR>gv=gv", { desc = '[J] Move selection down' })
@@ -66,14 +69,6 @@ map('t', '<C-k>', '<cmd>wincmd k<cr>', { desc = 'Go to upper window' })
 map('t', '<C-l>', '<cmd>wincmd l<cr>', { desc = 'Go to right window' })
 map('t', '<C-/>', '<cmd>close<cr>', { desc = 'Hide Terminal' })
 map('t', '<c-_>', '<cmd>close<cr>', { desc = 'which_key_ignore' })
-
--- Trouble.nvim
--- @@@ Move this to lua/k1ng/plugins/trouble.lua
-map('n', '<leader>xx', '<cmd>Trouble toggle diagnostics<CR>', { silent = true, noremap = true, desc = 'toggle Trouble' })
-map('n', '<leader>xd', '<cmd>Trouble toggle document_diagnostics<cr>', { silent = true, noremap = true, desc = 'toggle Trouble [D]ocument diagnostics' })
-map('n', '<leader>xl', '<cmd>Trouble toggle loclist<cr>', { silent = true, noremap = true, desc = 'toggle Trouble [L]ocation list' })
-map('n', '<leader>xq', '<cmd>Trouble toggle quickfix<cr>', { silent = true, noremap = true, desc = 'toggle Trouble [Q]uickfix' })
-map('n', 'gR', '<cmd>Trouble toggle lsp_references<cr>', { silent = true, noremap = true, desc = 'toggle Trouble [R]eferences' })
 
 -- maximizer
 map({ 'n', 'v', 't' }, '<leader>mm', '<cmd>MaximizerToggle!<cr>', { silent = true, noremap = true, desc = 'Toggle Maximizer' })

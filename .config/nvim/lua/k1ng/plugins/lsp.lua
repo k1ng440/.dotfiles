@@ -7,6 +7,7 @@ return {
       'williamboman/mason-lspconfig.nvim',
       'folke/neodev.nvim',
       'b0o/schemastore.nvim',
+      'folke/neoconf.nvim',
     },
     config = function()
       require('k1ng.lsp')
@@ -20,12 +21,6 @@ return {
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
     },
-  },
-  {
-    'creativenull/efmls-configs-nvim',
-    event = 'LspAttach',
-    version = 'v1.x.x',
-    dependencies = { 'neovim/nvim-lspconfig' },
   },
   {
     'someone-stole-my-name/yaml-companion.nvim',
@@ -80,5 +75,14 @@ return {
   {
     'j-hui/fidget.nvim',
     event = 'LspAttach',
+    config = function()
+      require('fidget').setup({
+        notification = {
+          window = {
+            winblend = 0,
+          },
+        },
+      })
+    end,
   },
 }

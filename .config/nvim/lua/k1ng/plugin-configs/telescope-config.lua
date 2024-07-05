@@ -142,7 +142,7 @@ function M.setup()
       grep_previewer = previewers.vim_buffer_vimgrep.new,
       qflist_previewer = previewers.vim_buffer_qflist.new,
       buffer_previewer_maker = previewers.buffer_previewer_maker,
-      file_sorter = sorters.get_fzy_sorter,
+      -- file_sorter = sorters.get_fzy_sorter,
       generic_sorter = sorters.get_generic_fuzzy_sorter,
       path_display = { shorten = { len = 2 } }, -- truncate
       winblend = 0,

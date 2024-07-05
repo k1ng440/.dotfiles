@@ -6,3 +6,8 @@ export TERMINAL=/home/k1ng/.local/bin/kitty
 if [ -e /home/k1ng/.nix-profile/etc/profile.d/nix.sh ]; then . /home/k1ng/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 . "$HOME/.cargo/env"
 
+
+
+# Added by Toolbox App
+export PATH="$PATH:/home/k1ng/.local/share/JetBrains/Toolbox/scripts"
+

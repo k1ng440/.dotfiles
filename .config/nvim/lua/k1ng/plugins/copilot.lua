@@ -1,61 +1,66 @@
 return {
   {
     'zbirenbaum/copilot.lua',
-    build = ':Copilot auth',
     dependencies = {
       'hrsh7th/nvim-cmp',
     },
-    -- config = function()
-    --   vim.schedule(function()
-    --     require('k1ng.plugin-configs.copilot')
-    --   end)
-    -- end,
+    build = ':Copilot auth',
     cmd = 'Copilot',
-    config = function()
-      require('copilot').setup({
-        suggestion = { enabled = false },
-        panel = { enabled = false },
-      })
-    end,
-  },
-  {
-    'zbirenbaum/copilot-cmp',
-    dependencies = {
-      'zbirenbaum/copilot.lua',
-    },
     event = 'InsertEnter',
-    config = function()
-      require('copilot_cmp').setup()
-    end,
-  },
-  {
-    'CopilotC-Nvim/CopilotChat.nvim',
-    branch = 'canary',
-    dependencies = {
-      { 'zbirenbaum/copilot.lua' },
-      { 'nvim-lua/plenary.nvim' },
-      { 'nvim-telescope/telescope.nvim' },
-    },
-    keys = {
-      {
-        '<leader>cch',
-        function()
-          local actions = require('CopilotChat.actions')
-          require('CopilotChat.integrations.telescope').pick(actions.help_actions())
-        end,
-        desc = 'CopilotChat - Help actions',
+    opts = {
+      panel = { enabled = false },
+      suggestion = {
+        enabled = true,
+        auto_trigger = true,
+        keymap = {
+          accept = false,
+          accept_word = '<M-w>',
+          accept_line = '<M-l>',
+          next = '<M-]>',
+          prev = '<M-[>',
+          dismiss = '<C-/>',
+        },
       },
-      {
-        '<leader>ccp',
-        function()
-          local actions = require('CopilotChat.actions')
-          require('CopilotChat.integrations.telescope').pick(actions.prompt_actions())
-        end,
-        desc = 'CopilotChat - Prompt actions',
-      },
+      filetypes = {},
     },
-    config = function()
-      require('CopilotChat').setup({})
+    config = function(_, opts)
+      local copilot = require('copilot.suggestion')
+      local cmp = require('cmp')
+      local luasnip = require('luasnip')
+      opts = opts or {}
+      local project_root = vim.g.project_root
+      if project_root then
+        opts.server_opts_overrides = {
+          root_dir = project_root,
+        }
+      end
+      require('copilot').setup(opts)
+
+      local function set_trigger(trigger)
+        vim.b.copilot_suggestion_auto_trigger = trigger
+        vim.b.copilot_suggestion_hidden = not trigger
+      end
+
+      -- Hide suggestions when the completion menu is open.
+      cmp.event:on('menu_opened', function()
+        if copilot.is_visible() then
+          copilot.dismiss()
+        end
+        set_trigger(false)
+      end)
+
+      -- Disable suggestions when inside a snippet.
+      cmp.event:on('menu_closed', function()
+        set_trigger(not luasnip.expand_or_locally_jumpable())
+      end)
+
+      -- Disable suggestions when inside a snippet.
+      vim.api.nvim_create_autocmd('User', {
+        pattern = { 'LuasnipInsertNodeEnter', 'LuasnipInsertNodeLeave' },
+        callback = function()
+          set_trigger(not luasnip.expand_or_locally_jumpable())
+        end,
+      })
     end,
   },
 }

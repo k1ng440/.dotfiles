@@ -1,7 +1,6 @@
 return {
   { 'tpope/vim-surround', event = 'BufEnter' },
-  { 'tpope/vim-repeat',   event = 'BufEnter' },
-  { 'tpope/vim-sleuth',   event = 'BufEnter' },
+  { 'tpope/vim-sleuth', event = 'BufEnter' },
   {
     'AndrewRadev/splitjoin.vim',
     keys = { 'gS', 'gJ' },
@@ -39,15 +38,6 @@ return {
       end)
     end,
   },
-  -- {
-  --   'lukas-reineke/indent-blankline.nvim',
-  --   event = { 'BufReadPost', 'BufNewFile' },
-  --   config = function()
-  --     vim.schedule(function()
-  --       require('k1ng.plugin-configs.indent-blankline').setup()
-  --     end)
-  --   end,
-  -- },
   {
     'iamcco/markdown-preview.nvim',
     ft = 'markdown',
@@ -55,14 +45,6 @@ return {
     build = function()
       vim.fn['mkdp#util#install']()
     end,
-  },
-  {
-    'simrat39/symbols-outline.nvim',
-    cmd = 'SymbolsOutline',
-    keys = { { '<leader>cs', '<cmd>SymbolsOutline<cr>', desc = 'Symbols Outline' } },
-    opts = {
-      position = 'right',
-    },
   },
   {
     'jinh0/eyeliner.nvim',
@@ -87,5 +69,5 @@ return {
         })
       end)
     end,
-  }
+  },
 }

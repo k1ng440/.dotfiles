@@ -9,7 +9,7 @@ return {
       winbar = "%{v:lua.require('oil').get_current_dir()}",
     },
     columns = {
-      "icon",
+      'icon',
     },
     keymaps = {
       ['g?'] = 'actions.show_help',
@@ -20,7 +20,8 @@ return {
       ['<M-p>'] = 'actions.preview',
       ['<C-p>'] = 'actions.preview',
       ['<C-c>'] = 'actions.close',
-      ['<C-l>'] = 'actions.refresh',
+      ['<C-l>'] = false,
+      ['<C-L>'] = 'actions.refresh',
       ['-'] = 'actions.parent',
       ['_'] = 'actions.open_cwd',
       ['`'] = 'actions.cd',

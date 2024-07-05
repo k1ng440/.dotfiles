@@ -1,23 +1,42 @@
 #!/usr/bin/env python3
 
-from argparse import ArgumentParser
 from subprocess import call
+import os
+import sys
+import signal
 import i3ipc
 
-i3 = i3ipc.Connection()
+LOCK_FILE = '/tmp/disable-standby-fs.lock'
 
-parser = ArgumentParser(prog='disable-standby-fs',
-                        description='''
-        Disable standby (dpms) and screensaver when a window becomes fullscreen
-        or exits fullscreen-mode. Requires `xorg-xset`.
-        ''')
 
-args = parser.parse_args()
+def check_lock():
+    if os.path.isfile(LOCK_FILE):
+        print(
+            f"Another instance is already running (lock file exists: {LOCK_FILE}).")
+        sys.exit(0)
+    with open(LOCK_FILE, 'w') as f:
+        f.write(str(os.getpid()))
+
+
+def remove_lock():
+    if os.path.isfile(LOCK_FILE):
+        os.remove(LOCK_FILE)
+
+
+def handle_signal(signum, _):
+    print(f"Received signal {signum}, removing lock file and exiting.")
+    remove_lock()
+    sys.exit(0)
+
+
+def setup_signal_handlers():
+    for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+        signal.signal(sig, handle_signal)
 
 
 def find_fullscreen(con):
     # XXX remove me when this method is available on the con in a release
-    return [c for c in con.descendents() if c.type == 'con' and c.fullscreen_mode]
+    return [c for c in con.descendants() if c.type == 'con' and c.fullscreen_mode]
 
 
 def set_dpms(state):
@@ -31,16 +50,26 @@ def set_dpms(state):
         call(['xset', '-dpms'])
 
 
-def on_fullscreen_mode(i3, e):
+def on_fullscreen_mode(i3, _):
     set_dpms(not len(find_fullscreen(i3.get_tree())))
 
 
-def on_window_close(i3, e):
+def on_window_close(i3, _):
     if not len(find_fullscreen(i3.get_tree())):
         set_dpms(True)
 
 
-i3.on('window::fullscreen_mode', on_fullscreen_mode)
-i3.on('window::close', on_window_close)
+def main():
+    check_lock()
+    setup_signal_handlers()
+    try:
+        i3 = i3ipc.Connection()
+        i3.on('window::fullscreen_mode', on_fullscreen_mode)
+        i3.on('window::close', on_window_close)
+        i3.main()
+    finally:
+        remove_lock()
 
-i3.main()
+
+if __name__ == '__main__':
+    main()

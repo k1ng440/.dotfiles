@@ -11,7 +11,7 @@ local colors = {
 
 local opts = {
   options = {
-    theme = 'catppuccin',
+    theme = 'tokyonight',
     globalstatus = true,
     disabled_filetypes = { statusline = { 'dashboard', 'alpha', 'NvimTree', 'lazy', 'oil' } },
   },

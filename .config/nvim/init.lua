@@ -1,5 +1,5 @@
 -- Neovim Configuration
--- Auther: Asaduzzaman Pavel
+-- Author: Asaduzzaman Pavel
 -- Github: https://github.com/k1ng440
 -- Email: contact@iampavel.dev
 -- Date: 2023-07-19
@@ -10,4 +10,3 @@ if vim.loader then
 end
 
 require('k1ng')
-

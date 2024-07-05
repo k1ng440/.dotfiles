@@ -31,6 +31,16 @@ return {
       { '<leader>ds', function() require('dap').session() end, desc = '[S]ession' },
       { '<leader>dp', function() require('dap.ui.widgets').preview() end, desc = '[D]ap [P]review' },
       { '<leader>dh', function() require('dap.ui.widgets').hover() end, desc = '[D]ap [H]over' },
+      { "<leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
+      { "<leader>dg", function() require("dap").goto_() end, desc = "Go to Line (No Execute)" },
+      { "<leader>di", function() require("dap").step_into() end, desc = "Step Into" },
+      { "<leader>dj", function() require("dap").down() end, desc = "Down" },
+      { "<leader>dk", function() require("dap").up() end, desc = "Up" },
+      { "<leader>dl", function() require("dap").run_last() end, desc = "Run Last" },
+      { "<leader>do", function() require("dap").step_out() end, desc = "Step Out" },
+      { "<leader>dO", function() require("dap").step_over() end, desc = "Step Over" },
+      { "<leader>dp", function() require("dap").pause() end, desc = "Pause" },
+
       { '<F5>', continue, 'Debug: Start/Continue' },
       { '<F6>', function() require('dap').run_last() end, desc = 'Debug: Run Last' },
       { '<F9>', function() require('dap').step_back() end, desc = 'Debug: Step Over' },
@@ -59,7 +69,6 @@ return {
       local dap = require('dap')
       local dapui = require('dapui')
       local icons = require('k1ng.core.icons')
-      local ftkeymap = require('k1ng.util').ft_keymap
 
       require('telescope').load_extension('dap')
       require('mason-nvim-dap').setup({
@@ -112,9 +121,6 @@ return {
           },
         },
       })
-
-      ftkeymap('go', 'n', '<leader>dt', "<cmd>lua require('dap-go').debug_test()<CR>", { desc = 'Debug Nearest function (Go)' })
-      -- EOF golang
 
       -- php
       dap.adapters.php = {

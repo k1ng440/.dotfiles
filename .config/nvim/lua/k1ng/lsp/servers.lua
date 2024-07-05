@@ -21,7 +21,7 @@ local M = {
         }
 
         return util.get_root_dir(fname, unpack(root_files))
-      end
+      end,
     },
     rust_analyzer = {},
     terraformls = {},
@@ -30,23 +30,24 @@ local M = {
         local root_files = { 'package.json', 'tsconfig.json', '.git' }
         return util.get_root_dir(fname, unpack(root_files))
       end,
+      cmd = { 'typescript-language-server', '--stdio', '--log-level', '4' },
       init_options = {
         plugins = {
           {
-            name = "@vue/typescript-plugin",
+            name = '@vue/typescript-plugin',
             location = util.get_mason_install_path('vue-language-server') .. '/node_modules/@vue/language-server',
-            languages = { 'vue' }
-          }
+            languages = { 'vue' },
+          },
         },
       },
-      filetypes = { 'javascript', 'typescript' }
+      filetypes = { 'javascript', 'typescript' },
     },
     denols = {
       autostart = false,
       root_dir = function(fname)
         local root_files = { 'deno.json', 'deno.jsonc' }
         return util.get_root_dir(fname, unpack(root_files))
-      end
+      end,
     },
     bashls = {},
     dockerls = {},
@@ -56,7 +57,7 @@ local M = {
         vue = {
           hybridMode = false,
         },
-      }
+      },
     },
     svelte = {},
     tailwindcss = {
@@ -123,7 +124,7 @@ local M = {
       flags = {
         debounce_text_changes = 150,
       },
-      settigns = {
+      settings = {
         redhat = { telemetry = { enabled = false } },
         yaml = {
           format = { enable = true },
@@ -134,7 +135,6 @@ local M = {
           schemas = require('schemastore').yaml.schemas(),
           completion = true,
           hover = true,
-
         },
       },
     },

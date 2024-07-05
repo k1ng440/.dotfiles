@@ -39,15 +39,6 @@ return {
     end,
   },
   {
-    'tpope/vim-rhubarb',
-    event = 'VeryLazy',
-    cond = function()
-      if vim.fn.isdirectory('.git') ~= 0 then
-        return true
-      end
-    end,
-  },
-  {
     'lewis6991/gitsigns.nvim',
     event = 'VeryLazy',
     opts = {
